@@ -63,7 +63,8 @@ body {
   padding: 10px 15px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #333;
   transition: color 0.3s ease;
 }
 
@@ -71,29 +72,35 @@ body {
   color: #007bff;
 }
 
+.chevron-icon {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.nav-item-container:hover .chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Styling */
 .dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   background: white;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  min-width: 200px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.nav-item-container:hover .dropdown,
-.nav-item-container .dropdown-active {
-  opacity: 1;
-  visibility: visible;
+  min-width: 220px;
+  padding: 10px 0;
+  z-index: 100;
 }
 
 .dropdown-item {
-  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
   font-size: 14px;
-  cursor: pointer;
+  font-weight: 500;
+  color: #333;
   transition: all 0.3s ease;
 }
 
@@ -102,80 +109,18 @@ body {
   color: white;
 }
 
-.nav-icon {
-  font-size: 18px;
-}
-
-.chevron-icon {
-  font-size: 12px;
-  margin-left: 5px;
-}
-
-.icon {
-  font-size: 18px;
+.dropdown-item .icon {
+  font-size: 20px;
   margin-right: 10px;
+  color: #007bff;
+  transition: color 0.3s ease;
 }
 
-/* Adjust icon sizes for mobile */
-@media (max-width: 768px) {
-  .nav-icon {
-    font-size: 20px; /* Slightly larger for better touch interaction */
-  }
-
-  .chevron-icon {
-    font-size: 14px;
-  }
-
-  .icon {
-    font-size: 22px; /* Larger icons in dropdown */
-  }
-
-  .menu-icon {
-    font-size: 30px; /* Hamburger and close icon size */
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-icon {
-    font-size: 22px;
-  }
-
-  .icon {
-    font-size: 24px;
-  }
-
-  .menu-icon {
-    font-size: 32px;
-  }
-}
-
-
-.get-started {
-  background: #007bff;
+.dropdown-item:hover .icon {
   color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.get-started:hover {
-  background: #0056b3;
-  transform: scale(1.05);
-}
-
-/* Hide "Get Started" on Mobile */
-@media (max-width: 768px) {
-  .get-started {
-    display: none;
-  }
-}
-
-
-/* Responsive Design */
+/* Responsive Styling */
 @media (max-width: 768px) {
   .menu-icon {
     display: block;
@@ -202,11 +147,9 @@ body {
 
   .nav-item {
     padding: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .dropdown {
     position: relative;
-    box-shadow: none;
   }
 }

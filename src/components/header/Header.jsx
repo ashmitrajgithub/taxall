@@ -8,15 +8,21 @@ import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
 import "./Header.css";
 
 const Header = () => {
-  const [dropdown, setDropdown] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [selectedComponent, setSelectedComponent] = useState(null);
 
   const handleDropdownToggle = (menu) => {
-    setDropdown(dropdown === menu ? null : menu);
+    setActiveDropdown(activeDropdown === menu ? null : menu);
   };
 
-  const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
+  const closeDropdown = () => {
+    setActiveDropdown(null);
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenu(!mobileMenu);
+  };
 
   return (
     <>
@@ -34,12 +40,12 @@ const Header = () => {
                 <span className="nav-item" onClick={() => handleDropdownToggle("products")}>
                   <FaBox className="nav-icon" /> Products <FaChevronDown className="chevron-icon" />
                 </span>
-                {dropdown === "products" && (
+                {activeDropdown === "products" && (
                   <div className="dropdown">
-                    <div className="dropdown-item" onClick={() => setSelectedComponent("IncomeTaxCalculator")}>
+                    <div className="dropdown-item" onClick={() => { setSelectedComponent("IncomeTaxCalculator"); closeDropdown(); }}>
                       <FaCalculator className="icon" /> Income Tax Calculator
                     </div>
-                    <div className="dropdown-item">
+                    <div className="dropdown-item" onClick={closeDropdown}>
                       <FaBalanceScale className="icon" /> Regulatory Compliance Hub
                     </div>
                   </div>
@@ -50,11 +56,11 @@ const Header = () => {
                 <span className="nav-item" onClick={() => handleDropdownToggle("resources")}>
                   <FaBook className="nav-icon" /> Resources <FaChevronDown className="chevron-icon" />
                 </span>
-                {dropdown === "resources" && (
+                {activeDropdown === "resources" && (
                   <div className="dropdown">
-                    <div className="dropdown-item"><FaBook className="icon" /> Blogs & Articles</div>
-                    <div className="dropdown-item"><FaTag className="icon" /> Case Studies</div>
-                    <div className="dropdown-item"><FaChartBar className="icon" /> Industry Insights</div>
+                    <div className="dropdown-item" onClick={closeDropdown}><FaBook className="icon" /> Blogs & Articles</div>
+                    <div className="dropdown-item" onClick={closeDropdown}><FaTag className="icon" /> Case Studies</div>
+                    <div className="dropdown-item" onClick={closeDropdown}><FaChartBar className="icon" /> Industry Insights</div>
                   </div>
                 )}
               </li>
@@ -63,11 +69,11 @@ const Header = () => {
                 <span className="nav-item" onClick={() => handleDropdownToggle("company")}>
                   <FaBuilding className="nav-icon" /> Company <FaChevronDown className="chevron-icon" />
                 </span>
-                {dropdown === "company" && (
+                {activeDropdown === "company" && (
                   <div className="dropdown">
-                    <div className="dropdown-item"><FaBuilding className="icon" /> About Us</div>
-                    <div className="dropdown-item"><FaUsers className="icon" /> Careers</div>
-                    <div className="dropdown-item"><FaTag className="icon" /> Contact</div>
+                    <div className="dropdown-item" onClick={closeDropdown}><FaBuilding className="icon" /> About Us</div>
+                    <div className="dropdown-item" onClick={closeDropdown}><FaUsers className="icon" /> Careers</div>
+                    <div className="dropdown-item" onClick={closeDropdown}><FaTag className="icon" /> Contact</div>
                   </div>
                 )}
               </li>
