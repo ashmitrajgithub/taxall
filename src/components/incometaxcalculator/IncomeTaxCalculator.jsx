@@ -231,7 +231,7 @@ const IncomeTaxCalculator = () => {
     });
   };
 
-  // (Optional) Chart data can be prepared here if needed
+  // Prepare chart data for the summary page graphs
   const barData = summary
     ? [
         { regime: 'Old Regime', payableTax: summary.old.payableTax },
@@ -241,8 +241,7 @@ const IncomeTaxCalculator = () => {
 
   let preferredRegime = null;
   if (summary) {
-    preferredRegime =
-      summary.old.payableTax <= summary.new.payableTax ? 'old' : 'new';
+    preferredRegime = summary.old.payableTax <= summary.new.payableTax ? 'old' : 'new';
   }
   const pieData =
     summary && preferredRegime === 'old'
@@ -256,7 +255,6 @@ const IncomeTaxCalculator = () => {
           { name: 'Cess', value: summary.new.cess },
         ]
       : [];
-
   const pieColors = ['#007bff', '#28a745'];
 
   return (
@@ -453,11 +451,14 @@ const IncomeTaxCalculator = () => {
         </div>
       )}
 
-      {/* Step 4: Summary Report */}
+      {/* Step 4: Summary Report with Graphs */}
       {step === 4 && summary && (
         <div id="report" className="summary section">
           <h2>Summary Report</h2>
+          {/* Display the selected Financial Year */}
           <h3>Financial Year: {basicDetails.financialYear}</h3>
+
+          {/* Comparison Table */}
           <div className="comparison-table">
             <table>
               <thead>
@@ -506,6 +507,46 @@ const IncomeTaxCalculator = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Graphs */}
+          <div className="charts-flex-container">
+            <div className="bar-chart-container">
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="regime" />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <Tooltip formatter={(value) => formatCurrency(value)} />
+                  <Legend />
+                  <Bar
+                    dataKey="payableTax"
+                    fill={
+                      summary.old.payableTax <= summary.new.payableTax ? "#007bff" : "#28a745"
+                    }
+                    animationDuration={1500}
+                  >
+                    {barData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={index === 0 ? "#007bff" : "#28a745"} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="pie-chart-container">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie dataKey="value" data={pieData} cx="50%" cy="50%" outerRadius={80} label>
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => formatCurrency(value)} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
           <p className="summary-message">{summary.message}</p>
           <div className="button-group">
             <button className="btn back-btn" onClick={prevStep}>
