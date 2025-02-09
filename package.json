@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "chart.js": "^4.4.7",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",

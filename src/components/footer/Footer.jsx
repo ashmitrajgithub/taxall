@@ -15,7 +15,7 @@ const Footer = () => {
           {/* Brand Section with Uploaded Logo */}
           <div className="footer-logo">
             <img src={footerLogo} alt="Best of Beat Logo" className="logo-image" />
-            <p>Feel the rhythm of life</p>
+            <p>Simplify Your Taxes, Amplify Your Savings</p>
           </div>
 
           {/* Quick Links */}
