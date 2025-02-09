@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { 
-  FaBox, FaBook, FaBuilding, FaTag, FaUsers, 
-  FaChartBar, FaChevronDown, FaCalculator, FaBalanceScale, FaBars, FaTimes 
-} from "react-icons/fa"; 
+import {
+  FaBox, FaBook, FaBuilding, FaTag, FaUsers,
+  FaChartBar, FaChevronDown, FaCalculator, FaBalanceScale, FaBars, FaTimes
+} from "react-icons/fa";
 import logo from "/src/assets/taxallnewww22n.png";
 import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
 import "./Header.css";
@@ -12,8 +12,10 @@ const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [selectedComponent, setSelectedComponent] = useState(null);
 
-  const handleMouseEnter = (menu) => setDropdown(menu);
-  const handleMouseLeave = () => setDropdown(null);
+  const handleDropdownToggle = (menu) => {
+    setDropdown(dropdown === menu ? null : menu);
+  };
+
   const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
 
   return (
@@ -28,10 +30,8 @@ const Header = () => {
           </div>
           <nav className={`nav ${mobileMenu ? "nav-active" : ""}`}>
             <ul className="nav-list">
-              <li className="nav-item-container" 
-                  onMouseEnter={() => handleMouseEnter("products")} 
-                  onMouseLeave={handleMouseLeave}>
-                <span className="nav-item">
+              <li className="nav-item-container">
+                <span className="nav-item" onClick={() => handleDropdownToggle("products")}>
                   <FaBox className="nav-icon" /> Products <FaChevronDown className="chevron-icon" />
                 </span>
                 {dropdown === "products" && (
@@ -46,10 +46,8 @@ const Header = () => {
                 )}
               </li>
 
-              <li className="nav-item-container" 
-                  onMouseEnter={() => handleMouseEnter("resources")} 
-                  onMouseLeave={handleMouseLeave}>
-                <span className="nav-item">
+              <li className="nav-item-container">
+                <span className="nav-item" onClick={() => handleDropdownToggle("resources")}>
                   <FaBook className="nav-icon" /> Resources <FaChevronDown className="chevron-icon" />
                 </span>
                 {dropdown === "resources" && (
@@ -61,10 +59,8 @@ const Header = () => {
                 )}
               </li>
 
-              <li className="nav-item-container" 
-                  onMouseEnter={() => handleMouseEnter("company")} 
-                  onMouseLeave={handleMouseLeave}>
-                <span className="nav-item">
+              <li className="nav-item-container">
+                <span className="nav-item" onClick={() => handleDropdownToggle("company")}>
                   <FaBuilding className="nav-icon" /> Company <FaChevronDown className="chevron-icon" />
                 </span>
                 {dropdown === "company" && (
