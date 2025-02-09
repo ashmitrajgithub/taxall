@@ -1,0 +1,120 @@
+/* Container styling for overall page layout */
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh; /* Increased height for extra space */
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+/* Main content wrapper with a card-like design */
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 1400px; /* Increased width for a larger layout */
+  width: 100%;
+  background-color: #e5dede;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Left content styles */
+.left-content {
+  flex: 1;
+  padding: 40px;
+}
+
+.logo {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #343a40;
+}
+
+.pricing {
+  color: #28a745; /* Emphasize pricing with a vibrant color */
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+.subtitle2{
+  margin-bottom: 15px;
+  margin-right: 115px;
+  line-height: 1.5;
+
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.description {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+}
+
+/* Right content styles */
+.right-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+
+  .left-content,
+  .right-content {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}

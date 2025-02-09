@@ -11,7 +11,7 @@ body {
 }
 
 .header {
-  background: #000;
+  background: linear-gradient(45deg, #000, #222);
   color: white;
   padding: 15px 20px;
   position: relative;
@@ -64,12 +64,12 @@ body {
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: #9d8f8f;
   transition: color 0.3s ease;
 }
 
 .nav-item:hover {
-  color: #007bff;
+  color: wheat;
 }
 
 .chevron-icon {
