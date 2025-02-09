@@ -1,10 +1,9 @@
 /* Theme Variables for Consistency */
 :root {
-  /* Updated Colors for a Modern Look */
   --primary-color: #007bff;         /* Vibrant Blue */
   --secondary-color: #d6d6d6;       /* Deep Purple */
   --bg-color: #e7e2e2;              /* Clean Light Gray */
-  --text-color-dark: #222222;       /* Rich Dark Gray for text */
+  --text-color-dark: #000000;       /* Rich Dark Gray for text */
   --text-color-light: #ffffff;      /* White for contrast on dark backgrounds */
   
   /* Typography sizes (responsive with clamp) */
@@ -18,7 +17,7 @@
   
   /* Animation and Shadow */
   --transition-speed: 0.6s;
-  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 8px 20px rgba(116, 116, 116, 0.1);
 }
 
 /* Section Background and Overall Layout */
@@ -72,7 +71,7 @@
 
 .description {
   font-size: var(--description-size);
-  color: #555; /* A softer dark tone for paragraphs */
+  color: #000000; /* A softer dark tone for paragraphs */
 }
 
 /* Cards Container */
@@ -118,11 +117,12 @@
   align-items: center;
   padding: 20px;
   box-shadow: var(--card-shadow);
+  transition: box-shadow var(--transition-speed);
 }
 
 /* Front Face Styling */
 .card-front {
-  background: #ffffff;
+  background: #c8c7c7; /* Change to a grey color */
   color: var(--text-color-dark);
 }
 
@@ -134,7 +134,7 @@
 
 /* Back Face Styling */
 .card-back {
-  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  background: #a9a9a9; /* Change to a darker grey for contrast */
   color: var(--text-color-light);
   transform: rotateY(180deg);
 }
@@ -186,5 +186,28 @@
   .service-card {
     width: 90%;
     max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .subheading {
+    font-size: 1.25rem;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .card-front-description,
+  .card-back-description {
+    font-size: 0.9rem;
   }
 }
