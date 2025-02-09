@@ -1,0 +1,188 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+/* Header */
+.header {
+  background: #000000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px 40px;
+  position: relative;
+  z-index: 100;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Logo */
+.logo-img {
+  height: 50px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+}
+
+/* Navigation */
+.nav {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+
+/* Parent container for dropdown */
+.nav-item-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Nav Items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+  color: #007bff;
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+.chevron-icon {
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+/* Dropdown Menu */
+
+/* Dropdown - Single Column Layout */
+.dropdown {
+  position: absolute;
+  background: white;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  min-width: 250px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-item-container:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Updated Dropdown Items (One per Row) */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* Icon Styles */
+.dropdown-item .icon {
+  font-size: 18px;
+  margin-right: 10px;
+  color: #007bff;
+}
+
+.dropdown-item:hover .icon {
+  color: white;
+}
+
+/* Call-to-Action Button */
+.get-started {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.get-started:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .nav-list {
+    gap: 20px;
+  }
+
+  .nav-item {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .get-started {
+    margin-top: 15px;
+  }
+
+  .dropdown-grid {
+    grid-template-columns: 1fr;
+  }
+}
