@@ -156,9 +156,9 @@
 /* Modal Content styling */
 .modal-content {
    /* Set a background color */
-  padding: 1rem;    /* Reduced padding for mobile */
+  padding: 0rem;    /* Reduced padding for mobile */
   border-radius: 8px;
-  width: 90vw;       /* 90% of the viewport width on small screens */
+  width: 110vw;       /* 90% of the viewport width on small screens */
   max-width: 1200px; /* Maximum width for larger screens */
   max-height: 90vh;
   overflow-y: auto;
