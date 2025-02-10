@@ -225,7 +225,7 @@ const IncomeTaxCalculator = () => {
     });
     
     // Your brand logo as a Base64 string (replace with your actual logo data)
-    const logoBase64 = '/assets/taxallnewww.png';
+    const logoBase64 = './assets/taxallnewww.png';
   
     html2canvas(input, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
