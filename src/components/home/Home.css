@@ -124,6 +124,7 @@
 /* Tablets & Small Desktops (max-width: 768px) */
 @media (max-width: 768px) {
   .home-container {
+    top: 18vh;
     height: 55vh;
     padding: 1.5rem;
   }
@@ -152,7 +153,7 @@
 /* Mobile Portrait (max-width: 480px) */
 @media (max-width: 480px) {
   .home-container {
-    margin-top: 170px;
+    margin-top: 130px;
     height: 60vh;
     padding: 1rem;
   }
