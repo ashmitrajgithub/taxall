@@ -1,9 +1,11 @@
 /* Container styling for overall page layout */
 .home-container {
+  position:relative;
+  top: 22vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 50vh; /* Increased height for extra space */
+  height: 50vh; 
   padding: 20px;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
 }
@@ -104,6 +106,18 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+
+  .home-container {
+    position:relative;
+    top:38vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh; 
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  }
+
   .content-wrapper {
     flex-direction: column;
   }

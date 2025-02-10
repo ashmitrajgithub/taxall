@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import {
-  FaBox, FaBook, FaBuilding, FaTag, FaUsers,
-  FaChartBar, FaChevronDown, FaCalculator, FaBalanceScale, FaBars, FaTimes
+  FaBox,
+  FaBook,
+  FaBuilding,
+  FaTag,
+  FaUsers,
+  FaChartBar,
+  FaChevronDown,
+  FaCalculator,
+  FaBalanceScale,
+  FaBars,
+  FaTimes
 } from "react-icons/fa";
 import logo from "/assets/taxallnewww22n.png";
 import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
@@ -28,7 +37,8 @@ const Header = () => {
     <>
       <header className="header">
         <div className="container">
-          <h1 className="logo">
+          {/* Logo container with unique id */}
+          <h1 className="logo" id="logo">
             <img src={logo} alt="Brand Logo" className="logo-img" />
           </h1>
           <div className="menu-icon" onClick={toggleMobileMenu}>
@@ -42,7 +52,13 @@ const Header = () => {
                 </span>
                 {activeDropdown === "products" && (
                   <div className="dropdown">
-                    <div className="dropdown-item" onClick={() => { setSelectedComponent("IncomeTaxCalculator"); closeDropdown(); }}>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => {
+                        setSelectedComponent("IncomeTaxCalculator");
+                        closeDropdown();
+                      }}
+                    >
                       <FaCalculator className="icon" /> Income Tax Calculator
                     </div>
                     <div className="dropdown-item" onClick={closeDropdown}>
@@ -58,9 +74,15 @@ const Header = () => {
                 </span>
                 {activeDropdown === "resources" && (
                   <div className="dropdown">
-                    <div className="dropdown-item" onClick={closeDropdown}><FaBook className="icon" /> Blogs & Articles</div>
-                    <div className="dropdown-item" onClick={closeDropdown}><FaTag className="icon" /> Case Studies</div>
-                    <div className="dropdown-item" onClick={closeDropdown}><FaChartBar className="icon" /> Industry Insights</div>
+                    <div className="dropdown-item" onClick={closeDropdown}>
+                      <FaBook className="icon" /> Blogs & Articles
+                    </div>
+                    <div className="dropdown-item" onClick={closeDropdown}>
+                      <FaTag className="icon" /> Case Studies
+                    </div>
+                    <div className="dropdown-item" onClick={closeDropdown}>
+                      <FaChartBar className="icon" /> Industry Insights
+                    </div>
                   </div>
                 )}
               </li>
@@ -71,15 +93,22 @@ const Header = () => {
                 </span>
                 {activeDropdown === "company" && (
                   <div className="dropdown">
-                    <div className="dropdown-item" onClick={closeDropdown}><FaBuilding className="icon" /> About Us</div>
-                    <div className="dropdown-item" onClick={closeDropdown}><FaUsers className="icon" /> Careers</div>
-                    <div className="dropdown-item" onClick={closeDropdown}><FaTag className="icon" /> Contact</div>
+                    <div className="dropdown-item" onClick={closeDropdown}>
+                      <FaBuilding className="icon" /> About Us
+                    </div>
+                    <div className="dropdown-item" onClick={closeDropdown}>
+                      <FaUsers className="icon" /> Careers
+                    </div>
+                    <div className="dropdown-item" onClick={closeDropdown}>
+                      <FaTag className="icon" /> Contact
+                    </div>
                   </div>
                 )}
               </li>
             </ul>
           </nav>
-          <button className="get-started">Get Started</button>
+          {/* Get Started button with a unique id; visible only on large screens */}
+          <button className="get-started" id="get-started">Get Started</button>
         </div>
       </header>
 
