@@ -217,20 +217,43 @@ const IncomeTaxCalculator = () => {
   // PDF download functionality using html2canvas and jsPDF
   const downloadPdf = () => {
     const input = document.getElementById('report');
+    const buttonGroups = input.querySelectorAll('.button-group');
+    
+    // Hide the buttons so they don't appear in the PDF
+    buttonGroups.forEach(group => {
+      group.style.display = 'none';
+    });
+    
+    // Your brand logo as a Base64 string (replace with your actual logo data)
+    const logoBase64 = 'public/assets/taxallnewww.png';
+  
     html2canvas(input, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
-      // Add a logo if desired (replace with your Base64 encoded logo)
-      const logoData = "data:image/png;base64,PUT_YOUR_BASE64_LOGO_HERE";
-      pdf.addImage(logoData, 'PNG', 10, 10, 30, 30);
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const yOffset = 45; // Leave space for the logo
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, yOffset, pdfWidth, pdfHeight);
+      
+      // Add the captured report image to the PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      
+      // Add the brand logo in the upper left corner.
+      // Adjust the x, y coordinates and dimensions as needed.
+      const logoX = 10;   // 10 mm from the left
+      const logoY = 10;   // 10 mm from the top
+      const logoWidth = 30;  // Width of the logo in mm (adjust as needed)
+      const logoHeight =20; // Height of the logo in mm (adjust as needed)
+      pdf.addImage(logoBase64, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      
+      // Save the PDF
       pdf.save("income_tax_summary.pdf");
+  
+      // Restore the button groups so the UI remains unchanged
+      buttonGroups.forEach(group => {
+        group.style.display = '';
+      });
     });
   };
-
+  
   // Prepare chart data for the summary page graphs
   const barData = summary
     ? [

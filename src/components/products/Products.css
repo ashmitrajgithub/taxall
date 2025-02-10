@@ -181,5 +181,6 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem; /* Adjust size as needed (this works well with react-icons) */
+  font-size: 1.5rem;
+  background-color: white; /* Adjust size as needed (this works well with react-icons) */
 }
