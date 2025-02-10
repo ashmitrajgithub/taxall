@@ -10,12 +10,15 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export default function ChatBot() {
   const [userInput, setUserInput] = useState("");
-  const [response, setResponse] = useState([]);
+  const [response, setResponse] = useState([{ type: "bot", message: "Hi, How can I help you?" }]); // Initial welcome message
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const messageEndRef = useRef(null);
 
-  const toggleChat = () => setIsChatOpen(!isChatOpen);
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+    scrollToBottom(); // Ensure the initial message is visible
+  };
 
   const handleUserInput = (e) => setUserInput(e.target.value);
 
@@ -63,8 +66,12 @@ export default function ChatBot() {
     }
   };
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
   }, [response]);
 
   return (
