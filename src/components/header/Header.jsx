@@ -3,7 +3,7 @@ import {
   FaBox, FaBook, FaBuilding, FaTag, FaUsers,
   FaChartBar, FaChevronDown, FaCalculator, FaBalanceScale, FaBars, FaTimes
 } from "react-icons/fa";
-import logo from "/Taxall/assets/taxallnewww22n.png";
+import logo from "/assets/taxallnewww22n.png";
 import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
 import "./Header.css";
 
