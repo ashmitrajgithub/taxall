@@ -118,3 +118,68 @@
 .product-box:hover .icon {
   transform: scale(1.1);
 }
+/* Products.css */
+
+/* (Your existing styles here...) */
+
+/* Modal Overlay styling */
+/* Modal Overlay styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* Modal Content styling */
+/* Modal Overlay styling */
+/* Modal Overlay styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* Modal Content styling */
+.modal-content {
+   /* Set a background color */
+  padding: 1rem;    /* Reduced padding for mobile */
+  border-radius: 8px;
+  width: 90vw;       /* 90% of the viewport width on small screens */
+  max-width: 1200px; /* Maximum width for larger screens */
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Adjust modal width and padding for larger screens */
+@media (min-width: 768px) {
+  .modal-content {
+    width: 80vw;   /* 80% of the viewport width on medium/large screens */
+    padding: 2rem; /* Increase padding on larger screens */
+  }
+}
+
+/* Close Button styling using react-icons */
+.close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem; /* Adjust size as needed (this works well with react-icons) */
+}
