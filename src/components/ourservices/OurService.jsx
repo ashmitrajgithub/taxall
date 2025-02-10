@@ -45,6 +45,7 @@ const OurService = () => {
   }, []);
 
   return (
+    <div className="ourservice-main">
     <section className="our-service-section">
       <div className="header-container" data-aos="fade-down">
         <h2 className="subheading">Explore</h2>
@@ -66,10 +67,13 @@ const OurService = () => {
                 <a href={service.link} className="learn-more-button">Learn More</a>
               </div>
             </div>
+            
           </div>
         ))}
       </div>
     </section>
+    </div>
+
   );
 };
 
