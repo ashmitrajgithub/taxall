@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IoSend, IoClose } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -12,13 +12,15 @@ export default function ChatBot() {
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const messageEndRef = useRef(null);
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
 
   const handleUserInput = (e) => setUserInput(e.target.value);
 
   const handleSubmit = async () => {
-    if (!userInput.trim()) return;
+    if (!userInput.trim() || loading) return;
 
     const userMessage = userInput;
     setResponse((prevResponse) => [
@@ -26,56 +28,90 @@ export default function ChatBot() {
       { type: "user", message: userMessage }
     ]);
     setUserInput("");
+    setLoading(true);
 
     const res = await generateContent(userMessage);
     setResponse((prevResponse) => [
       ...prevResponse,
       { type: "bot", message: res }
     ]);
+    setLoading(false);
   };
 
   const generateContent = async (prompt) => {
-    const result = await model.generateContent(prompt);
-    if (
-      result &&
-      result.response &&
-      result.response.candidates &&
-      result.response.candidates.length > 0 &&
-      result.response.candidates[0].content.parts.length > 0
-    ) {
-      return result.response.candidates[0].content.parts[0].text;
+    try {
+      const result = await model.generateContent(prompt);
+      if (
+        result &&
+        result.response &&
+        result.response.candidates &&
+        result.response.candidates.length > 0 &&
+        result.response.candidates[0].content.parts.length > 0
+      ) {
+        return result.response.candidates[0].content.parts[0].text;
+      }
+    } catch (error) {
+      console.error("Error generating response:", error);
     }
-    return "No valid response received.";
+    return "Sorry, I couldn't process that. Please try again.";
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [response]);
 
   return (
     <>
       <div className={`chatbot-container ${isChatOpen ? "open" : ""}`}>
         <div className="chatbot-header">
-          Chatbot
-          <button onClick={toggleChat}>
-            <IoClose />
+          <img src="src/assets/taxallnewww22n.png" alt="Chatbot Logo" className="chatbot-logo" />
+          <button className="close-button" onClick={toggleChat}>
+            <IoClose size={20} />
           </button>
         </div>
         <div className="chatbot-body">
           {response.map((msg, index) => (
-            <div key={index} className="chatbot-message-container">
+            <div
+              key={index}
+              className={`chatbot-message-container ${
+                msg.type === "user" ? "user-message" : "bot-message"
+              }`}
+            >
               <div className={`chatbot-message ${msg.type}`}>
                 <ReactMarkdown>{msg.message}</ReactMarkdown>
               </div>
             </div>
           ))}
+          {loading && (
+            <div className="loading-container">
+              <div className="typing-dots">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+              </div>
+            </div>
+          )}
+          <div ref={messageEndRef} />
         </div>
         <div className="chatbot-footer">
           <input
             type="text"
             value={userInput}
             onChange={handleUserInput}
+            onKeyDown={handleKeyDown}
             placeholder="Type a message..."
             className="chatbot-input"
+            disabled={loading}
           />
-          <button onClick={handleSubmit} className="chatbot-send-button">
-            <IoSend />
+          <button onClick={handleSubmit} className="chatbot-send-button" disabled={loading}>
+            <IoSend size={20} />
           </button>
         </div>
       </div>
