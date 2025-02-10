@@ -1,25 +1,24 @@
 /* Products.css */
 
 /* Main container covering the full viewport with a light gray background */
-
-.product-main{
+.product-main {
   width: 100vw;
-  padding:0% 1% 0% 1% ;
+  padding: 0 1%;
 }
+
 .products-container {
-  height: 60vh;       /* Full viewport height */
-   padding: 2%;
-  background-color: #e7e2e2; 
-  border-radius: 15px;     
-      /* Responsive padding using rem units */
+  height: auto; /* Allow height to adjust based on content */
+  padding: 2%;
+  background-color: #e7e2e2;
+  border-radius: 15px;
 }
 
 /* Gradient heading for Our Products */
 .products-heading {
-  font-size: 3rem;
+  font-size: 2.5rem; /* Adjusted for better mobile view */
   font-weight: 800;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem; /* Adjusted for better spacing */
   background: linear-gradient(45deg, #000, #222);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -28,13 +27,13 @@
 /* Parent container using CSS Grid for a responsive layout */
 .parent-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* Default to single column */
   gap: 2rem;
 }
 
 @media (min-width: 48rem) {
   .parent-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
   }
 }
 
@@ -44,25 +43,26 @@
   border: 2px solid #e2e8f0; /* Light gray border for a defined box look */
   border-radius: 0.5rem;
   padding: 1.5rem;
-  /* box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1); */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%; /* Full width for responsiveness */
+  max-width: 400px; /* Max width for larger screens */
+  margin: 0 auto; /* Center the boxes */
 }
 
 .product-box:hover {
   transform: translateY(-0.5rem);
-  /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
 }
 
 /* Section title styling */
 .section-title {
-  font-size: 2rem;
+  font-size: 1.5rem; /* Adjusted for better mobile view */
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
 /* Section description styling */
 .section-description {
-  font-size: 1rem;
+  font-size: 0.9rem; /* Adjusted for better mobile view */
   color: #4a5568; /* Dark gray text for better readability */
   margin-bottom: 1.5rem;
 }
@@ -81,7 +81,7 @@
 
 /* Specific styling for the Income Tax Calculator button */
 .btn-calc {
-  background: linear-gradient(45deg, #000, #222);
+  background: linear-gradient(45deg, #000, #646262);
   color: #fff;
 }
 
@@ -91,10 +91,30 @@
 
 /* Specific styling for the Regulatory Compliance Hub button */
 .btn-view {
-  background: linear-gradient(45deg, #000, #222);
+  background: linear-gradient(45deg, #000, #646262);
   color: #fff;
 }
 
 .btn-view:hover {
   background-color: #38a169;
+}
+
+/* Icon container styling */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Icon styling for Lottie animations */
+.icon {
+  width: 80px;    /* Adjusted size for better mobile view */
+  height: 80px;   /* Adjusted size for better mobile view */
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for the icon */
+.product-box:hover .icon {
+  transform: scale(1.1);
 }

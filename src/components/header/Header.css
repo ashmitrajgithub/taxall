@@ -1,11 +1,4 @@
 /* General Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
 body {
   background-color: #f8f9fa;
   font-size: 1rem; /* Base font-size for rem calculations */
@@ -16,6 +9,7 @@ body {
   background: linear-gradient(45deg, #000, #222);
   color: #fff;
   position: fixed;
+  top:0;
   z-index: 100;
   width: 100vw;
   height: 13vh;
