@@ -17,7 +17,7 @@
   
   /* Animation and Shadow */
   --transition-speed: 0.6s;
-  --card-shadow: 0 8px 20px rgba(116, 116, 116, 0.1);
+  --card-shadow: 0 8px 20px rgba(61, 60, 60, 0.1);
 }
 
 /* Section Background and Overall Layout */
@@ -71,7 +71,7 @@
 
 .description {
   font-size: var(--description-size);
-  color: #000000; /* A softer dark tone for paragraphs */
+  color: #555; /* A softer dark tone for paragraphs */
 }
 
 /* Cards Container */
@@ -122,7 +122,7 @@
 
 /* Front Face Styling */
 .card-front {
-  background: #c8c7c7; /* Change to a grey color */
+  background: #d6d6d6; /* Change to a grey color */
   color: var(--text-color-dark);
 }
 
