@@ -1,35 +1,42 @@
-/* Theme Variables for Consistency */
+/*-----------------------------------*/
+/*       CSS Variables & Base        */
+/*-----------------------------------*/
 :root {
   --primary-color: #007bff;         /* Vibrant Blue */
-  --secondary-color: #d6d6d6;       /* Deep Purple */
-  --bg-color: #e7e2e2;              /* Clean Light Gray */
-  --text-color-dark: #000000;       /* Rich Dark Gray for text */
-  --text-color-light: #ffffff;      /* White for contrast on dark backgrounds */
+  --secondary-color: #d6d6d6;         /* Light Gray (for card front) */
+  --bg-color: #e7e2e2;                /* Clean Light Gray */
+  --text-color-dark: #000000;         /* Rich Dark Gray for text */
+  --text-color-light: #ffffff;        /* White for contrast on dark backgrounds */
   
-  /* Typography sizes (responsive with clamp) */
+  /* Responsive Typography using clamp */
   --subheading-size: clamp(1.5rem, 2vw, 2rem);
   --heading-size: clamp(2.5rem, 4vw, 3rem);
   --description-size: clamp(1rem, 1.5vw, 1.25rem);
   
-  /* Card dimensions */
-  --card-width: 300px;
-  --card-height: 400px;
+  /* Card dimensions using clamp for responsiveness */
+  --card-width: clamp(250px, 20vw, 300px);
+  --card-height: clamp(350px, 30vw, 400px);
   
-  /* Animation and Shadow */
+  /* Animation and Shadows */
   --transition-speed: 0.6s;
   --card-shadow: 0 8px 20px rgba(61, 60, 60, 0.1);
 }
 
-/* Section Background and Overall Layout */
+/*-----------------------------------*/
+/*       Section Layout              */
+/*-----------------------------------*/
 .our-service-section {
-  position: relative;
-  top:35vh;
+  /* Remove the top offset and use margin-top instead */
+  margin-top: 35vh; /* This pushes the section down and makes space in the flow */
   padding: 60px 40px;
   background: var(--bg-color);
   overflow: hidden;
+  /* You can keep position: relative if you need it for the ::before overlay, but no top offset */
+  position: relative;
 }
 
-/* Background Overlay with Parallax Effect */
+
+/* Parallax Background Overlay */
 .our-service-section::before {
   content: "";
   position: absolute;
@@ -40,16 +47,18 @@
   background: url('your-background-image-url.jpg') no-repeat center center/cover;
   opacity: 0.1;
   z-index: -1;
-  background-attachment: fixed; /* Creates a parallax effect */
+  background-attachment: fixed;
 }
 
-/* Header Styles */
+/*-----------------------------------*/
+/*          Header Styles            */
+/*-----------------------------------*/
 .header-container {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 }
 
-/* Apply Cursive Font to Headers */
+/* Use a cursive font for headers */
 .subheading,
 .heading,
 .description {
@@ -59,38 +68,41 @@
 .subheading {
   font-size: var(--subheading-size);
   color: var(--primary-color);
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   font-weight: 600;
 }
 
 .heading {
   font-size: var(--heading-size);
   color: var(--text-color-dark);
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   font-weight: 700;
 }
 
 .description {
   font-size: var(--description-size);
-  color: #555; /* A softer dark tone for paragraphs */
+  color: #555;
 }
 
-/* Cards Container */
+/*-----------------------------------*/
+/*         Cards Container           */
+/*-----------------------------------*/
 .cards-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 1.875rem; /* 30px */
 }
 
-/* Card Flip Container */
+/*-----------------------------------*/
+/*         Service Card              */
+/*-----------------------------------*/
 .service-card {
   width: var(--card-width);
   height: var(--card-height);
   perspective: 1000px; /* Enables 3D flip effect */
 }
 
-/* Inner Card Wrapper for Flip Animation */
 .card-inner {
   position: relative;
   width: 100%;
@@ -99,51 +111,51 @@
   transform-style: preserve-3d;
 }
 
-/* Flip the Card on Hover */
+/* Flip effect on hover */
 .service-card:hover .card-inner {
   transform: rotateY(180deg);
 }
 
-/* Front and Back Faces */
+/* Front & Back Faces */
 .card-front,
 .card-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 15px;
+  border-radius: 0.9375rem; /* 15px */
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 1.25rem;
   box-shadow: var(--card-shadow);
   transition: box-shadow var(--transition-speed);
 }
 
 /* Front Face Styling */
 .card-front {
-  background: #d6d6d6; /* Change to a grey color */
+  background: var(--secondary-color);
   color: var(--text-color-dark);
 }
 
 /* Card Icon */
 .card-icon {
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
   color: var(--primary-color);
 }
 
 /* Back Face Styling */
 .card-back {
-  background: #a9a9a9; /* Change to a darker grey for contrast */
+  background: #a9a9a9; /* Darker gray for contrast */
   color: var(--text-color-light);
   transform: rotateY(180deg);
 }
 
-/* Typography for the Cards */
+/* Card Typography */
 .card-title {
   font-size: 1.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
   font-weight: 600;
 }
 
@@ -151,24 +163,24 @@
 .card-back-description {
   font-size: 1rem;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   line-height: 1.5;
 }
 
 .card-back-title {
   font-size: 1.375rem;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   font-weight: 600;
 }
 
 /* Learn More Button */
 .learn-more-button {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   background: var(--text-color-light);
   color: var(--primary-color);
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem; /* 5px */
   font-weight: bold;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -178,10 +190,14 @@
   transform: scale(1.05);
 }
 
-/* Responsive Adjustments */
+/*-----------------------------------*/
+/*          Responsive               */
+/*-----------------------------------*/
+
+/* Tablet & Small Desktop (max-width: 768px) */
 @media (max-width: 768px) {
   .our-service-section {
-    padding: 40px 20px;
+    padding: 2.5rem 1.25rem;
   }
   
   .service-card {
@@ -190,23 +206,24 @@
   }
 }
 
+/* Mobile Portrait (max-width: 480px) */
 @media (max-width: 480px) {
   .subheading {
-    font-size: 1.25rem;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
   }
-
+  
   .heading {
-    font-size: 2rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
   }
-
+  
   .description {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
   }
-
+  
   .card-title {
     font-size: 1.25rem;
   }
-
+  
   .card-front-description,
   .card-back-description {
     font-size: 0.9rem;
