@@ -1,134 +1,189 @@
-/* Container styling for overall page layout */
+/* Base settings for relative units */
+:root {
+  font-size: 16px; /* 1rem = 16px */
+}
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ========================= */
+/*       Home Container      */
+/* ========================= */
 .home-container {
-  position:relative;
-  top: 22vh;
+  position: relative;
+  top: 22vh; /* 22% of viewport height from the top */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50vh; 
-  padding: 20px;
+  height: 50vh; /* 50% of viewport height */
+  padding: 1.25rem; /* 20px */
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
 }
 
-/* Main content wrapper with a card-like design */
+/* ========================= */
+/*       Content Wrapper     */
+/* ========================= */
 .content-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
-  max-width: 1400px; /* Increased width for a larger layout */
+  justify-content: center;
   width: 100%;
+  max-width: 1400px; /* Preserved from your original code */
   background-color: #e5dede;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem; /* 12px */
   overflow: hidden;
 }
 
-/* Left content styles */
+/* ========================= */
+/*         Left Content      */
+/* ========================= */
 .left-content {
   flex: 1;
-  padding: 40px;
+  padding: 2.5rem; /* 40px */
 }
 
-.logo {
-  max-width: 200px;
-  margin-bottom: 20px;
+.left-content .logo {
+  max-width: 12.5rem; /* ~200px */
+  margin-bottom: 1.25rem;
 }
 
-.title {
+.left-content .title {
   font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   color: #343a40;
 }
 
-.pricing {
-  color: #28a745; /* Emphasize pricing with a vibrant color */
+.left-content .pricing {
+  color: #28a745;
 }
 
-.subtitle {
+.left-content .subtitle {
   font-size: 1.1rem;
   color: #6c757d;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
   line-height: 1.5;
 }
-.subtitle2{
-  margin-bottom: 15px;
-  margin-right: 115px;
+
+.left-content .subtitle2 {
+  margin-bottom: 0.9375rem;
+  margin-right: 7.1875rem; /* ~115px */
   line-height: 1.5;
-
 }
 
-.link {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.link:hover {
-  text-decoration: underline;
-}
-
-.description {
+.left-content .description {
   font-size: 1rem;
   color: #495057;
-  margin-bottom: 25px;
+  margin-bottom: 1.5625rem;
   line-height: 1.6;
 }
 
-.cta-button {
+.left-content .cta-button {
   display: inline-block;
   background-color: #007bff;
   color: #ffffff;
-  padding: 12px 24px;
-  border-radius: 30px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1.875rem;
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-.cta-button:hover {
+.left-content .cta-button:hover {
   background-color: #0056b3;
 }
 
-/* Right content styles */
+/* ========================= */
+/*         Right Content     */
+/* ========================= */
 .right-content {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 2.5rem;
 }
 
-.hero-image {
+.right-content .hero-image {
   max-width: 100%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
-/* Responsive adjustments */
+/* ========================= */
+/*       Responsive Layout   */
+/* ========================= */
+
+/* Tablets & Small Desktops (max-width: 768px) */
 @media (max-width: 768px) {
-
   .home-container {
-    position:relative;
-    top:38vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50vh; 
-    padding: 20px;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    top: 18vh;
+    height: 55vh;
+    padding: 1.5rem;
   }
-
+  
   .content-wrapper {
     flex-direction: column;
+    width: 95%;
+    max-width: 95vw;
   }
-
+  
   .left-content,
   .right-content {
-    padding: 20px;
+    padding: 1.5rem;
     text-align: center;
   }
-
-  .title {
+  
+  .left-content .title {
     font-size: 2rem;
+  }
+  
+  .left-content .logo {
+    max-width: 10rem; /* Reduce logo size on smaller screens */
+  }
+}
+
+/* Mobile Portrait (max-width: 480px) */
+@media (max-width: 480px) {
+  .home-container {
+    top: 15vh;
+    height: 60vh;
+    padding: 1rem;
+  }
+  
+  .left-content .title {
+    font-size: 1.75rem;
+  }
+  
+  .left-content .subtitle,
+  .left-content .description {
+    font-size: 0.9rem;
+  }
+  
+  .left-content .cta-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .left-content .subtitle2 {
+    margin-right: 0;
+  }
+}
+
+/* Ultra-large Screens / TV (min-width: 1400px) */
+/* (Optional: If you want to further fine-tune layout on very large displays,
+   you can add additional rules here. For example, you might leave the max-width
+   as-is to preserve your original layout.) */
+@media (min-width: 1400px) {
+  /* Preserve your original wrapper width */
+  .content-wrapper {
+    max-width: 1400px;
   }
 }
