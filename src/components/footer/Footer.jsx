@@ -3,7 +3,7 @@ import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import "./Footer.css";
 // Import your footer logo image – adjust the path based on your project structure.
-import footerLogo from "/src/assets/taxallnewww22n.png";
+import footerLogo from "/Taxall/assets/taxallnewww22n.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

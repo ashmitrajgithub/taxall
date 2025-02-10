@@ -8,7 +8,7 @@ const Home = () => {
         {/* Left Section */}
         <section className="left-content">
           <img
-            src="./src/assets/taxallnewww.png"
+            src="/Taxall/assets/taxallnewww.png"
             alt="Intuit Logo"
             className="logo"
           />

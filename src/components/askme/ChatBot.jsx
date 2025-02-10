@@ -78,7 +78,7 @@ export default function ChatBot() {
     <>
       <div className={`chatbot-container ${isChatOpen ? "open" : ""}`}>
         <div className="chatbot-header">
-          <img src="src/assets/taxallnewww22n.png" alt="Chatbot Logo" className="chatbot-logo" />
+          <img src="/Taxall/assets/taxallnewww22n.png" alt="Chatbot Logo" className="chatbot-logo" />
           <button className="close-button" onClick={toggleChat}>
             <IoClose size={20} />
           </button>
