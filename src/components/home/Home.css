@@ -28,7 +28,7 @@
   justify-content: space-between;
   width: 100vw;
   height: auto;
-  background-color: #e5dede;
+  background: linear-gradient(45deg, #000, #434242);
   border-radius: 15px;
   padding: 2%;
 }

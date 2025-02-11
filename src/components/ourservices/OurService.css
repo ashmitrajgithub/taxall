@@ -32,7 +32,7 @@
 .our-service-section {
   /* Remove the top offset and use margin-top instead */ /* This pushes the section down and makes space in the flow */
   padding: 60px 40px;
-  background: var(--bg-color);
+  background: linear-gradient(45deg, #000, #434242);
   overflow: hidden;
   /* You can keep position: relative if you need it for the ::before overlay, but no top offset */
   position: relative;
@@ -79,7 +79,7 @@
 
 .heading {
   font-size: var(--heading-size);
-  color: var(--text-color-dark);
+  color:white;
   margin-bottom: 1.25rem;
   font-weight: 700;
 }
