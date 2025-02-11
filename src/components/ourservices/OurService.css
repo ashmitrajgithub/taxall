@@ -3,7 +3,7 @@
 /*-----------------------------------*/
 :root {
   --primary-color: #007bff;         /* Vibrant Blue */
-  --secondary-color: #d6d6d6;         /* Light Gray (for card front) */
+  --secondary-color: #ffffff;         /* Light Gray (for card front) */
   --bg-color: #e7e2e2;                /* Clean Light Gray */
   --text-color-dark: #000000;         /* Rich Dark Gray for text */
   --text-color-light: #ffffff;        /* White for contrast on dark backgrounds */

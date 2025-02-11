@@ -1,0 +1,130 @@
+.testimonials {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 10vh 5vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.testimonials-header h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1rem;
+}
+
+.testimonials-header p {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: #888;
+}
+
+.highlight {
+  color: #e85b9d;
+}
+
+.testimonials-grid {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.testimonial-card {
+  position: absolute;
+  width: min(90%, 400px);
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  color: #333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.25rem;
+}
+
+.role {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+blockquote {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+blockquote p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+  font-style: italic;
+}
+
+.meta {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.flag {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .testimonials-grid {
+    height: auto;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .testimonial-card {
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin-bottom: 2rem;
+    width: 100%;
+    transform: none !important;
+  }
+}
+
