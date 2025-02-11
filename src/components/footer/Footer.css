@@ -25,7 +25,7 @@
 /*         Footer Styles             */
 /*-----------------------------------*/
 .footer {
-  background: linear-gradient(45deg, #000, #222);
+  background: linear-gradient(45deg, #000, #434242);
   color: var(--light-color);
   padding: var(--sp-lg) var(--sp-sm) var(--sp-sm);
   font-family: 'Roboto', sans-serif;
