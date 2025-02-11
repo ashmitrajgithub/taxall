@@ -10,7 +10,7 @@ body {
   color: #fff;
   position: fixed;
   top:0;
-  z-index: 100;
+  z-index: 1000;
   width: 100vw;
   height: 13vh;
   display: flex;
@@ -25,9 +25,8 @@ body {
   justify-content: space-between;
   width: 100%;
   max-width: 95%;
-  margin: 0 auto;
   height: 100%;
-  padding: 0 1rem;
+  margin: auto;
 }
 
 /* Logo Container (ID: logo) */

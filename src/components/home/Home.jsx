@@ -27,7 +27,7 @@ const Home = () => {
             Transfer last year’s info for a head start on your taxes with <b><b>Taxall </b></b>  Free Edition.
           </p>
           <a href="#" className="cta-button">
-            Start for free
+            Subscribe Now 
           </a>
         </section>
 

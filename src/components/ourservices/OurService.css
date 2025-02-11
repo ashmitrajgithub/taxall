@@ -30,8 +30,7 @@
 /*       Section Layout              */
 /*-----------------------------------*/
 .our-service-section {
-  /* Remove the top offset and use margin-top instead */
-  margin-top: 30vh; /* This pushes the section down and makes space in the flow */
+  /* Remove the top offset and use margin-top instead */ /* This pushes the section down and makes space in the flow */
   padding: 60px 40px;
   background: var(--bg-color);
   overflow: hidden;
