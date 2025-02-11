@@ -1,13 +1,17 @@
 /* Blog.css */
 
 /* Container styling using % and rem for responsiveness */
+
+
+.blog-main{
+  width: 100vw;
+  padding: 1%;
+
+}
 .blog-container {
-border-radius: 1%;
-  max-width: 1400px;
-  margin: 0 auto;
+  border-radius: 15px;;
   padding: 2rem;
-  background:linear-gradient(45deg, #000, #434242);
-  
+  background: linear-gradient(45deg, #000, #444444);
 }
 
 /* Main title styling */
@@ -15,8 +19,8 @@ border-radius: 1%;
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 2rem;
-  color: white;
-  
+  font-family: 'Dancing Script', cursive;
+  color: white
 }
 
 /* Section title styling with a left border for emphasis */

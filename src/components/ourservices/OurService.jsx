@@ -41,47 +41,39 @@ const services = [
 
 const OurService = () => {
   useEffect(() => {
-    AOS.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false,    // Animate every time the element scrolls into view
-    });
+    AOS.init({ duration: 1000 });
   }, []);
 
   return (
     <div className="ourservice-main">
-      <section className="our-service-section">
-        <div className="header-container" data-aos="fade-down">
-          <h2 className="subheading">Explore</h2>
-          <h1 className="heading">Services I Provide For My Clients</h1>
-          <p className="description">I can help you in these particular areas.</p>
-        </div>
-        <div className="cards-container">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="service-card"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              <div className="card-inner">
-                <div className="card-front">
-                  <div className="card-icon">{service.icon}</div>
-                  <h3 className="card-title">{service.title}</h3>
-                  <p className="card-front-description">{service.frontDescription}</p>
-                </div>
-                <div className="card-back">
-                  <h3 className="card-back-title">{service.backTitle}</h3>
-                  <p className="card-back-description">{service.backDescription}</p>
-                  <a href={service.link} className="learn-more-button">
-                    Learn More
-                  </a>
-                </div>
+    <section className="our-service-section">
+      <div className="header-container" data-aos="fade-down">
+        <h2 className="subheading">Explore</h2>
+        <h1 className="heading">Services I Provide For My Clients</h1>
+        <p className="description">I can help you in these particular areas.</p>
+      </div>
+      <div className="cards-container">
+        {services.map((service, index) => (
+          <div key={index} className="service-card" data-aos="fade-up">
+            <div className="card-inner">
+              <div className="card-front">
+                <div className="card-icon">{service.icon}</div>
+                <h3 className="card-title">{service.title}</h3>
+                <p className="card-front-description">{service.frontDescription}</p>
+              </div>
+              <div className="card-back">
+                <h3 className="card-back-title">{service.backTitle}</h3>
+                <p className="card-back-description">{service.backDescription}</p>
+                <a href={service.link} className="learn-more-button">Learn More</a>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+            
+          </div>
+        ))}
+      </div>
+    </section>
     </div>
+
   );
 };
 

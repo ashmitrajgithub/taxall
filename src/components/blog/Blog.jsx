@@ -1,7 +1,5 @@
 // Blog.jsx
 import React, { useState, useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import './Blog.css';
 
 // AnimatedStickyNote component cycles through an array of notes
@@ -19,7 +17,8 @@ const AnimatedStickyNote = ({ notes, initialIndex = 0 }) => {
   const currentNote = notes[currentIndex];
 
   return (
-    <div className="text-blog-item animated" data-aos="flip-left">
+  
+    <div className="text-blog-item animated">
       <h3>{currentNote.title}</h3>
       <p>{currentNote.content}</p>
       <span className="blog-date">{currentNote.date}</span>
@@ -28,15 +27,6 @@ const AnimatedStickyNote = ({ notes, initialIndex = 0 }) => {
 };
 
 const Blog = () => {
-  useEffect(() => {
-    // Initialize AOS library
-    AOS.init({
-      duration: 1000, // Animation duration (in ms)
-      easing: 'ease-in-out', // Easing function for animations
-      once: false, // Whether animation should happen only once
-    });
-  }, []);
-
   // Data for the latest blog post (with image)
   const latestBlog = {
     title: "Latest Blog Post",
@@ -93,20 +83,20 @@ const Blog = () => {
   ];
 
   return (
+    <div className='blog-main'>
     <div className="blog-container">
-      <h1 className="blog-title" data-aos="fade-down">Our Blog</h1>
+      <h1 className="blog-title">Our Blog</h1>
 
       {/* Latest Blog Section (Big and Prominent) */}
-      <section className="latest-blog" data-aos="fade-right">
+      <section className="latest-blog">
         <h2 className="section-title">Latest Blog</h2>
         <div className="blog-card latest">
           <img
             src={latestBlog.image}
             alt={latestBlog.title}
             className="blog-image"
-            data-aos="zoom-in"
           />
-          <div className="blog-content" data-aos="fade-left">
+          <div className="blog-content">
             <h3>{latestBlog.title}</h3>
             <p>{latestBlog.description}</p>
             <span className="blog-date">{latestBlog.date}</span>
@@ -115,11 +105,11 @@ const Blog = () => {
       </section>
 
       {/* More Blogs Section (With Images) */}
-      <section className="other-blogs" data-aos="fade-up">
+      <section className="other-blogs">
         <h2 className="section-title">More Blogs</h2>
         <div className="blog-grid">
           {otherBlogs.map((blog) => (
-            <div key={blog.id} className="blog-card" data-aos="flip-up">
+            <div key={blog.id} className="blog-card">
               <img src={blog.image} alt={blog.title} className="blog-image" />
               <div className="blog-content">
                 <h3>{blog.title}</h3>
@@ -130,9 +120,10 @@ const Blog = () => {
           ))}
         </div>
       </section>
+      
 
       {/* Animated Text Blogs Section (Two Sticky Notes Side by Side) */}
-      <section className="text-blogs" data-aos="fade-up">
+      <section className="text-blogs">
         <h2 className="section-title">Text Blogs</h2>
         <div className="text-blog-grid">
           <AnimatedStickyNote notes={textBlogs} initialIndex={0} />
@@ -140,6 +131,8 @@ const Blog = () => {
         </div>
       </section>
     </div>
+    </div>
+    
   );
 };
 

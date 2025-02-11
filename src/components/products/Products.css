@@ -19,10 +19,11 @@
   font-weight: 800;
   text-align: center;
   margin-bottom: 2rem; /* Adjusted for better spacing */
-  background: linear-gradient(45deg, #000, #434242);
+  background: linear-gradient(45deg, #b1b1b1, #ffffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Dancing Script', cursive;
+
 }
 
 /* Parent container using CSS Grid for a responsive layout */
