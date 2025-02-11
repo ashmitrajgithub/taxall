@@ -28,7 +28,7 @@
   justify-content: space-between;
   width: 100vw;
   height: auto;
-  background-color: #e5dede;
+  background: linear-gradient(45deg, #000, #444444);
   border-radius: 15px;
   padding: 2%;
 }
@@ -50,7 +50,7 @@
 .left-content .title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #343a40;
+  color: white;
 }
 
 .left-content .pricing {
@@ -61,17 +61,18 @@
   font-size: 1.8rem;
   line-height: 1.2;
   margin-bottom: 1rem;
+  color: #ffffff;
 }
 
 .left-content .subtitle {
   font-size: 1rem;
-  color: #6c757d;
+  color: white;
   margin-bottom: 1rem;
 }
 
 .left-content .description {
   font-size: 0.95rem;
-  color: #495057;
+  color: white;
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }

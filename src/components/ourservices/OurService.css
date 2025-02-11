@@ -4,8 +4,8 @@
 :root {
   --primary-color: #007bff;         /* Vibrant Blue */
   --secondary-color: #ffffff;         /* Light Gray (for card front) */
-  --bg-color: #e7e2e2;                /* Clean Light Gray */
-  --text-color-dark: #000000;         /* Rich Dark Gray for text */
+  --bg-color: #ffffff;                /* Clean Light Gray */
+  --text-color-dark: #ffffff;         /* Rich Dark Gray for text */
   --text-color-light: #ffffff;        /* White for contrast on dark backgrounds */
   
   /* Responsive Typography using clamp */
@@ -32,7 +32,7 @@
 .our-service-section {
   /* Remove the top offset and use margin-top instead */ /* This pushes the section down and makes space in the flow */
   padding: 60px 40px;
-  background: var(--bg-color);
+  background: linear-gradient(45deg, #000, #444444);
   overflow: hidden;
   /* You can keep position: relative if you need it for the ::before overlay, but no top offset */
   position: relative;

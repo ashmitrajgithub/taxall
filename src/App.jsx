@@ -7,6 +7,7 @@ import Askme from "./components/askme/ChatBot";
 import Products from "./components/products/Product";
 import Review from "./components/review/Review";
 import ContactUs from "./components/contactUs/ContactUs";
+import Blog from "./components/blog/Blog";
 const App = () => {
   return (
     <div>
@@ -15,6 +16,7 @@ const App = () => {
       <Askme />
       <OurService />
       <Products />
+      <Blog />
       <ContactUs />
       <Review />
       <Footer />

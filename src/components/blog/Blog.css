@@ -1,0 +1,118 @@
+/* Blog.css */
+
+/* Container styling using % and rem for responsiveness */
+.blog-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  
+}
+
+/* Main title styling */
+.blog-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Section title styling with a left border for emphasis */
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
+  border-left: 0.25rem solid #3498db;
+}
+
+/* =========================
+   Latest Blog Section
+   ========================= */
+.latest-blog .blog-card.latest {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+}
+
+/* The latest blog image uses vh to size relative to viewport height */
+.latest-blog .blog-card.latest .blog-image {
+  width: 100%;
+  height: 30vh; /* 30% of the viewport height */
+  object-fit: cover;
+}
+
+.latest-blog .blog-card.latest .blog-content {
+  padding: 1.5rem;
+}
+
+/* =========================
+   Other Blogs Grid
+   ========================= */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.blog-card {
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Other blog images also use viewport height units */
+.blog-card .blog-image {
+  width: 100%;
+  height: 20vh; /* 20% of the viewport height */
+  object-fit: cover;
+}
+
+.blog-card .blog-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.blog-card .blog-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.blog-card .blog-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.blog-date {
+  font-size: 0.875rem;
+  color: #777;
+}
+
+/* =========================
+   Responsive Adjustments
+   ========================= */
+@media (min-width: 768px) {
+  /* For larger screens, display the latest blog in a row layout */
+  .latest-blog .blog-card.latest {
+    flex-direction: row;
+  }
+  
+  .latest-blog .blog-card.latest .blog-image {
+    width: 50%;
+    height: 40vh; /* Increase height on larger screens */
+  }
+  
+  .latest-blog .blog-card.latest .blog-content {
+    width: 50%;
+    padding: 2rem;
+  }
+}
