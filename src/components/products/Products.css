@@ -3,7 +3,7 @@
 /* Main container covering the full viewport with a light gray background */
 .product-main {
   width: 100vw;
-  padding:1%;
+  padding: 1%;
 }
 
 .products-container {
@@ -19,7 +19,7 @@
   font-weight: 800;
   text-align: center;
   margin-bottom: 2rem; /* Adjusted for better spacing */
-  background:white;
+  background: linear-gradient(45deg, #000, #434242);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Dancing Script', cursive;
@@ -28,26 +28,32 @@
 /* Parent container using CSS Grid for a responsive layout */
 .parent-container {
   display: grid;
-  grid-template-columns: 1fr; /* Default to single column */
+  grid-template-columns: 1fr; /* Default to one column on small screens */
   gap: 2rem;
 }
 
 @media (min-width: 48rem) {
   .parent-container {
-    grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+    grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .parent-container {
+    grid-template-columns: repeat(3, 1fr); /* Three columns on large screens */
   }
 }
 
 /* Box style design for each product section */
 .product-box {
   background-color: #fff;
-  border: 2px solid #e2e8f0; /* Light gray border for a defined box look */
+  border: 2px solid #e2e8f0; /* Light gray border */
   border-radius: 0.5rem;
   padding: 1.5rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%; /* Full width for responsiveness */
-  max-width: 400px; /* Max width for larger screens */
-  margin: 0 auto; /* Center the boxes */
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .product-box:hover {
@@ -59,19 +65,20 @@
   font-size: 1.5rem; /* Adjusted for better mobile view */
   font-weight: 600;
   margin-bottom: 1rem;
-  color: black;
+  color: #000;
 }
 
 /* Section description styling */
 .section-description {
   font-size: 0.9rem; /* Adjusted for better mobile view */
-  color: #4a5568; /* Dark gray text for better readability */
+  color: #4a5568; /* Dark gray text */
   margin-bottom: 1.5rem;
 }
 
-/* Button styling for both call-to-action buttons */
+/* Button styling for call-to-action buttons */
 .btn-calc,
-.btn-view {
+.btn-view,
+.btn-convert {
   font-size: 1rem;
   font-weight: 600;
   padding: 0.75rem 1.5rem;
@@ -79,26 +86,14 @@
   border-radius: 0.375rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-/* Specific styling for the Income Tax Calculator button */
-.btn-calc {
   background: linear-gradient(45deg, #000, #646262);
   color: #fff;
 }
 
-.btn-calc:hover {
+.btn-calc:hover,
+.btn-view:hover,
+.btn-convert:hover {
   background-color: #3182ce;
-}
-
-/* Specific styling for the Regulatory Compliance Hub button */
-.btn-view {
-  background: linear-gradient(45deg, #000, #646262);
-  color: #fff;
-}
-
-.btn-view:hover {
-  background-color: #38a169;
 }
 
 /* Icon container styling */
@@ -111,8 +106,8 @@
 
 /* Icon styling for Lottie animations */
 .icon {
-  width: 80px;    /* Adjusted size for better mobile view */
-  height: 80px;   /* Adjusted size for better mobile view */
+  width: 80px;    /* Adjusted size for mobile view */
+  height: 80px;   /* Adjusted size for mobile view */
   transition: transform 0.3s ease;
 }
 
@@ -120,11 +115,7 @@
 .product-box:hover .icon {
   transform: scale(1.1);
 }
-/* Products.css */
 
-/* (Your existing styles here...) */
-
-/* Modal Overlay styling */
 /* Modal Overlay styling */
 .modal-overlay {
   position: fixed;
@@ -136,46 +127,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure it appears above other content */
-}
-
-/* Modal Content styling */
-/* Modal Overlay styling */
-/* Modal Overlay styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure it appears above other content */
+  z-index: 1000;
 }
 
 /* Modal Content styling */
 .modal-content {
-   /* Set a background color */
   padding: 0rem;    /* Reduced padding for mobile */
   border-radius: 8px;
-  width: 110vw;       /* 90% of the viewport width on small screens */
-  max-width: 1200px; /* Maximum width for larger screens */
+  width: 110vw;       /* Adjust if needed (e.g., 90vw to avoid horizontal scrolling) */
+  max-width: 1200px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
 }
 
-/* Adjust modal width and padding for larger screens */
 @media (min-width: 768px) {
   .modal-content {
     width: 80vw;   /* 80% of the viewport width on medium/large screens */
-    padding: 2rem; /* Increase padding on larger screens */
+    padding: 2rem;
   }
 }
 
-/* Close Button styling using react-icons */
+/* Close Button styling */
 .close-button {
   position: absolute;
   top: 0.5rem;
@@ -184,5 +157,5 @@
   border: none;
   cursor: pointer;
   font-size: 1.5rem;
-  background-color: white; /* Adjust size as needed (this works well with react-icons) */
+  background-color: white; /* Provides contrast for the icon */
 }

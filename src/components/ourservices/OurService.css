@@ -4,7 +4,7 @@
 :root {
   --primary-color: #007bff;         /* Vibrant Blue */
   --secondary-color: #f5f5f5;         /* Light Gray for card front */
-  --card-back-color: linear-gradient(45deg, #141414, #fffdfd);     /* Deep Dark Gray for card back */
+  --card-back-color: linear-gradient(45deg, #000, #444444);     /* Deep Dark Gray for card back */
   --bg-color: #ffffff;                /* Clean Light Gray */
   --text-color-dark: #333333;         /* Dark text for card front */
   --text-color-light: #ffffff;        /* White text for card back */
