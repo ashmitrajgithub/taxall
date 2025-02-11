@@ -160,12 +160,13 @@ body {
   }
 
   .header {
-    height: auto;
+    height: 65px;
     padding: 0.625rem 0.9375rem;
   }
 
   .menu-icon {
     display: block;
+    padding-top: 10px;
   }
 
   /* Position the mobile navigation menu on the right side */
