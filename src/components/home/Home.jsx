@@ -34,7 +34,7 @@ const Home = () => {
         {/* Right Section */}
         <section className="right-content">
           <img
-            src="public/assets/home1.png"
+            src="assets/home1.png"
             alt="Customer holding a tablet with refund details"
             className="hero-image"
           />
