@@ -3,13 +3,13 @@
 /* Main container covering the full viewport with a light gray background */
 .product-main {
   width: 100vw;
-  padding: 0 1%;
+  padding:1%;
 }
 
 .products-container {
   height: auto; /* Allow height to adjust based on content */
   padding: 2%;
-  background-color: #e7e2e2;
+  background: linear-gradient(45deg, #000, #434242);
   border-radius: 15px;
 }
 
@@ -19,7 +19,7 @@
   font-weight: 800;
   text-align: center;
   margin-bottom: 2rem; /* Adjusted for better spacing */
-  background: linear-gradient(45deg, #000, #222);
+  background:white;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
