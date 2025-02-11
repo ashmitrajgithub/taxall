@@ -22,6 +22,7 @@
   background:white;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-family: 'Dancing Script', cursive;
 }
 
 /* Parent container using CSS Grid for a responsive layout */
@@ -58,6 +59,7 @@
   font-size: 1.5rem; /* Adjusted for better mobile view */
   font-weight: 600;
   margin-bottom: 1rem;
+  color: black;
 }
 
 /* Section description styling */

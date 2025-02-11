@@ -1,4 +1,7 @@
-import "./Review.css"
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "./Review.css";
 
 const testimonialData = [
   {
@@ -41,15 +44,25 @@ const testimonialData = [
       "Dico is finally addressing a long time problem we had when building UIs. It's ease of use and workflow seems really intuitive. Promising!",
     date: "2021.03.02",
   },
-]
+];
 
 export default function Review() {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration in ms
+      once: false,     // Whether animation should happen only once
+    });
+  }, []);
+
   return (
     <section className="testimonials">
-      <div className="testimonials-header">
+      <div className="testimonials-header" data-aos="fade-down">
         <h1>Users Testimonials</h1>
         <p>
-          Discover early user's feedback on <span className="highlight">Dico integration within their workflows</span>.
+          Discover early user's feedback on{" "}
+          <span className="highlight">
+            Dico integration within their workflows
+          </span>.
         </p>
       </div>
 
@@ -58,6 +71,8 @@ export default function Review() {
           <div
             key={testimonial.id}
             className="testimonial-card"
+            data-aos="fade-up"
+            data-aos-delay={index * 100} // Staggered delay for each card
             style={{
               // Adjust position based on index for staggered layout
               left: `${index * 8}%`,
@@ -66,7 +81,11 @@ export default function Review() {
             }}
           >
             <div className="user-info">
-              <img src={testimonial.image || "/placeholder.svg"} alt={testimonial.name} className="avatar" />
+              <img
+                src={testimonial.image || "/placeholder.svg"}
+                alt={testimonial.name}
+                className="avatar"
+              />
               <div className="user-details">
                 <h3>{testimonial.name}</h3>
                 <p className="role">{testimonial.role}</p>
@@ -83,6 +102,5 @@ export default function Review() {
         ))}
       </div>
     </section>
-  )
+  );
 }
-

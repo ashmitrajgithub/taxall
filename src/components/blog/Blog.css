@@ -2,10 +2,12 @@
 
 /* Container styling using % and rem for responsiveness */
 .blog-container {
-  width: 90%;
-  max-width: 1200px;
+border-radius: 1%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
+  background:linear-gradient(45deg, #000, #434242);
+  
 }
 
 /* Main title styling */
@@ -13,6 +15,8 @@
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 2rem;
+  color: white;
+  font-family: 'Dancing Script', cursive;
 }
 
 /* Section title styling with a left border for emphasis */
@@ -21,6 +25,8 @@
   margin-bottom: 1.5rem;
   padding-left: 0.5rem;
   border-left: 0.25rem solid #3498db;
+  color: white;
+  font-family: 'Dancing Script', cursive;
 }
 
 /* =========================
@@ -95,65 +101,95 @@
 }
 
 /* =========================
-   Text Blogs Section (Without Images)
+   Text Blogs Section (Enhanced Sticky Note Style)
    ========================= */
-   .text-blogs {
-    margin-top: 3rem;
-    padding: 0 1rem;
-  }
-  
+.text-blogs {
+  margin-top: 3rem;
+}
+
+/* Set up grid: 1 column on small screens, 2 columns on larger screens */
+.text-blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 600px) {
   .text-blog-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .text-blog-item {
-    position: relative;
-    padding: 2rem;
-    background: linear-gradient(135deg, #f9f9f9 0%, #e8e8e8 100%);
-    border-left: 4px solid #3498db;
-    border-radius: 0.5rem;
-    transition: transform 0.3s ease, background 0.3s ease;
-  }
-  
-  .text-blog-item:hover {
-    transform: translateY(-5px);
-    background: linear-gradient(135deg, #ffffff 0%, #f1f1f1 100%);
-  }
-  
-  .text-blog-item h3 {
-    font-size: 2rem;
-    color: #007bff;
-    margin-bottom: 1rem;
-    transition: color 0.3s ease;
-  }
-  
-  .text-blog-item h3:hover {
-    color: #0056b3;
-  }
-  
-  .text-blog-item p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.8;
-    margin-bottom: 1rem;
-  }
-  
-  .text-blog-item .blog-date {
-    font-size: 0.875rem;
-    color: #888;
-    font-style: italic;
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-  }
-  
+}
+
+.text-blog-item {
+  background: linear-gradient(145deg, #fff9c4, #ffecb3);
+  border: 2px solid #f0e68c;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2);
+  transform: rotate(-5deg);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Straighten the note and soften the shadow on hover */
+.text-blog-item:hover {
+  transform: rotate(0deg);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Folded corner effect */
+.text-blog-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 3rem 3rem 0;
+  border-style: solid;
+  border-color: transparent #ffe082 transparent transparent;
+}
+
+/* A small pin element to mimic a note being held in place */
+.text-blog-item::after {
+  content: "";
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1rem;
+  height: 1rem;
+  background-color: #e57373;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade-in animation for the animated sticky note */
+.animated {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Text styling inside sticky notes */
+.text-blog-item h3 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.text-blog-item p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
 /* =========================
-   Responsive Adjustments
+   Responsive Adjustments for Latest Blog
    ========================= */
 @media (min-width: 768px) {
-  /* For larger screens, display the latest blog in a row layout */
+  /* Latest blog switches to a row layout */
   .latest-blog .blog-card.latest {
     flex-direction: row;
   }
@@ -166,10 +202,5 @@
   .latest-blog .blog-card.latest .blog-content {
     width: 50%;
     padding: 2rem;
-  }
-
-  /* For text blogs, allow a two-column layout if desired */
-  .text-blog-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
