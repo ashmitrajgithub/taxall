@@ -6,7 +6,7 @@ body {
 }
 
 .contact-us {
-  padding: 1%;
+  padding: 2%;
 }
 
 .contact-container {
@@ -158,5 +158,14 @@ body {
   .contact-form button {
     font-size: 0.9rem;
     padding: 0.7rem;
+  }
+}
+
+/* Media Queries for Large Screens (apply 90% width for input and button) */
+@media (min-width: 1024px) {
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form button {
+    width: 90%;
   }
 }
