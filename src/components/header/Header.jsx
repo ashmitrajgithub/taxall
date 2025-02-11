@@ -10,7 +10,7 @@ import {
   FaCalculator,
   FaBalanceScale,
   FaBars,
-  FaTimes
+  FaTimes,
 } from "react-icons/fa";
 import logo from "/assets/taxallnewww22n.png";
 import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
@@ -19,26 +19,19 @@ import "./Header.css";
 const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleDropdownToggle = (menu) => {
-    setActiveDropdown(activeDropdown === menu ? null : menu);
-  };
-
-  const closeDropdown = () => {
-    setActiveDropdown(null);
-  };
-
-  const toggleMobileMenu = () => {
-    setMobileMenu(!mobileMenu);
-  };
+  const handleMouseEnter = (menu) => setActiveDropdown(menu);
+  const handleMouseLeave = () => setActiveDropdown(null);
+  const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <>
       <header className="header">
         <div className="container">
-          {/* Logo container with unique id */}
-          <h1 className="logo" id="logo">
+          <h1 className="logo" id="logo" onClick={() => (window.location.href = "/")}>
             <img src={logo} alt="Brand Logo" className="logo-img" />
           </h1>
           <div className="menu-icon" onClick={toggleMobileMenu}>
@@ -46,8 +39,12 @@ const Header = () => {
           </div>
           <nav className={`nav ${mobileMenu ? "nav-active" : ""}`}>
             <ul className="nav-list">
-              <li className="nav-item-container">
-                <span className="nav-item" onClick={() => handleDropdownToggle("products")}>
+              <li
+                className="nav-item-container"
+                onMouseEnter={() => handleMouseEnter("products")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <span className="nav-item">
                   <FaBox className="nav-icon" /> Products <FaChevronDown className="chevron-icon" />
                 </span>
                 {activeDropdown === "products" && (
@@ -55,67 +52,57 @@ const Header = () => {
                     <div
                       className="dropdown-item"
                       onClick={() => {
-                        setSelectedComponent("IncomeTaxCalculator");
-                        closeDropdown();
+                        openModal();
+                        setActiveDropdown(null);
                       }}
                     >
                       <FaCalculator className="icon" /> Income Tax Calculator
                     </div>
-                    <div className="dropdown-item" onClick={closeDropdown}>
+                    <div className="dropdown-item">
                       <FaBalanceScale className="icon" /> Regulatory Compliance Hub
                     </div>
                   </div>
                 )}
               </li>
-
-              <li className="nav-item-container">
-                <span className="nav-item" onClick={() => handleDropdownToggle("resources")}>
+              <li
+                className="nav-item-container"
+                onMouseEnter={() => handleMouseEnter("resources")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <span className="nav-item">
                   <FaBook className="nav-icon" /> Resources <FaChevronDown className="chevron-icon" />
                 </span>
-                {activeDropdown === "resources" && (
-                  <div className="dropdown">
-                    <div className="dropdown-item" onClick={closeDropdown}>
-                      <FaBook className="icon" /> Blogs & Articles
-                    </div>
-                    <div className="dropdown-item" onClick={closeDropdown}>
-                      <FaTag className="icon" /> Case Studies
-                    </div>
-                    <div className="dropdown-item" onClick={closeDropdown}>
-                      <FaChartBar className="icon" /> Industry Insights
-                    </div>
-                  </div>
-                )}
+                {/* Dropdown for Resources */}
               </li>
-
-              <li className="nav-item-container">
-                <span className="nav-item" onClick={() => handleDropdownToggle("company")}>
+              <li
+                className="nav-item-container"
+                onMouseEnter={() => handleMouseEnter("company")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <span className="nav-item">
                   <FaBuilding className="nav-icon" /> Company <FaChevronDown className="chevron-icon" />
                 </span>
-                {activeDropdown === "company" && (
-                  <div className="dropdown">
-                    <div className="dropdown-item" onClick={closeDropdown}>
-                      <FaBuilding className="icon" /> About Us
-                    </div>
-                    <div className="dropdown-item" onClick={closeDropdown}>
-                      <FaUsers className="icon" /> Careers
-                    </div>
-                    <div className="dropdown-item" onClick={closeDropdown}>
-                      <FaTag className="icon" /> Contact
-                    </div>
-                  </div>
-                )}
+                {/* Dropdown for Company */}
               </li>
             </ul>
           </nav>
-          {/* Get Started button with a unique id; visible only on large screens */}
-          <button className="get-started" id="get-started">Get Started</button>
+          <button className="get-started" id="get-started">
+            Get Started
+          </button>
         </div>
       </header>
 
-      {/* Render selected component */}
-      <div className="content-container">
-        {selectedComponent === "IncomeTaxCalculator" && <IncomeTaxCalculator />}
-      </div>
+      {/* Modal for Income Tax Calculator */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeModal}>
+              &times;
+            </button>
+            <IncomeTaxCalculator />
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -98,6 +98,7 @@ h3 {
   font-size: 1rem;           /* 16px */
   background-color: var(--input-bg);
   transition: border 0.3s, background-color 0.3s;
+  border-radius: 15px;
 }
 
 .form-group input:focus,
@@ -125,6 +126,7 @@ h3 {
   flex-wrap: wrap;
   gap: 1.25rem;    /* 20px */
   margin-top: 1.875rem; /* 30px */
+  
 }
 
 .button-group .btn {
@@ -137,7 +139,7 @@ h3 {
   border: none;
   padding: 0.875rem 1.25rem; /* 14px 20px */
   font-size: 1rem;           /* 16px */
-  border-radius: 0.25rem;     /* 4px */
+  border-radius: 14px;   /* 4px */
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
 }
