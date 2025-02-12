@@ -1,82 +1,79 @@
-/* Products.css */
-
-/* Main container covering the full viewport with a light gray background */
 .product-main {
   width: 100vw;
   padding: 1%;
 }
 
 .products-container {
-  height: auto; /* Allow height to adjust based on content */
+  height: auto;
   padding: 2%;
-  background: linear-gradient(45deg, #000, #434242);
+  background: linear-gradient(45deg, #000, #444444);
   border-radius: 15px;
 }
 
-/* Gradient heading for Our Products */
+/* Heading for Our Products */
 .products-heading {
-  font-size: 2.5rem; /* Adjusted for better mobile view */
+  font-size: 2.5rem;
   font-weight: 800;
   text-align: center;
-  margin-bottom: 2rem; /* Adjusted for better spacing */
+  margin-bottom: 2rem;
   background: linear-gradient(45deg, #b1b1b1, #ffffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Dancing Script', cursive;
-
 }
 
-/* Parent container using CSS Grid for a responsive layout */
 .parent-container {
   display: grid;
-  grid-template-columns: 1fr; /* Default to one column on small screens */
+  grid-template-columns: 1fr;
   gap: 2rem;
 }
 
 @media (min-width: 48rem) {
   .parent-container {
-    grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1024px) {
   .parent-container {
-    grid-template-columns: repeat(3, 1fr); /* Three columns on large screens */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Box style design for each product section */
 .product-box {
   background-color: #fff;
-  border: 2px solid #e2e8f0; /* Light gray border */
+  border: 2px solid #e2e8f0;
   border-radius: 0.5rem;
   padding: 1.5rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .product-box:hover {
   transform: translateY(-0.5rem);
 }
 
-/* Section title styling */
-.section-title {
-  font-size: 1.5rem; /* Adjusted for better mobile view */
+.section-title1 {
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: #000;
+  font-family: 'Dancing Script', cursive;
 }
 
-/* Section description styling */
 .section-description {
-  font-size: 0.9rem; /* Adjusted for better mobile view */
-  color: #4a5568; /* Dark gray text */
-  margin-bottom: 1.5rem;
+  flex-grow: 1;
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
 }
 
-/* Button styling for call-to-action buttons */
 .btn-calc,
 .btn-view,
 .btn-convert {
@@ -89,6 +86,7 @@
   transition: background-color 0.3s ease;
   background: linear-gradient(45deg, #000, #646262);
   color: #fff;
+  align-self: flex-start;
 }
 
 .btn-calc:hover,
@@ -97,7 +95,6 @@
   background-color: #3182ce;
 }
 
-/* Icon container styling */
 .icon-container {
   display: flex;
   justify-content: center;
@@ -105,37 +102,33 @@
   margin-bottom: 1rem;
 }
 
-/* Icon styling for Lottie animations */
 .icon {
-  width: 80px;    /* Adjusted size for mobile view */
-  height: 80px;   /* Adjusted size for mobile view */
+  width: 80px;
+  height: 80px;
   transition: transform 0.3s ease;
 }
 
-/* Hover effect for the icon */
 .product-box:hover .icon {
   transform: scale(1.1);
 }
 
-/* Modal Overlay styling */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-/* Modal Content styling */
 .modal-content {
-  padding: 0rem;    /* Reduced padding for mobile */
+  padding: 0rem;
   border-radius: 8px;
-  width: 110vw;       /* Adjust if needed (e.g., 90vw to avoid horizontal scrolling) */
+  width: 90vw;
   max-width: 1200px;
   max-height: 90vh;
   overflow-y: auto;
@@ -144,12 +137,11 @@
 
 @media (min-width: 768px) {
   .modal-content {
-    width: 80vw;   /* 80% of the viewport width on medium/large screens */
+    width: 80vw;
     padding: 2rem;
   }
 }
 
-/* Close Button styling */
 .close-button {
   position: absolute;
   top: 0.5rem;
@@ -158,5 +150,5 @@
   border: none;
   cursor: pointer;
   font-size: 1.5rem;
-  background-color: white; /* Provides contrast for the icon */
+  background-color: white;
 }

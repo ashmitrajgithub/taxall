@@ -20,6 +20,7 @@ const App = () => {
       <ContactUs />
       <Review />
       <Footer />
+      
     </div>
   );
 };

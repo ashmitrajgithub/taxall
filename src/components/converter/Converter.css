@@ -1,0 +1,183 @@
+/* Global reset and font settings */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Full-page container with a refined gradient background */
+.converter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+  padding: 20px;
+}
+
+/* Card container for the converter with subtle shadow and border radius */
+.converter-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 30px 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Title styling */
+.converter-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Form styling */
+.converter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Input group styling */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* File input group styling */
+.file-group {
+  position: relative;
+}
+
+/* Custom label styling with icon for file upload */
+.input-label {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* File input styling (hidden but accessible) */
+.file-input {
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Styled container to mimic file input */
+.file-group::before {
+  content: "Click to select a file";
+  display: block;
+  padding: 12px 15px;
+  border: 2px dashed #bbb;
+  border-radius: 8px;
+  background: #f9f9f9;
+  color: #777;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.file-group:hover::before {
+  border-color: #2980b9;
+}
+
+/* Select dropdown styling */
+.conversion-select {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.conversion-select:focus {
+  border-color: #2980b9;
+}
+
+/* Number input styling */
+.number-input {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.number-input:focus {
+  border-color: #2980b9;
+}
+
+/* Convert button styling */
+.convert-button {
+  padding: 12px;
+  background: linear-gradient(135deg, #2980b9, #6dd5fa);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.4s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.convert-button:hover {
+  transform: scale(1.02);
+}
+
+.convert-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Loading icon styling using react-icons */
+.loading-icon {
+  animation: spin 1s linear infinite;
+  font-size: 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Message container styling */
+.message-container {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/* Success and error message styling */
+.success-message, .error-message {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+}
+
+.success-message {
+  color: #27ae60;
+}
+
+.error-message {
+  color: #e74c3c;
+}
+
+/* File info text styling */
+.file-info {
+  font-size: 1rem;
+  color: #333;
+}
