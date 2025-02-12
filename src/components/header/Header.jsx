@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react";
 import {
   FaBox,
   FaBook,
@@ -12,34 +12,53 @@ import {
   FaBars,
   FaTimes,
   FaFile,
-} from "react-icons/fa"
-import { FiLogIn } from "react-icons/fi"
-import { RiScissorsLine } from "react-icons/ri"  // Imported scissors icon for “cut”
-import { motion, AnimatePresence } from "framer-motion"
-import logo from "/assets/taxallnewww22n.png"
-import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator"
-import Converter from "../converter/Converter"
-import Signin from "../signin/Signin"
-import Subscription from "../subscription/Subscription"
-import "./Header.css"
+} from "react-icons/fa";
+import { FiLogIn } from "react-icons/fi";
+import { RiScissorsLine } from "react-icons/ri"; // Imported scissors icon for “cut”
+import { motion, AnimatePresence } from "framer-motion";
+import logo from "/assets/taxallnewww22n.png";
+import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
+import Converter from "../converter/Converter";
+import Signin from "../signin/Signin";
+import Subscription from "../subscription/Subscription";
+import "./Header.css";
 
 const Header = () => {
-  const [activeDropdown, setActiveDropdown] = useState(null)
-  const [mobileMenu, setMobileMenu] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isConverterOpen, setIsConverterOpen] = useState(false)
-  const [isSigninOpen, setIsSigninOpen] = useState(false)
-  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false)
+  // State for dropdowns, modals, etc.
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConverterOpen, setIsConverterOpen] = useState(false);
+  const [isSigninOpen, setIsSigninOpen] = useState(false);
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
 
-  const handleMouseEnter = (menu) => setActiveDropdown(menu)
-  const handleMouseLeave = () => setActiveDropdown(null)
-  const toggleMobileMenu = () => setMobileMenu(!mobileMenu)
-  const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
-  const openConverter = () => setIsConverterOpen(true)
-  const closeConverter = () => setIsConverterOpen(false)
-  const toggleSignin = () => setIsSigninOpen(!isSigninOpen)
-  const toggleSubscription = () => setIsSubscriptionOpen(!isSubscriptionOpen)
+  // Detect viewport width for mobile vs. desktop (breakpoint at 768px)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Reusable sign in button markup (with an extra CSS class based on viewport)
+  const signInButton = (
+    <button
+      className={`sign-in-button ${isMobile ? "mobile-sign-in" : "desktop-only"}`}
+      onClick={() => setIsSigninOpen(!isSigninOpen)}
+    >
+      <FiLogIn className="sign-in-icon" /> Sign In / Sign Up
+    </button>
+  );
+
+  // Other handlers
+  const handleMouseEnter = (menu) => setActiveDropdown(menu);
+  const handleMouseLeave = () => setActiveDropdown(null);
+  const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const openConverter = () => setIsConverterOpen(true);
+  const closeConverter = () => setIsConverterOpen(false);
+  const toggleSubscription = () => setIsSubscriptionOpen(!isSubscriptionOpen);
 
   return (
     <>
@@ -116,22 +135,16 @@ const Header = () => {
                   </div>
                 )}
               </li>
-              {/* Sign In / Sign Up for mobile */}
-              <li className="nav-item sign-in-nav-item mobile-only">
-                <button className="sign-in-button mobile-sign-in" onClick={toggleSignin}>
-                  <FiLogIn className="sign-in-icon" /> Sign In / Sign Up
-                </button>
-              </li>
+              {/* Render sign in button inside navigation only for mobile */}
+              {isMobile && <li className="nav-item sign-in-nav-item">{signInButton}</li>}
             </ul>
           </nav>
           <div className="header-buttons">
             <button className="get-started" id="get-started" onClick={toggleSubscription}>
               Subscribe Us
             </button>
-            {/* Sign In / Sign Up for desktop */}
-            <button className="sign-in-button desktop-only" onClick={toggleSignin}>
-              <FiLogIn className="sign-in-icon" /> Sign In / Sign Up
-            </button>
+            {/* Render sign in button in header (right side) only for desktop */}
+            {!isMobile && signInButton}
           </div>
         </div>
       </header>
@@ -168,7 +181,7 @@ const Header = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={toggleSignin}
+            onClick={() => setIsSigninOpen(!isSigninOpen)}
           >
             <motion.div
               className="modal-content signin-modal"
@@ -179,7 +192,7 @@ const Header = () => {
             >
               <motion.button
                 className="close-button"
-                onClick={toggleSignin}
+                onClick={() => setIsSigninOpen(!isSigninOpen)}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ rotate: 90 }}
               >
@@ -222,7 +235,7 @@ const Header = () => {
         )}
       </AnimatePresence>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
