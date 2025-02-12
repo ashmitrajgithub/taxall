@@ -1,0 +1,210 @@
+/* Blog.css */
+
+/* Container styling using % and rem for responsiveness */
+
+
+.blog-main{
+  width: 100vw;
+  padding: 1%;
+
+}
+.blog-container {
+  border-radius: 15px;;
+  padding: 2rem;
+  background: linear-gradient(45deg, #000, #444444);
+}
+
+/* Main title styling */
+.blog-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: 'Dancing Script', cursive;
+  color: white
+}
+
+/* Section title styling with a left border for emphasis */
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
+  border-left: 0.25rem solid #3498db;
+  color: white;
+  font-family: 'Dancing Script', cursive;
+}
+
+/* =========================
+   Latest Blog Section (Big Layout)
+   ========================= */
+.latest-blog .blog-card.latest {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+}
+
+.latest-blog .blog-card.latest .blog-image {
+  width: 100%;
+  height: 30vh; /* 30% of the viewport height on small screens */
+  object-fit: cover;
+}
+
+.latest-blog .blog-card.latest .blog-content {
+  padding: 1.5rem;
+}
+
+/* =========================
+   Other Blogs Grid (With Images)
+   ========================= */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.blog-card {
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card .blog-image {
+  width: 100%;
+  height: 20vh; /* Smaller image height for grid items */
+  object-fit: cover;
+}
+
+.blog-card .blog-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.blog-card .blog-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.blog-card .blog-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.blog-date {
+  font-size: 0.875rem;
+  color: #777;
+}
+
+/* =========================
+   Text Blogs Section (Enhanced Sticky Note Style)
+   ========================= */
+.text-blogs {
+  margin-top: 3rem;
+}
+
+/* Set up grid: 1 column on small screens, 2 columns on larger screens */
+.text-blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 600px) {
+  .text-blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.text-blog-item {
+  background: linear-gradient(145deg, #fff9c4, #ffecb3);
+  border: 2px solid #f0e68c;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2);
+  transform: rotate(-5deg);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Straighten the note and soften the shadow on hover */
+.text-blog-item:hover {
+  transform: rotate(0deg);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Folded corner effect */
+.text-blog-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 3rem 3rem 0;
+  border-style: solid;
+  border-color: transparent #ffe082 transparent transparent;
+}
+
+/* A small pin element to mimic a note being held in place */
+.text-blog-item::after {
+  content: "";
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1rem;
+  height: 1rem;
+  background-color: #e57373;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade-in animation for the animated sticky note */
+.animated {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Text styling inside sticky notes */
+.text-blog-item h3 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.text-blog-item p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* =========================
+   Responsive Adjustments for Latest Blog
+   ========================= */
+@media (min-width: 768px) {
+  /* Latest blog switches to a row layout */
+  .latest-blog .blog-card.latest {
+    flex-direction: row;
+  }
+  
+  .latest-blog .blog-card.latest .blog-image {
+    width: 50%;
+    height: 40vh; /* Bigger image height on larger screens */
+  }
+  
+  .latest-blog .blog-card.latest .blog-content {
+    width: 50%;
+    padding: 2rem;
+  }
+}

@@ -1,0 +1,250 @@
+/* Overall container styling */
+
+.signin-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(45deg, #000, #444444);
+  padding: 20px;
+}
+
+/* Card wrapper with perspective for 3D effect */
+.signin-card-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+  
+}
+
+/* The signin card with smooth transitions and 3D transform */
+.signin-row {
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-out;
+  transform-style: preserve-3d;
+}
+
+/* Both columns */
+.signin-col-left,
+.signin-col-right {
+  flex: 1;
+  padding: 30px;
+}
+
+/* Left column with a gradient background */
+.signin-col-left {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Logo styles */
+.signin-logo-wrapper {
+  margin-bottom: 20px;
+}
+
+.signin-logo {
+  max-width: 150px;
+  transition: transform 0.3s ease;
+}
+
+.signin-logo:hover {
+  transform: scale(1.1);
+}
+
+/* Image styling */
+.signin-image-wrapper {
+  max-width: 80%;
+}
+
+.signin-image {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.signin-image:hover {
+  transform: scale(1.05);
+}
+
+/* Right column styling */
+.signin-card-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Social login area */
+.signin-social-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.signin-social-login h6 {
+  margin-right: 10px;
+  font-weight: 500;
+  color: #555;
+}
+
+.signin-social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signin-facebook {
+  background-color: #3b5998;
+  color: #fff;
+}
+
+.signin-twitter {
+  background-color: #1da1f2;
+  color: #fff;
+}
+
+.signin-linkedin {
+  background-color: #0077b5;
+  color: #fff;
+}
+
+.signin-social-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Divider styling */
+.signin-divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.signin-line {
+  flex: 1;
+  height: 1px;
+  background-color: #dee2e6;
+}
+
+.signin-or {
+  margin: 0 10px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* Input fields */
+.signin-input-group {
+  margin-bottom: 20px;
+}
+
+.signin-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.signin-input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signin-input-group input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Options row */
+.signin-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.signin-checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.signin-checkbox-group input {
+  margin-right: 5px;
+}
+
+.signin-forgot-password {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Button styles */
+.signin-button-group {
+  margin-bottom: 20px;
+}
+
+.signin-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signin-btn-blue {
+  background-color: #007bff;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.signin-btn-blue:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Register link */
+.signin-register-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signin-text-danger {
+  color: #dc3545;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .signin-row {
+    flex-direction: column;
+  }
+
+  .signin-col-left,
+  .signin-col-right {
+    padding: 20px;
+  }
+}
