@@ -116,23 +116,31 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: 1000; /* Ensures it is above all other content */
 }
 
 .modal-content {
-  padding: 0rem;
+  background: #fff;
+  padding: 2rem;
   border-radius: 8px;
-  width: 90vw;
-  max-width: 1200px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

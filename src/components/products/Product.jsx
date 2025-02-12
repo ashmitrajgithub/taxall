@@ -1,18 +1,38 @@
+// Products.jsx
 import React, { useEffect, useState } from 'react';
-import './Products.css'; // Import your custom CSS file
+import './Products.css'; // Your custom CSS file
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { FaTimes } from 'react-icons/fa'; // Import the close icon
-import IncomeTaxCalculator from '../incometaxcalculator/IncomeTaxCalculator'; // Adjust the path as needed
-import Converter from '../converter/Converter'; // Adjust the path as needed
-import AOS from 'aos'; // Import AOS
-import 'aos/dist/aos.css'; // Import AOS styles
+import { FaTimes } from 'react-icons/fa'; // React built-in close icon
+import IncomeTaxCalculator from '../incometaxcalculator/IncomeTaxCalculator'; // Adjust path as needed
+import Converter from '../converter/Converter'; // Adjust path as needed
+import Imgtotxt from '../imgtotst/Imgtotxt';
+import AOS from 'aos'; // For scroll animations
+import 'aos/dist/aos.css'; // AOS styles
 
 const Products = () => {
   const [modalType, setModalType] = useState(null);
 
   useEffect(() => {
-    AOS.init({ duration: 800, easing: 'ease-in-out', once: false }); // Initialize AOS
+    AOS.init({ duration: 800, easing: 'ease-in-out', once: false });
+
+    // Optional: Close modal on Escape key press
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
   }, []);
+
+  // Disable background scroll when a modal is open
+  useEffect(() => {
+    if (modalType) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [modalType]);
 
   const openModal = (type) => {
     setModalType(type);
@@ -28,6 +48,7 @@ const Products = () => {
         <h1 className="products-heading" data-aos="fade-down">Our Products</h1>
 
         <div className="parent-container grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+          {/* Income Tax Calculator */}
           <div className="product-box" data-aos="fade-up">
             <div className="icon-container">
               <DotLottieReact
@@ -46,6 +67,26 @@ const Products = () => {
             </button>
           </div>
 
+          {/* Image To Text */}
+          <div className="product-box" data-aos="fade-up" data-aos-delay="400">
+            <div className="icon-container">
+              <DotLottieReact
+                src="https://lottie.host/6f05c863-35a3-42cf-8551-23e106f37d74/acWqJrHIpD.lottie"
+                loop
+                autoplay
+                className="icon"
+              />
+            </div>
+            <h2 className="section-title1">Image To Text</h2>
+            <p className="section-description">
+              Image-to-Text conversion extracts text from images using OCR technology, turning scanned documents or handwritten notes into editable text. It’s widely used for digitization, data extraction, and improving productivity and accessibility.
+            </p>
+            <button className="btn-view" onClick={() => openModal('imgtotxt')}>
+              Convert Now
+            </button>
+          </div>
+
+          {/* Taxall File Converter */}
           <div className="product-box" data-aos="fade-up" data-aos-delay="200">
             <div className="icon-container">
               <DotLottieReact
@@ -64,6 +105,7 @@ const Products = () => {
             </button>
           </div>
 
+          {/* Regulatory Compliance Hub */}
           <div className="product-box" data-aos="fade-up" data-aos-delay="400">
             <div className="icon-container">
               <DotLottieReact
@@ -82,6 +124,7 @@ const Products = () => {
         </div>
       </div>
 
+      {/* Modal Popup */}
       {modalType && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -90,6 +133,7 @@ const Products = () => {
             </button>
             {modalType === 'calculator' && <IncomeTaxCalculator />}
             {modalType === 'converter' && <Converter />}
+            {modalType === 'imgtotxt' && <Imgtotxt />}
           </div>
         </div>
       )}
