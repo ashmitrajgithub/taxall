@@ -11,21 +11,27 @@ import {
   FaBalanceScale,
   FaBars,
   FaTimes,
+  FaFile,
 } from "react-icons/fa";
+import { FiLogIn } from "react-icons/fi";
 import logo from "/assets/taxallnewww22n.png";
 import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
+import Converter from "../converter/Converter"; // Import Converter
 import "./Header.css";
 
 const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConverterOpen, setIsConverterOpen] = useState(false); // Modal state for Converter
 
   const handleMouseEnter = (menu) => setActiveDropdown(menu);
   const handleMouseLeave = () => setActiveDropdown(null);
   const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const openConverter = () => setIsConverterOpen(true);
+  const closeConverter = () => setIsConverterOpen(false);
 
   return (
     <>
@@ -39,6 +45,7 @@ const Header = () => {
           </div>
           <nav className={`nav ${mobileMenu ? "nav-active" : ""}`}>
             <ul className="nav-list">
+              {/* Products Dropdown */}
               <li
                 className="nav-item-container"
                 onMouseEnter={() => handleMouseEnter("products")}
@@ -49,14 +56,11 @@ const Header = () => {
                 </span>
                 {activeDropdown === "products" && (
                   <div className="dropdown">
-                    <div
-                      className="dropdown-item"
-                      onClick={() => {
-                        openModal();
-                        setActiveDropdown(null);
-                      }}
-                    >
+                    <div className="dropdown-item" onClick={openModal}>
                       <FaCalculator className="icon" /> Income Tax Calculator
+                    </div>
+                    <div className="dropdown-item" onClick={openConverter}>
+                      <FaFile className="icon" /> Taxall File Converter
                     </div>
                     <div className="dropdown-item">
                       <FaBalanceScale className="icon" /> Regulatory Compliance Hub
@@ -64,6 +68,7 @@ const Header = () => {
                   </div>
                 )}
               </li>
+              {/* Resources Dropdown */}
               <li
                 className="nav-item-container"
                 onMouseEnter={() => handleMouseEnter("resources")}
@@ -72,8 +77,18 @@ const Header = () => {
                 <span className="nav-item">
                   <FaBook className="nav-icon" /> Resources <FaChevronDown className="chevron-icon" />
                 </span>
-                {/* Dropdown for Resources */}
+                {activeDropdown === "resources" && (
+                  <div className="dropdown">
+                    <div className="dropdown-item">
+                      <FaChartBar className="icon" /> Reports
+                    </div>
+                    <div className="dropdown-item">
+                      <FaTag className="icon" /> Pricing Guide
+                    </div>
+                  </div>
+                )}
               </li>
+              {/* Company Dropdown */}
               <li
                 className="nav-item-container"
                 onMouseEnter={() => handleMouseEnter("company")}
@@ -82,12 +97,24 @@ const Header = () => {
                 <span className="nav-item">
                   <FaBuilding className="nav-icon" /> Company <FaChevronDown className="chevron-icon" />
                 </span>
-                {/* Dropdown for Company */}
+                {activeDropdown === "company" && (
+                  <div className="dropdown">
+                    <div className="dropdown-item">
+                      <FaUsers className="icon" /> About Us
+                    </div>
+                    <div className="dropdown-item">
+                      <FaTag className="icon" /> Careers
+                    </div>
+                  </div>
+                )}
               </li>
             </ul>
           </nav>
           <button className="get-started" id="get-started">
-            Get Started
+           Subscribe Us
+          </button>
+          <button className="sign-in-button">
+            <FiLogIn className="sign-in-icon" /> Sign In / Sign Up
           </button>
         </div>
       </header>
@@ -100,6 +127,18 @@ const Header = () => {
               &times;
             </button>
             <IncomeTaxCalculator />
+          </div>
+        </div>
+      )}
+
+      {/* Modal for File Converter */}
+      {isConverterOpen && (
+        <div className="modal-overlay" onClick={closeConverter}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeConverter}>
+              &times;
+            </button>
+            <Converter />
           </div>
         </div>
       )}

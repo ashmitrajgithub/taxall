@@ -122,9 +122,11 @@ body {
 .dropdown-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.25rem;
+ padding: 2%;
+ margin-bottom: 2%;
   font-size: 0.875rem;
   font-weight: 500;
+  height: 8vh;
   color: #333;
   transition: all 0.3s ease;
 }
@@ -132,11 +134,12 @@ body {
 .dropdown-item:hover {
   background: #007bff;
   color: #fff;
-  border-radius: 0.5rem;
+  
 }
 
 .dropdown-item .icon {
   font-size: 1.25rem;
+  height: 4vh;
   margin-right: 0.625rem;
   color: #007bff;
   transition: color 0.3s ease;
@@ -277,4 +280,24 @@ body {
   cursor: pointer;
   color: black;
   
+}
+.sign-in-button {
+  background: none;
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sign-in-button:hover {
+  background: wheat;
+  color: #000;
+}
+
+.sign-in-icon {
+  margin-right: 0.5rem;
 }
