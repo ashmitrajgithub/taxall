@@ -1,10 +1,12 @@
-/* Wrapper and title styles */
+/* Testimonial Section */
 .testimonial-wrapper {
   height: 70vh;
   border-radius: 19px;
   margin: 1%;
   text-align: center;
   background: linear-gradient(45deg, #000, #444444);
+  position: relative;
+  padding-bottom: 3rem; /* Extra space at the bottom for the button */
 }
 
 .testimonial-title {
@@ -26,7 +28,6 @@
   font-weight: bold;
 }
 
-/* Horizontal scroll container */
 .testimonial-container {
   display: flex;
   gap: 2rem;
@@ -53,7 +54,6 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Header section with avatar */
 .testimonial-header {
   display: flex;
   align-items: center;
@@ -74,9 +74,9 @@
   color: #fff;
 }
 
-.author-position {
-  font-size: 0.9rem;
-  color: #bbb;
+.review-rating {
+  display: flex;
+  margin-top: 0.3rem;
 }
 
 .testimonial-text {
@@ -91,20 +91,97 @@
   text-align: right;
 }
 
-/* Scroll behavior on small screens */
+/* Add Review Button (Inside Box) */
+.add-review-button-wrapper {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.add-review-button {
+  padding: 0.75rem 1.5rem;
+  background: #ff6ec4;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  text-align: left;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Review Form */
+.review-form input,
+.review-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.review-form label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.rating-input {
+  margin-bottom: 1rem;
+}
+
+.submit-button {
+  padding: 0.75rem 1.5rem;
+  background: #ff6ec4;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .testimonial-container {
     gap: 1rem;
   }
-
   .testimonial-card {
     min-width: 250px;
   }
-
   .testimonial-title {
     font-size: 2rem;
   }
-
   .testimonial-subtitle {
     font-size: 1rem;
   }
