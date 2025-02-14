@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Tesseract from "tesseract.js";
 import { jsPDF } from "jspdf";
-import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt } from "react-icons/fa";
+import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt, FaUpload } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Conversion.css";
@@ -18,10 +17,6 @@ const base64ToBlob = (base64, mime) => {
   }
   return new Blob([new Uint8Array(byteNumbers)], { type: mime });
 };
-
-// Dummy JPG base64 (for testing purposes)
-const dummyJpgBase64 =
-  "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUTEhIVFhUXFRUVFhUVFRUVFRUWFxUXFhUVFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAJ8BPgMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQIDBAUGBwj/xABCEAACAQMCAwYDBgUEBgIDAAABAgMABBESIQUTMQZBUWEHInGBkRRCscHR8BQjM1Lh8SNSY3KCksLS4f/EABkBAAMBAQEAAAAAAAAAAAAAAAABAgMEBf/EACMRAAICAgICAgMAAAAAAAAAAAABAhEDIRIxQVFhExQi/2oADAMBAAIRAxEAPwD9AN//2Q==";
 
 // File Extension Mapper
 const getExtension = (conversionType) => {
@@ -60,8 +55,7 @@ const getAcceptForConversion = (conversionType) => {
 // Preserve original file name (change extension)
 const getConvertedFilename = (originalName, conversionType) => {
   const dotIndex = originalName.lastIndexOf(".");
-  const baseName =
-    dotIndex !== -1 ? originalName.substring(0, dotIndex) : originalName;
+  const baseName = dotIndex !== -1 ? originalName.substring(0, dotIndex) : originalName;
   return `${baseName}.${getExtension(conversionType)}`;
 };
 
@@ -74,12 +68,8 @@ const getFileUrlFromResponse = (fileObj, conversionType) => {
     if (conversionType === "docx-to-pdf" || conversionType === "jpg-to-pdf")
       mimeType = "application/pdf";
     else if (conversionType === "pdf-to-docx")
-      mimeType =
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    else if (
-      conversionType === "docx-to-jpg" ||
-      conversionType === "pdf-to-jpg"
-    )
+      mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    else if (conversionType === "docx-to-jpg" || conversionType === "pdf-to-jpg")
       mimeType = "image/jpeg";
     const blob = base64ToBlob(fileObj.FileData, mimeType);
     return URL.createObjectURL(blob);
@@ -98,7 +88,6 @@ const convertDocxToPdf = async (file) => {
     body: formData,
   });
   const data = await response.json();
-  console.log("DOCX to PDF response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "docx-to-pdf");
@@ -116,7 +105,6 @@ const convertPdfToDocx = async (file) => {
     body: formData,
   });
   const data = await response.json();
-  console.log("PDF to DOCX response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "pdf-to-docx");
@@ -134,7 +122,6 @@ const convertDocxToJpg = async (file) => {
     body: formData,
   });
   const data = await response.json();
-  console.log("DOCX to JPG response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "docx-to-jpg");
@@ -153,7 +140,6 @@ const convertPdfToJpg = async (file) => {
     body: formData,
   });
   const data = await response.json();
-  console.log("PDF to JPG response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "pdf-to-jpg");
@@ -172,7 +158,6 @@ const convertJpgToPdf = async (file) => {
     body: formData,
   });
   const data = await response.json();
-  console.log("JPG to PDF response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "jpg-to-pdf");
@@ -205,7 +190,6 @@ const imageToTextOCR = async (file) => {
     });
     return result.data.text;
   } catch (error) {
-    console.error("Tesseract OCR error:", error);
     throw error;
   }
 };
@@ -264,29 +248,25 @@ const ModalPopup = ({ isOpen, onClose, children }) => {
   );
 };
 
-const ProgressBar = ({ progress }) => {
-  return (
-    <div className="progress-container">
-      <div className="progress-bar" style={{ width: `${progress}%` }}>
-        {progress}%
-      </div>
+const ProgressBar = ({ progress }) => (
+  <div className="progress-container">
+    <div className="progress-bar" style={{ width: `${progress}%` }}>
+      {progress}%
     </div>
-  );
-};
+  </div>
+);
 
-const ConversionCard = ({ conversionType, label, description, icon, onClick }) => {
-  return (
-    <div className="conversion-card" onClick={onClick}>
-      <div className="card-icon">{icon}</div>
-      <h3 className="card-title">{label}</h3>
-      <p className="card-description">{description}</p>
-    </div>
-  );
-};
+const ConversionCard = ({ conversionType, label, description, icon, onClick }) => (
+  <div className="conversion-card" onClick={onClick}>
+    <div className="card-icon">{icon}</div>
+    <h3 className="card-title">{label}</h3>
+    <p className="card-description">{description}</p>
+  </div>
+);
 
 const Conversion = () => {
   useEffect(() => {
-    // Initialize AOS only for larger screens
+    // Initialize AOS only on larger screens
     if (window.innerWidth >= 768) {
       AOS.init({ duration: 800, once: true });
     }
@@ -438,25 +418,18 @@ const Conversion = () => {
       </div>
 
       {/* File Converter Modal Popup */}
-      <ModalPopup
-        isOpen={isFileModalOpen}
-        onClose={() => setIsFileModalOpen(false)}
-      >
-        <h2>
-          {conversionCards.find((c) => c.type === selectedConversion)?.label}
-        </h2>
+      <ModalPopup isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
+        <h2>{conversionCards.find((c) => c.type === selectedConversion)?.label}</h2>
         <div className="modal-tab">
           <label className="file-label">
-            <span className="file-icon">
-              <FaFileAlt size={30} />
-            </span>
+            <FaUpload size={20} color="#fff" />
+            <span className="choose-file-button">Choose File</span>
             <input
               type="file"
               accept={getAcceptForConversion(selectedConversion)}
               onChange={(e) => setFileInput(e.target.files[0])}
               style={{ display: "none" }}
             />
-            <span className="choose-file-button">Choose File</span>
           </label>
           {fileInput && <p>Selected File: {fileInput.name}</p>}
           <button onClick={handleFileConversion} disabled={fileConverting}>
@@ -465,10 +438,7 @@ const Conversion = () => {
           {fileConverting && <ProgressBar progress={fileProgress} />}
           {convertedFileUrl && (
             <div className="download-container">
-              <a
-                href={convertedFileUrl}
-                download={getConvertedFilename(fileInput.name, selectedConversion)}
-              >
+              <a href={convertedFileUrl} download={getConvertedFilename(fileInput.name, selectedConversion)}>
                 Download Converted File
               </a>
             </div>
@@ -482,20 +452,16 @@ const Conversion = () => {
         <section className="text-converter">
           <div className="text-converter-inner">
             <label className="file-label">
-              <span className="file-icon">
-                <FaFileAlt size={30} />
-              </span>
+              <FaUpload size={20} color="#2d89ef" />
+              <span className="choose-file-button">Choose File</span>
               <input
                 type="file"
                 accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
                 onChange={(e) => setTextFile(e.target.files[0])}
                 style={{ display: "none" }}
               />
-              <span className="choose-file-button">Choose File</span>
             </label>
-            {textFile && (
-              <p className="selected-file">Selected File: {textFile.name}</p>
-            )}
+            {textFile && <p className="selected-file">Selected File: {textFile.name}</p>}
             <button onClick={handleConvertToText} disabled={textConverting}>
               Convert Now
             </button>
@@ -506,9 +472,7 @@ const Conversion = () => {
                 <textarea value={convertedText} readOnly rows="8" />
                 <div className="download-options">
                   <button onClick={handleDownloadText}>Download as .txt</button>
-                  <button onClick={handleDownloadTextAsPDF}>
-                    Download as PDF
-                  </button>
+                  <button onClick={handleDownloadTextAsPDF}>Download as PDF</button>
                 </div>
               </div>
             )}
