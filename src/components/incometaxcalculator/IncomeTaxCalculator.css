@@ -37,13 +37,17 @@ body {
 =                Main Container                =
 ===============================================*/
 .income-tax-calculator {
-  width: 90%;
-  max-width: 56.25rem; /* ~900px */
-  margin: 2.5rem auto;  /* 40px top/bottom */
-  background: var(--white);
-  border-radius: 0.5rem; /* 8px */
-  padding: 1.875rem;    /* 30px */
-  box-shadow: var(--shadow-medium);
+  position: relative;
+    top: 100px;
+    /* margin-top: 200px; */
+    /* width: 90%; */
+    /* max-width: 56.25rem; */
+    margin: 2.5rem auto;
+    background: var(--white);
+    border-radius: 0.5rem;
+    padding: 1.875rem;
+    box-shadow: var(--shadow-medium);
+    margin: 1%;
 }
 
 /*===============================================

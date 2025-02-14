@@ -63,7 +63,7 @@ const Products = () => {
               Our Income Tax Calculator is designed to help you quickly and accurately estimate your taxes based on your income, deductions, and credits. Plan your finances confidently with our intuitive tool.
             </p>
             <button className="btn-calc" onClick={() => openModal('calculator')}>
-              Calculate Now
+              <a href='/incometaxcalculator'>Calculate Now</a>
             </button>
           </div>
 
@@ -131,7 +131,7 @@ const Products = () => {
             <button className="close-button" onClick={closeModal}>
               <FaTimes size={24} color="#333" />
             </button>
-            {modalType === 'calculator' && <IncomeTaxCalculator />}
+            <a href='/incometaxcalculator'>{modalType === 'calculator' && <IncomeTaxCalculator />}</a>
             {modalType === 'converter' && <Converter />}
             {modalType === 'imgtotxt' && <Imgtotxt />}
           </div>
