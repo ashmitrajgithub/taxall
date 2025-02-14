@@ -19,6 +19,7 @@ const base64ToBlob = (base64, mime) => {
   return new Blob([new Uint8Array(byteNumbers)], { type: mime });
 };
 
+// Dummy JPG base64 (for testing purposes)
 const dummyJpgBase64 =
   "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUTEhIVFhUXFRUVFhUVFRUVFRUWFxUXFhUVFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAJ8BPgMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQIDBAUGBwj/xABCEAACAQMCAwYDBgUEBgIDAAABAgMABBESIQUTMQZBUWEHInGBkRRCscHR8BQjM1Lh8SNSY3KCksLS4f/EABkBAAMBAQEAAAAAAAAAAAAAAAABAgMEBf/EACMRAAICAgICAgMAAAAAAAAAAAABAhEDIRIxQVFhExQi/2oADAMBAAIRAxEAPwD9AN//2Q==";
 
@@ -252,7 +253,7 @@ const downloadTextFile = (text, filename) => {
 const ModalPopup = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay" data-aos="zoom-in">
+    <div className="modal-overlay">
       <div className="modal-content">
         <button className="modal-close" onClick={onClose}>
           &times;
@@ -275,7 +276,7 @@ const ProgressBar = ({ progress }) => {
 
 const ConversionCard = ({ conversionType, label, description, icon, onClick }) => {
   return (
-    <div className="conversion-card" data-aos="fade-up" onClick={onClick}>
+    <div className="conversion-card" onClick={onClick}>
       <div className="card-icon">{icon}</div>
       <h3 className="card-title">{label}</h3>
       <p className="card-description">{description}</p>
@@ -285,7 +286,10 @@ const ConversionCard = ({ conversionType, label, description, icon, onClick }) =
 
 const Conversion = () => {
   useEffect(() => {
-    AOS.init({ duration: 800, once: true });
+    // Initialize AOS only for larger screens
+    if (window.innerWidth >= 768) {
+      AOS.init({ duration: 800, once: true });
+    }
   }, []);
 
   // --- File Converter States ---
@@ -417,7 +421,7 @@ const Conversion = () => {
   return (
     <div className="conversion-container">
       {/* Conversion Tools Section */}
-      <div className="conversion-tools" data-aos="fade-right">
+      <div className="conversion-tools">
         <h1 className="section-header">Conversion Tools</h1>
         <div className="cards-container">
           {conversionCards.map((card, index) => (
@@ -434,8 +438,13 @@ const Conversion = () => {
       </div>
 
       {/* File Converter Modal Popup */}
-      <ModalPopup isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
-        <h2>{conversionCards.find((c) => c.type === selectedConversion)?.label}</h2>
+      <ModalPopup
+        isOpen={isFileModalOpen}
+        onClose={() => setIsFileModalOpen(false)}
+      >
+        <h2>
+          {conversionCards.find((c) => c.type === selectedConversion)?.label}
+        </h2>
         <div className="modal-tab">
           <label className="file-label">
             <span className="file-icon">
@@ -468,7 +477,7 @@ const Conversion = () => {
       </ModalPopup>
 
       {/* Text Converter Section */}
-      <div className="text-converter-section" data-aos="fade-left">
+      <div className="text-converter-section">
         <h1 className="section-header">Text Converter</h1>
         <section className="text-converter">
           <div className="text-converter-inner">
@@ -484,18 +493,22 @@ const Conversion = () => {
               />
               <span className="choose-file-button">Choose File</span>
             </label>
-            {textFile && <p className="selected-file">Selected File: {textFile.name}</p>}
+            {textFile && (
+              <p className="selected-file">Selected File: {textFile.name}</p>
+            )}
             <button onClick={handleConvertToText} disabled={textConverting}>
               Convert Now
             </button>
             {textConverting && <ProgressBar progress={textProgress} />}
             {convertedText && (
-              <div className="text-result" data-aos="fade-up">
+              <div className="text-result">
                 <h3>Extracted Text:</h3>
                 <textarea value={convertedText} readOnly rows="8" />
                 <div className="download-options">
                   <button onClick={handleDownloadText}>Download as .txt</button>
-                  <button onClick={handleDownloadTextAsPDF}>Download as PDF</button>
+                  <button onClick={handleDownloadTextAsPDF}>
+                    Download as PDF
+                  </button>
                 </div>
               </div>
             )}

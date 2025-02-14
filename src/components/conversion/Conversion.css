@@ -1,10 +1,11 @@
-/* Overall container */
+/* ----------------- Overall Container ----------------- */
 .conversion-container {
   padding: 1rem;
   max-width: 1450px;
+  margin: 0 auto;
   position: relative;
   top: 100px;
-  
+  box-sizing: border-box;
 }
 
 /* ----------------- Conversion Tools Section ----------------- */
@@ -31,7 +32,7 @@
   gap: 1.5rem;
 }
 
-/* Conversion Card Styles */
+/* ----------------- Conversion Card Styles ----------------- */
 .conversion-card {
   background: rgba(255, 255, 255, 0.9);
   width: 260px;
@@ -40,6 +41,7 @@
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .conversion-card:hover {
@@ -55,10 +57,9 @@
 .card-title {
   font-size: 1.2rem;
   margin-bottom: 0.4rem;
-  color: #ffffff;
+  color: #000000;
   font-weight: 600;
 }
-
 
 .card-description {
   font-size: 0.9rem;
@@ -66,39 +67,61 @@
   line-height: 1.3;
 }
 
-/* ----------------- Modal Styles ----------------- */
+/* ----------------- Modal Styles (Improved) ----------------- */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
   padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .modal-content {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 10px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 15px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
+  margin: 0 auto;
   position: relative;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.5s ease-out;
+  box-sizing: border-box;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-close {
   position: absolute;
-  right: 10px;
-  top: 10px;
-  border: none;
+  top: 15px;
+  right: 15px;
   background: transparent;
-  font-size: 1.6rem;
+  border: none;
+  font-size: 1.5rem;
   cursor: pointer;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+  color: #333;
 }
 
 /* ----------------- File Label/Button Styles ----------------- */
@@ -177,66 +200,128 @@ button:disabled {
   background: #1e8449;
 }
 
-/* ----------------- Text Converter Section ----------------- */
+/* ----------------- Text Converter Section (Modernized) ----------------- */
 .text-converter-section {
-  background: linear-gradient(45deg, #000, #444444);
+  background: linear-gradient(135deg, #1d1f21, #3a3f47);
   padding: 2rem;
-  margin-bottom: 1%;
+  margin-bottom: 2rem;
   border-radius: 15px;
-  color: #333;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.text-converter-section .section-header {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #f9f9f9;
 }
 
 .text-converter {
-  margin-top: 1rem;
-}
-
-.text-converter-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.selected-file {
+.text-converter-inner {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* File Input/Button Styling for Text Converter */
+.text-converter-inner .file-label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  background: #f0f0f0;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.text-converter-inner .file-label:hover {
+  background: #e0e0e0;
+}
+
+.text-converter-inner .choose-file-button {
+  background: #2d89ef;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.text-converter-inner .choose-file-button:hover {
+  background: #1b6ac9;
+}
+
+.text-converter-inner .selected-file {
   margin-top: 0.5rem;
   font-size: 1rem;
   color: #555;
 }
 
+/* Extracted Text Styling */
 .text-result {
   width: 100%;
   margin-top: 1.5rem;
-  background: #fff;
-  padding: 1.2rem;
-  border-radius: 8px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .text-result h3 {
+  font-size: 1.4rem;
   margin-bottom: 1rem;
-  font-size: 1.3rem;
+  color: #333;
 }
 
 .text-result textarea {
   width: 100%;
+  min-height: 150px;
   border: 1px solid #ccd0d5;
-  border-radius: 4px;
-  padding: 0.8rem;
-  resize: vertical;
+  border-radius: 6px;
+  padding: 1rem;
   font-size: 1rem;
+  resize: vertical;
 }
 
+/* Download Options */
 .download-options {
   margin-top: 1.2rem;
+  text-align: center;
 }
 
 .download-options button {
   margin: 0 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background: #2d89ef;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-/* ----------------- Responsive ----------------- */
+.download-options button:hover {
+  background: #1b6ac9;
+}
+
+/* ----------------- Responsive Adjustments ----------------- */
 @media (max-width: 768px) {
   .conversion-container {
-    padding: 1rem;
+    top: 50px;
+    padding: 0.5rem;
   }
   .section-header {
     font-size: 1.8rem;
@@ -246,7 +331,15 @@ button:disabled {
     max-width: 300px;
   }
   .modal-content {
-    padding: 1rem;
+    padding: 1.5rem;
+    max-width: calc(100% - 20px);
+  }
+  .text-converter-inner {
+    padding: 1.5rem;
+    max-width: calc(100% - 20px);
+  }
+  .text-result textarea {
+    min-height: 120px;
   }
 }
 
@@ -254,7 +347,8 @@ button:disabled {
   .section-header {
     font-size: 1.6rem;
   }
-  .choose-file-button, button {
+  .choose-file-button,
+  button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
   }
