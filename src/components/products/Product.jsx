@@ -4,7 +4,7 @@ import './Products.css'; // Your custom CSS file
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { FaTimes } from 'react-icons/fa'; // React built-in close icon
 import IncomeTaxCalculator from '../incometaxcalculator/IncomeTaxCalculator'; // Adjust path as needed
-import Converter from '../converter/Converter'; // Adjust path as needed
+// import Converter from '../converter/Converter'; // Adjust path as needed
 import Imgtotxt from '../imgtotst/Imgtotxt';
 import AOS from 'aos'; // For scroll animations
 import 'aos/dist/aos.css'; // AOS styles
@@ -62,13 +62,13 @@ const Products = () => {
             <p className="section-description">
               Our Income Tax Calculator is designed to help you quickly and accurately estimate your taxes based on your income, deductions, and credits. Plan your finances confidently with our intuitive tool.
             </p>
-            <button className="btn-calc" onClick={() => openModal('calculator')}>
+            <button className="btn-calc">
               <a href='/incometaxcalculator'>Calculate Now</a>
             </button>
           </div>
 
           {/* Image To Text */}
-          <div className="product-box" data-aos="fade-up" data-aos-delay="400">
+          {/* <div className="product-box" data-aos="fade-up" data-aos-delay="400">
             <div className="icon-container">
               <DotLottieReact
                 src="https://lottie.host/6f05c863-35a3-42cf-8551-23e106f37d74/acWqJrHIpD.lottie"
@@ -83,8 +83,8 @@ const Products = () => {
             </p>
             <button className="btn-view" onClick={() => openModal('imgtotxt')}>
               Convert Now
-            </button>
-          </div>
+            </button> */}
+          {/* </div> */}
 
           {/* Taxall File Converter */}
           <div className="product-box" data-aos="fade-up" data-aos-delay="200">
@@ -100,8 +100,8 @@ const Products = () => {
             <p className="section-description">
               Taxall File Converter is a professional online tool enabling secure conversion of diverse file formats. Optimize your documents effortlessly with intelligent scaling, quality control, and a sleek, intuitive user interface.
             </p>
-            <button className="btn-calc" onClick={() => openModal('converter')}>
-              Convert Now
+            <button className="btn-calc">
+             <a href='/fileconverter'> Convert Now</a>
             </button>
           </div>
 
@@ -123,20 +123,7 @@ const Products = () => {
           </div>
         </div>
       </div>
-
-      {/* Modal Popup */}
-      {modalType && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-button" onClick={closeModal}>
-              <FaTimes size={24} color="#333" />
-            </button>
-            <a href='/incometaxcalculator'>{modalType === 'calculator' && <IncomeTaxCalculator />}</a>
-            {modalType === 'converter' && <Converter />}
-            {modalType === 'imgtotxt' && <Imgtotxt />}
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

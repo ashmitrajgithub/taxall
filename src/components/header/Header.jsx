@@ -18,7 +18,7 @@ import { RiScissorsLine } from "react-icons/ri"; // Imported scissors icon for â
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "/assets/taxallnewww22n.png";
 import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
-import Converter from "../converter/Converter";
+// import Converter from "../converter/Converter";
 import Signin from "../signin/Signin";
 import Subscription from "../subscription/Subscription";
 import "./Header.css";

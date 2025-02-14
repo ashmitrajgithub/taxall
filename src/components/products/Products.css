@@ -74,6 +74,10 @@
   margin-bottom: 1rem;
 }
 
+.btn-calc a{
+  color: #fff;
+}
+
 .btn-calc,
 .btn-view,
 .btn-convert {

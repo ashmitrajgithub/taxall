@@ -10,7 +10,8 @@ import Review from "./components/review/Review";
 import ContactUs from "./components/contactUs/ContactUs";
 import Blog from "./components/blog/Blog";
 import IncomeTaxCalculator from "./components/incometaxcalculator/IncomeTaxCalculator";
-
+import "./App.css"
+import Conversion from "./components/conversion/Conversion";
 const App = () => {
   const location = useLocation(); // Get current location
 
@@ -18,6 +19,7 @@ const App = () => {
     <div>
       <Header />
       <Askme />
+     
       <div>
         <Routes>
           <Route
@@ -34,13 +36,12 @@ const App = () => {
             }
           />
           <Route path="/incometaxcalculator" element={<IncomeTaxCalculator />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/review" element={<Review />} />
+          <Route path="/fileconverter" element={<Conversion />} />
+          <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       </div>
       <Footer />
+     
     </div>
   );
 };
