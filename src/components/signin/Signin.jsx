@@ -24,10 +24,11 @@ const Signin = () => {
   };
 
   return (
+    <div className="sign-main">
     <div className="signin-container">
       <div className="signin-card-wrapper">
         <div
-          className="signin-row"
+          className="signin-row-main"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={cardStyle}
@@ -98,6 +99,7 @@ const Signin = () => {
                 </small>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

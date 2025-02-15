@@ -177,21 +177,21 @@ const Header = () => {
       <AnimatePresence>
         {isSigninOpen && (
           <motion.div
-            className="modal-overlay"
+            className="header-modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsSigninOpen(!isSigninOpen)}
           >
             <motion.div
-              className="modal-content signin-modal"
+              className="header-modal-content header-signin-modal" 
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
               <motion.button
-                className="close-button"
+                className="header-close-button"
                 onClick={() => setIsSigninOpen(!isSigninOpen)}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ rotate: 90 }}

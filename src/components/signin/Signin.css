@@ -1,12 +1,12 @@
 /* Overall container styling */
 
+
 .signin-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height:auto;
   font-family: "Roboto", sans-serif;
-  background: linear-gradient(45deg, #000, #444444);
-  padding: 20px;
+
 }
 
 /* Card wrapper with perspective for 3D effect */
@@ -15,18 +15,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1000px;
-  
+  perspective:2000px;
 }
 
 /* The signin card with smooth transitions and 3D transform */
-.signin-row {
+.signin-row-main {
+  margin: 1%;
+  border-radius: 15px;
   display: flex;
-  width: 100%;
-  max-width: 800px;
+  /* width: 90vw;
+  height: 80vh; */
   background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease-out;
   transform-style: preserve-3d;
@@ -37,6 +37,7 @@
 .signin-col-right {
   flex: 1;
   padding: 30px;
+  border-radius: 15px;
 }
 
 /* Left column with a gradient background */
@@ -239,7 +240,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .signin-row {
+  .signin-row-main {
     flex-direction: column;
   }
 

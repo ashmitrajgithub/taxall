@@ -288,7 +288,7 @@ const ModalPopup = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-cont">
         <button className="modal-close" onClick={onClose}>
           &times;
         </button>

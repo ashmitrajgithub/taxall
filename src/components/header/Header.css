@@ -236,6 +236,30 @@ body {
   text-align: center;
 }
 
+.header-modal-overlay {
+  position: fixed;
+  width: 100vw;
+  height:auto;
+  z-index: 2000;
+}
+
+.header-modal-content {
+  border-radius:15px;
+  position: relative;
+  text-align: center;
+}
+
+.header-close-button {
+  position: absolute;
+  top: 10px;
+  right: 18vw;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  z-index: 30000;
+}
 .close-button {
   position: absolute;
   top: 10px;
@@ -245,6 +269,7 @@ body {
   font-size: 1.5rem;
   cursor: pointer;
   color: #333;
+  z-index: 30000;
 }
 
 /* Responsive Design */
