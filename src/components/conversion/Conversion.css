@@ -334,6 +334,15 @@ button:disabled {
   .text-result textarea {
     min-height: 120px;
   }
+  .modal-overlay .modal-cont {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
 }
 
 @media (max-width: 480px) {
@@ -349,5 +358,14 @@ button:disabled {
   }
   .card-description {
     font-size: 0.85rem;
+  }
+  .modal-overlay .modal-cont {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
   }
 }

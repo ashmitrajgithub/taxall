@@ -56,6 +56,7 @@ const getConvertedFilename = (originalName, conversionType) => {
 };
 
 const getFileUrlFromResponse = (fileObj, conversionType) => {
+  console.log("Processing file object:", fileObj);
   if (fileObj.File) return fileObj.File;
   if (fileObj.Url) return fileObj.Url;
   if (fileObj.FileData) {
@@ -82,7 +83,9 @@ const convertDocxToPdf = async (file) => {
     headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
+  console.log("DOCX to PDF - Raw response:", response);
   const data = await response.json();
+  console.log("DOCX to PDF - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "docx-to-pdf");
@@ -99,7 +102,9 @@ const convertPdfToDocx = async (file) => {
     headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
+  console.log("PDF to DOCX - Raw response:", response);
   const data = await response.json();
+  console.log("PDF to DOCX - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "pdf-to-docx");
@@ -116,7 +121,9 @@ const convertDocxToJpg = async (file) => {
     headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
+  console.log("DOCX to JPG - Raw response:", response);
   const data = await response.json();
+  console.log("DOCX to JPG - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "docx-to-jpg");
@@ -134,7 +141,9 @@ const convertPdfToJpg = async (file) => {
     headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
+  console.log("PDF to JPG - Raw response:", response);
   const data = await response.json();
+  console.log("PDF to JPG - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "pdf-to-jpg");
@@ -152,7 +161,9 @@ const convertJpgToPdf = async (file) => {
     headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
+  console.log("JPG to PDF - Raw response:", response);
   const data = await response.json();
+  console.log("JPG to PDF - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "jpg-to-pdf");
@@ -183,7 +194,7 @@ const convertFile = async (file, conversionType) => {
 const imageToTextOCR = async (file) => {
   try {
     const result = await Tesseract.recognize(file, "eng+hin", {
-      logger: (m) => console.log(m),
+      logger: (m) => console.log("OCR:", m),
     });
     return result.data.text;
   } catch (error) {
@@ -197,7 +208,7 @@ const convertFileToText = async (file) => {
     try {
       const jpgUrl = await convertPdfToJpg(file);
       const result = await Tesseract.recognize(jpgUrl, "eng+hin", {
-        logger: (m) => console.log(m),
+        logger: (m) => console.log("OCR:", m),
       });
       return result.data.text;
     } catch (error) {
@@ -340,29 +351,23 @@ const Conversion = () => {
   const [textProgress, setTextProgress] = useState(0);
   const [textConverting, setTextConverting] = useState(false);
 
-  const simulateProgress = (setProgress, callback) => {
-    setProgress(0);
-    const duration = 3000;
-    const interval = 30;
-    let elapsed = 0;
-    const timer = setInterval(() => {
-      elapsed += interval;
-      const percent = Math.min(Math.round((elapsed / duration) * 100), 100);
-      setProgress(percent);
-      if (percent === 100) {
-        clearInterval(timer);
-        callback();
-      }
-    }, interval);
+  // ------------------ Progress Simulation ------------------
+  const simulateProgress = (duration, setProgress) => {
+    return new Promise((resolve) => {
+      const start = Date.now();
+      const timer = setInterval(() => {
+        const elapsed = Date.now() - start;
+        const percent = Math.min(Math.round((elapsed / duration) * 100), 100);
+        setProgress(percent);
+        if (percent === 100) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 30);
+    });
   };
 
-  const openConversionModal = (convType) => {
-    setSelectedConversion(convType);
-    setFileInput(null);
-    setConvertedFileUrl("");
-    setFileProgress(0);
-    setIsFileModalOpen(true);
-  };
+  // ------------------ Conversion Handlers ------------------
 
   const handleFileConversion = async () => {
     if (!fileInput) {
@@ -370,24 +375,31 @@ const Conversion = () => {
       return;
     }
     setFileConverting(true);
-    simulateProgress(setFileProgress, async () => {
-      try {
-        const resultUrl = await convertFile(fileInput, selectedConversion);
-        setConvertedFileUrl(resultUrl);
-        const filename = getConvertedFilename(fileInput.name, selectedConversion);
-        const a = document.createElement("a");
-        a.href = resultUrl;
-        a.download = filename;
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } catch (err) {
-        console.error("Conversion error:", err);
-        alert("Conversion failed: " + err.message);
-      }
-      setFileConverting(false);
-    });
+    setFileProgress(0);
+    const minDuration = 3000; // 3 seconds minimum
+    try {
+      const conversionPromise = convertFile(fileInput, selectedConversion);
+      // Wait for both the conversion and simulated progress
+      const [resultUrl] = await Promise.all([
+        conversionPromise,
+        simulateProgress(minDuration, setFileProgress),
+      ]);
+      setFileProgress(100);
+      setConvertedFileUrl(resultUrl);
+      const filename = getConvertedFilename(fileInput.name, selectedConversion);
+      // Trigger download
+      const a = document.createElement("a");
+      a.href = resultUrl;
+      a.download = filename;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error("Conversion error:", err);
+      alert("Conversion failed: " + err.message);
+    }
+    setFileConverting(false);
   };
 
   const handleConvertToText = async () => {
@@ -396,16 +408,21 @@ const Conversion = () => {
       return;
     }
     setTextConverting(true);
-    simulateProgress(setTextProgress, async () => {
-      try {
-        const text = await convertFileToText(textFile);
-        setConvertedText(text);
-      } catch (error) {
-        console.error("Text conversion failed:", error);
-        alert("Conversion to text failed: " + error.message);
-      }
-      setTextConverting(false);
-    });
+    setTextProgress(0);
+    const minDuration = 3000;
+    try {
+      const conversionPromise = convertFileToText(textFile);
+      const [text] = await Promise.all([
+        conversionPromise,
+        simulateProgress(minDuration, setTextProgress),
+      ]);
+      setTextProgress(100);
+      setConvertedText(text);
+    } catch (error) {
+      console.error("Text conversion failed:", error);
+      alert("Conversion to text failed: " + error.message);
+    }
+    setTextConverting(false);
   };
 
   const handleDownloadText = () => {
@@ -452,6 +469,14 @@ const Conversion = () => {
     },
   ];
 
+  const openConversionModal = (convType) => {
+    setSelectedConversion(convType);
+    setFileInput(null);
+    setConvertedFileUrl("");
+    setFileProgress(0);
+    setIsFileModalOpen(true);
+  };
+
   return (
     <div className="conversion-container">
       {/* Conversion Tools Section */}
@@ -475,7 +500,10 @@ const Conversion = () => {
       <ModalPopup
         isOpen={isFileModalOpen}
         onClose={() => setIsFileModalOpen(false)}
-        title={conversionCards.find((c) => c.type === selectedConversion)?.label}
+        title={
+          conversionCards.find((c) => c.type === selectedConversion)?.label ||
+          "File Converter"
+        }
       >
         <p className="modal-instruction">
           Choose a file that matches the format requirements below.
