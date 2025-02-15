@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tesseract from "tesseract.js";
 import { jsPDF } from "jspdf";
+import JSZip from "jszip"; // <-- Import JSZip for combining multiple files
 import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -9,6 +10,16 @@ import "./Conversion.css";
 // ------------------ Helper Functions ------------------
 
 const base64ToBlob = (base64, mime) => {
+  // Remove any Data URI scheme header if present
+  if (base64.startsWith("data:")) {
+    base64 = base64.split(",")[1];
+  }
+  // Replace URL-safe characters with standard Base64 characters
+  base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
+  // Pad the base64 string with '=' to ensure length is a multiple of 4
+  while (base64.length % 4 !== 0) {
+    base64 += "=";
+  }
   const byteCharacters = atob(base64);
   const byteNumbers = new Array(byteCharacters.length);
   for (let i = 0; i < byteCharacters.length; i++) {
@@ -65,8 +76,10 @@ const getFileUrlFromResponse = (fileObj, conversionType) => {
       mimeType = "application/pdf";
     else if (conversionType === "pdf-to-docx")
       mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    else if (conversionType === "docx-to-jpg" || conversionType === "pdf-to-jpg")
+    else if (conversionType === "docx-to-jpg")
       mimeType = "image/jpeg";
+    else if (conversionType === "pdf-to-jpg")
+      mimeType = "application/zip";
     const blob = base64ToBlob(fileObj.FileData, mimeType);
     return URL.createObjectURL(blob);
   }
@@ -135,7 +148,10 @@ const convertDocxToJpg = async (file) => {
 const convertPdfToJpg = async (file) => {
   const formData = new FormData();
   formData.append("File", file);
+  // Ensure that multiple pages (if any) are zipped
   formData.append("ZipFiles", "true");
+  // Request the API to store the file and return a proper URL
+  formData.append("StoreFile", "true");
   const response = await fetch("https://v2.convertapi.com/convert/pdf/to/jpg", {
     method: "POST",
     headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
@@ -145,9 +161,29 @@ const convertPdfToJpg = async (file) => {
   const data = await response.json();
   console.log("PDF to JPG - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
+    // If the API returned a single file with a .zip extension, return its URL directly.
+    const firstFile = data.Files[0];
+    if (firstFile.FileName && firstFile.FileName.toLowerCase().endsWith(".zip")) {
+      return getFileUrlFromResponse(firstFile, "pdf-to-jpg");
+    }
+    // If multiple JPG files are returned, combine them into a ZIP using JSZip.
+    if (data.Files.length > 1) {
+      const zip = new JSZip();
+      for (let i = 0; i < data.Files.length; i++) {
+        const fileObj = data.Files[i];
+        const fileUrl = getFileUrlFromResponse(fileObj, "pdf-to-jpg");
+        const res = await fetch(fileUrl);
+        const blob = await res.blob();
+        const fileName = fileObj.FileName || `page_${i}.jpg`;
+        zip.file(fileName, blob);
+      }
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      return URL.createObjectURL(zipBlob);
+    }
+    // Otherwise, assume a single-page PDF that returns one JPG.
     const fileObj = data.Files[0];
     const url = getFileUrlFromResponse(fileObj, "pdf-to-jpg");
-    if (url) return url;
+    return url;
   }
   throw new Error("PDF to JPG conversion failed");
 };
@@ -385,16 +421,38 @@ const Conversion = () => {
         simulateProgress(minDuration, setFileProgress),
       ]);
       setFileProgress(100);
-      setConvertedFileUrl(resultUrl);
-      const filename = getConvertedFilename(fileInput.name, selectedConversion);
-      // Trigger download
-      const a = document.createElement("a");
-      a.href = resultUrl;
-      a.download = filename;
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      // Special handling for PDF-to-JPG:
+      if (selectedConversion === "pdf-to-jpg") {
+        // If the result URL starts with "http", assume it’s a direct URL (ZIP or JPG)
+        if (resultUrl.startsWith("http")) {
+          const a = document.createElement("a");
+          a.href = resultUrl;
+          a.download = getConvertedFilename(fileInput.name, selectedConversion);
+          a.style.display = "none";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          // Otherwise, fetch the blob and trigger download
+          const blobResponse = await fetch(resultUrl);
+          const blob = await blobResponse.blob();
+          const dotIndex = fileInput.name.lastIndexOf(".");
+          const baseName =
+            dotIndex !== -1 ? fileInput.name.substring(0, dotIndex) : fileInput.name;
+          const downloadFilename = `${baseName}.zip`;
+          downloadBlobFile(blob, downloadFilename);
+        }
+      } else {
+        setConvertedFileUrl(resultUrl);
+        const downloadFilename = getConvertedFilename(fileInput.name, selectedConversion);
+        const a = document.createElement("a");
+        a.href = resultUrl;
+        a.download = downloadFilename;
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
     } catch (err) {
       console.error("Conversion error:", err);
       alert("Conversion failed: " + err.message);
@@ -458,7 +516,8 @@ const Conversion = () => {
     {
       type: "pdf-to-jpg",
       label: "PDF to JPG",
-      description: "Extract high-quality images from your PDFs.",
+      description:
+        "Extract high-quality JPG images from your PDFs. For multi‑page PDFs, all pages will be packaged into a ZIP file.",
       icon: <FaFileAlt size={40} />,
     },
     {
@@ -523,7 +582,7 @@ const Conversion = () => {
           Convert Now
         </button>
         {fileConverting && <ProgressBar progress={fileProgress} />}
-        {convertedFileUrl && (
+        {convertedFileUrl && selectedConversion !== "pdf-to-jpg" && (
           <div className="download-container">
             <a
               href={convertedFileUrl}
