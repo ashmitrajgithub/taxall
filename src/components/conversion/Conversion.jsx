@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Tesseract from "tesseract.js";
 import { jsPDF } from "jspdf";
-import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt, FaUpload } from "react-icons/fa";
+import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Conversion.css";
 
-const SECRET_KEY = "secret_e8H2rPx2EGZ3KMhG";
+// ------------------ Helper Functions ------------------
 
-// Helper: Convert base64 string to Blob
 const base64ToBlob = (base64, mime) => {
   const byteCharacters = atob(base64);
   const byteNumbers = new Array(byteCharacters.length);
@@ -18,7 +17,6 @@ const base64ToBlob = (base64, mime) => {
   return new Blob([new Uint8Array(byteNumbers)], { type: mime });
 };
 
-// File Extension Mapper
 const getExtension = (conversionType) => {
   switch (conversionType) {
     case "docx-to-pdf":
@@ -36,7 +34,6 @@ const getExtension = (conversionType) => {
   }
 };
 
-// Determine accepted file types for conversion
 const getAcceptForConversion = (conversionType) => {
   switch (conversionType) {
     case "docx-to-pdf":
@@ -52,14 +49,12 @@ const getAcceptForConversion = (conversionType) => {
   }
 };
 
-// Preserve original file name (change extension)
 const getConvertedFilename = (originalName, conversionType) => {
   const dotIndex = originalName.lastIndexOf(".");
   const baseName = dotIndex !== -1 ? originalName.substring(0, dotIndex) : originalName;
   return `${baseName}.${getExtension(conversionType)}`;
 };
 
-// Extract file URL from API response
 const getFileUrlFromResponse = (fileObj, conversionType) => {
   if (fileObj.File) return fileObj.File;
   if (fileObj.Url) return fileObj.Url;
@@ -77,14 +72,14 @@ const getFileUrlFromResponse = (fileObj, conversionType) => {
   return "";
 };
 
-// Conversion Functions
+// ------------------ Conversion Functions ------------------
 
 const convertDocxToPdf = async (file) => {
   const formData = new FormData();
   formData.append("File", file);
   const response = await fetch("https://v2.convertapi.com/convert/docx/to/pdf", {
     method: "POST",
-    headers: { Authorization: `Bearer ${SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
   const data = await response.json();
@@ -101,7 +96,7 @@ const convertPdfToDocx = async (file) => {
   formData.append("File", file);
   const response = await fetch("https://v2.convertapi.com/convert/pdf/to/docx", {
     method: "POST",
-    headers: { Authorization: `Bearer ${SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
   const data = await response.json();
@@ -118,7 +113,7 @@ const convertDocxToJpg = async (file) => {
   formData.append("File", file);
   const response = await fetch("https://v2.convertapi.com/convert/docx/to/jpg", {
     method: "POST",
-    headers: { Authorization: `Bearer ${SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
   const data = await response.json();
@@ -136,7 +131,7 @@ const convertPdfToJpg = async (file) => {
   formData.append("ZipFiles", "true");
   const response = await fetch("https://v2.convertapi.com/convert/pdf/to/jpg", {
     method: "POST",
-    headers: { Authorization: `Bearer ${SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
   const data = await response.json();
@@ -154,7 +149,7 @@ const convertJpgToPdf = async (file) => {
   formData.append("StoreFile", "true");
   const response = await fetch("https://v2.convertapi.com/convert/jpg/to/pdf", {
     method: "POST",
-    headers: { Authorization: `Bearer ${SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
     body: formData,
   });
   const data = await response.json();
@@ -182,6 +177,8 @@ const convertFile = async (file, conversionType) => {
       throw new Error("Invalid conversion type");
   }
 };
+
+// ------------------ OCR Functions ------------------
 
 const imageToTextOCR = async (file) => {
   try {
@@ -230,11 +227,64 @@ const downloadTextFile = (text, filename) => {
   downloadBlobFile(blob, filename);
 };
 
-// -----------------------
-// UI Components
-// -----------------------
+// ------------------ Reusable Components ------------------
 
-const ModalPopup = ({ isOpen, onClose, children }) => {
+const DropZone = ({ onFileSelect, accept, file, placeholder }) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = React.useRef(null);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      onFileSelect(e.dataTransfer.files[0]);
+      e.dataTransfer.clearData();
+    }
+  };
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  return (
+    <div
+      className={`dropzone ${isDragging ? "dragging" : ""}`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      onClick={handleClick}
+      style={{ cursor: "pointer" }}
+    >
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        accept={accept}
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            onFileSelect(e.target.files[0]);
+          }
+        }}
+      />
+      {file ? <p>File: {file.name}</p> : <p>{placeholder}</p>}
+    </div>
+  );
+};
+
+const ModalPopup = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">
@@ -242,6 +292,9 @@ const ModalPopup = ({ isOpen, onClose, children }) => {
         <button className="modal-close" onClick={onClose}>
           &times;
         </button>
+        <div className="modal-header">
+          <h2>{title}</h2>
+        </div>
         {children}
       </div>
     </div>
@@ -264,9 +317,10 @@ const ConversionCard = ({ conversionType, label, description, icon, onClick }) =
   </div>
 );
 
+// ------------------ Main Conversion Component ------------------
+
 const Conversion = () => {
   useEffect(() => {
-    // Initialize AOS only on larger screens
     if (window.innerWidth >= 768) {
       AOS.init({ duration: 800, once: true });
     }
@@ -369,31 +423,31 @@ const Conversion = () => {
     {
       type: "docx-to-pdf",
       label: "DOCX to PDF",
-      description: "Convert your DOCX files into professional PDF documents.",
+      description: "Convert DOCX files into polished, print-ready PDFs.",
       icon: <FaFilePdf size={40} />,
     },
     {
       type: "pdf-to-docx",
       label: "PDF to DOCX",
-      description: "Easily transform PDF files into editable DOCX format.",
+      description: "Transform your PDFs into editable DOCX documents.",
       icon: <FaFileWord size={40} />,
     },
     {
       type: "docx-to-jpg",
       label: "DOCX to JPG",
-      description: "Generate high-quality JPG images from your DOCX files.",
+      description: "Generate crisp JPG images from DOCX files.",
       icon: <FaFileImage size={40} />,
     },
     {
       type: "pdf-to-jpg",
       label: "PDF to JPG",
-      description: "Extract images by converting PDF pages to JPG format.",
+      description: "Extract high-quality images from your PDFs.",
       icon: <FaFileAlt size={40} />,
     },
     {
       type: "jpg-to-pdf",
       label: "JPG to PDF",
-      description: "Merge your JPG images into a single PDF document.",
+      description: "Merge JPGs into a single streamlined PDF.",
       icon: <FaFilePdf size={40} />,
     },
   ];
@@ -418,60 +472,64 @@ const Conversion = () => {
       </div>
 
       {/* File Converter Modal Popup */}
-      <ModalPopup isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
-        <h2>{conversionCards.find((c) => c.type === selectedConversion)?.label}</h2>
-        <div className="modal-tab">
-          <label className="file-label">
-            <FaUpload size={20} color="#fff" />
-            <span className="choose-file-button">Choose File</span>
-            <input
-              type="file"
-              accept={getAcceptForConversion(selectedConversion)}
-              onChange={(e) => setFileInput(e.target.files[0])}
-              style={{ display: "none" }}
-            />
-          </label>
-          {fileInput && <p>Selected File: {fileInput.name}</p>}
-          <button onClick={handleFileConversion} disabled={fileConverting}>
-            Convert Now
-          </button>
-          {fileConverting && <ProgressBar progress={fileProgress} />}
-          {convertedFileUrl && (
-            <div className="download-container">
-              <a href={convertedFileUrl} download={getConvertedFilename(fileInput.name, selectedConversion)}>
-                Download Converted File
-              </a>
-            </div>
-          )}
-        </div>
+      <ModalPopup
+        isOpen={isFileModalOpen}
+        onClose={() => setIsFileModalOpen(false)}
+        title={conversionCards.find((c) => c.type === selectedConversion)?.label}
+      >
+        <p className="modal-instruction">
+          Choose a file that matches the format requirements below.
+        </p>
+        <DropZone
+          onFileSelect={setFileInput}
+          accept=".svg,.png,.jpg,.jpeg,.gif"
+          file={fileInput}
+          placeholder="Click to upload or drag and drop SVG, PNG, JPG or GIF (MAX. 800x400px)"
+        />
+        {fileInput && <p className="selected-file">File: {fileInput.name}</p>}
+        <button onClick={handleFileConversion} disabled={fileConverting}>
+          Convert Now
+        </button>
+        {fileConverting && <ProgressBar progress={fileProgress} />}
+        {convertedFileUrl && (
+          <div className="download-container">
+            <a
+              href={convertedFileUrl}
+              download={getConvertedFilename(fileInput.name, selectedConversion)}
+            >
+              Download Converted File
+            </a>
+          </div>
+        )}
       </ModalPopup>
 
       {/* Text Converter Section */}
       <div className="text-converter-section">
         <h1 className="section-header">Text Converter</h1>
+        <h3>Upload Your File</h3>
+        <p className="text-converter-description">
+          Our advanced OCR tool quickly converts images, PDFs, and DOC/DOCX files into editable text.
+          Upload your file and let our technology extract the content for you.
+        </p>
         <section className="text-converter">
           <div className="text-converter-inner">
-            <label className="file-label">
-              <FaUpload size={20} color="#2d89ef" />
-              <span className="choose-file-button">Choose File</span>
-              <input
-                type="file"
-                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                onChange={(e) => setTextFile(e.target.files[0])}
-                style={{ display: "none" }}
-              />
-            </label>
-            {textFile && <p className="selected-file">Selected File: {textFile.name}</p>}
+            <DropZone
+              onFileSelect={setTextFile}
+              accept=".svg,.png,.jpg,.jpeg,.gif"
+              file={textFile}
+              placeholder="Click to upload or drag and drop SVG, PNG, JPG or GIF (MAX. 800x400px)"
+            />
+            {textFile && <p className="selected-file">File: {textFile.name}</p>}
             <button onClick={handleConvertToText} disabled={textConverting}>
               Convert Now
             </button>
             {textConverting && <ProgressBar progress={textProgress} />}
             {convertedText && (
               <div className="text-result">
-                <h3>Extracted Text:</h3>
+                <h3>Extracted Text</h3>
                 <textarea value={convertedText} readOnly rows="8" />
                 <div className="download-options">
-                  <button onClick={handleDownloadText}>Download as .txt</button>
+                  <button onClick={handleDownloadText}>Download as TXT</button>
                   <button onClick={handleDownloadTextAsPDF}>Download as PDF</button>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-/* ----------------- Overall Container ----------------- */
+/* Overall Container */
 .conversion-container {
   padding: 1rem;
   max-width: 1450px;
@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-/* ----------------- Conversion Tools Section ----------------- */
+/* Conversion Tools Section */
 .conversion-tools {
   background: linear-gradient(45deg, #000, #444444);
   padding: 2rem;
@@ -24,7 +24,7 @@
   font-weight: bold;
 }
 
-/* Cards container */
+/* Cards Container */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -32,7 +32,7 @@
   gap: 1.5rem;
 }
 
-/* ----------------- Conversion Card Styles ----------------- */
+/* Conversion Card Styles */
 .conversion-card {
   background: rgba(255, 255, 255, 0.9);
   width: 260px;
@@ -67,34 +67,33 @@
   line-height: 1.3;
 }
 
-/* ----------------- Modal Styles (Improved & Centered) ----------------- */
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  padding: 10px;
+  padding: 20px;
   overflow-y: auto;
   box-sizing: border-box;
 }
 
 .modal-content {
   background: #fff;
-  padding: 20px;
-  border-radius: 8px;
+  border-radius: 16px;
+  padding: 30px;
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
   position: relative;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
-  text-align: center; /* Center all content */
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .modal-close {
@@ -103,7 +102,7 @@
   right: 10px;
   background: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   cursor: pointer;
   color: #888;
   transition: color 0.3s ease;
@@ -113,47 +112,54 @@
   color: #333;
 }
 
-@media (max-width: 480px) {
-  .modal-content {
-    padding: 15px;
-    max-width: 90%;
-  }
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #333;
 }
 
-/* ----------------- File Label/Button Styles ----------------- */
-.file-label {
+.modal-instruction {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #555;
+  text-align: center;
+}
+
+/* DropZone Styles */
+.dropzone {
+  border: 2px dashed #2d89ef;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  color: #555;
+  transition: background 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.dropzone.dragging {
+  background: #e0f7ff;
+}
+
+/* File Source Dropdown Styles */
+.file-source-dropdown {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  cursor: pointer;
   margin-bottom: 1rem;
-  justify-content: center; /* Center the content in the label */
 }
 
-/* -------------- Fancy Choose File Button -------------- */
-.choose-file-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(45deg, #2d89ef, #1b6ac9);
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 50px;
-  font-weight: bold;
+.file-source-dropdown select {
+  padding: 0.5rem;
   font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.choose-file-button:hover {
-  background: linear-gradient(45deg, #1b6ac9, #2d89ef);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+.file-source-icon {
+  font-size: 1.5rem;
+  color: #2d89ef;
 }
 
-/* ----------------- Buttons ----------------- */
+/* Buttons */
 button {
   padding: 0.7rem 1.4rem;
   font-size: 1rem;
@@ -175,7 +181,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ----------------- Progress Bar ----------------- */
+/* Progress Bar */
 .progress-container {
   width: 100%;
   background: #e0e0e0;
@@ -193,7 +199,7 @@ button:disabled {
   transition: width 0.03s linear;
 }
 
-/* ----------------- Download Container ----------------- */
+/* Download Container */
 .download-container a {
   text-decoration: none;
   color: #fff;
@@ -208,7 +214,7 @@ button:disabled {
   background: #1e8449;
 }
 
-/* ----------------- Text Converter Section (Modernized) ----------------- */
+/* Text Converter Section */
 .text-converter-section {
   background: linear-gradient(135deg, #1d1f21, #3a3f47);
   padding: 2rem;
@@ -216,16 +222,24 @@ button:disabled {
   border-radius: 15px;
   color: #fff;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
 .text-converter-section .section-header {
   font-size: 2rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 700;
   color: #f9f9f9;
 }
 
+.text-converter-description {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+/* Text Converter Inner Box */
 .text-converter {
   display: flex;
   flex-direction: column;
@@ -240,42 +254,7 @@ button:disabled {
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   color: #333;
-}
-
-/* File Input/Button Styling for Text Converter */
-.text-converter-inner .file-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  background: #f0f0f0;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-  justify-content: center;
-}
-
-.text-converter-inner .file-label:hover {
-  background: #e0e0e0;
-}
-
-.text-converter-inner .choose-file-button {
-  background: linear-gradient(45deg, #2d89ef, #1b6ac9);
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 50px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.text-converter-inner .choose-file-button:hover {
-  background: linear-gradient(45deg, #1b6ac9, #2d89ef);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
 }
 
 .text-converter-inner .selected-file {
@@ -332,7 +311,7 @@ button:disabled {
   background: #1b6ac9;
 }
 
-/* ----------------- Responsive Adjustments ----------------- */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .conversion-container {
     top: 50px;
@@ -362,7 +341,6 @@ button:disabled {
   .section-header {
     font-size: 1.6rem;
   }
-  .choose-file-button,
   button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
