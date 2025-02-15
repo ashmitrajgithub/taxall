@@ -482,9 +482,13 @@ const Conversion = () => {
         </p>
         <DropZone
           onFileSelect={setFileInput}
-          accept=".svg,.png,.jpg,.jpeg,.gif"
+          accept={getAcceptForConversion(selectedConversion)}
           file={fileInput}
-          placeholder="Click to upload or drag and drop SVG, PNG, JPG or GIF (MAX. 800x400px)"
+          placeholder={`Click to upload or drag and drop a ${getAcceptForConversion(
+            selectedConversion
+          )
+            .replace(".", "")
+            .toUpperCase()} file`}
         />
         {fileInput && <p className="selected-file">File: {fileInput.name}</p>}
         <button onClick={handleFileConversion} disabled={fileConverting}>
@@ -508,8 +512,9 @@ const Conversion = () => {
         <h1 className="section-header">Text Converter</h1>
         <h3>Upload Your File</h3>
         <p className="text-converter-description">
-          Our advanced OCR tool quickly converts images, PDFs, and DOC/DOCX files into editable text.
-          Upload your file and let our technology extract the content for you.
+          Our advanced OCR tool quickly converts images, PDFs, and DOC/DOCX files
+          into editable text. Upload your file and let our technology extract the
+          content for you.
         </p>
         <section className="text-converter">
           <div className="text-converter-inner">
