@@ -139,23 +139,30 @@
   background: #e0f7ff;
 }
 
-/* File Source Dropdown Styles */
-.file-source-dropdown {
+/* Merge PDF File List */
+.merge-file-list {
+  margin: 1rem 0;
+}
+
+.merge-file-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.merge-file-list li {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin: 0.5rem 0;
 }
 
-.file-source-dropdown select {
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-
-.file-source-icon {
-  font-size: 1.5rem;
-  color: #2d89ef;
+.merge-file-list button {
+  background: #ff4d4d;
+  border: none;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Buttons */
@@ -187,15 +194,24 @@ button:disabled {
   border-radius: 4px;
   margin-top: 1rem;
   overflow: hidden;
+  position: relative;
 }
 
 .progress-bar {
   height: 25px;
-  background: #27ae60;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
   text-align: center;
   color: #fff;
   line-height: 25px;
-  transition: width 0.03s linear;
+  transition: width 0.5s ease;
+  /* Water float animation */
+  background-size: 200% 100%;
+  animation: water 2s ease-in-out infinite;
+}
+
+@keyframes water {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 0; }
 }
 
 /* Download Container */
@@ -206,6 +222,7 @@ button:disabled {
   padding: 0.7rem 1.4rem;
   border-radius: 4px;
   display: inline-block;
+  margin: 0.5%;
   transition: background 0.3s ease;
 }
 
@@ -323,13 +340,13 @@ button:disabled {
     width: 100%;
     max-width: 300px;
   }
-  .modal-content {
+  .modal-cont {
     padding: 1.5rem;
-    max-width:100%
+    max-width: 100%;
   }
   .text-converter-inner {
     padding: 1.5rem;
-    max-width: 100%
+    max-width: 100%;
   }
   .text-result textarea {
     min-height: 120px;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tesseract from "tesseract.js";
 import { jsPDF } from "jspdf";
-import JSZip from "jszip"; // <-- Import JSZip for combining multiple files
+import JSZip from "jszip"; // <-- For combining multiple image files when needed
 import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -10,13 +10,10 @@ import "./Conversion.css";
 // ------------------ Helper Functions ------------------
 
 const base64ToBlob = (base64, mime) => {
-  // Remove any Data URI scheme header if present
   if (base64.startsWith("data:")) {
     base64 = base64.split(",")[1];
   }
-  // Replace URL-safe characters with standard Base64 characters
   base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
-  // Pad the base64 string with '=' to ensure length is a multiple of 4
   while (base64.length % 4 !== 0) {
     base64 += "=";
   }
@@ -40,6 +37,8 @@ const getExtension = (conversionType) => {
       return "zip";
     case "jpg-to-pdf":
       return "pdf";
+    case "merge-pdf":
+      return "pdf";
     default:
       return "file";
   }
@@ -52,6 +51,7 @@ const getAcceptForConversion = (conversionType) => {
       return ".docx";
     case "pdf-to-docx":
     case "pdf-to-jpg":
+    case "merge-pdf":
       return ".pdf";
     case "jpg-to-pdf":
       return ".jpg,.jpeg";
@@ -80,6 +80,8 @@ const getFileUrlFromResponse = (fileObj, conversionType) => {
       mimeType = "image/jpeg";
     else if (conversionType === "pdf-to-jpg")
       mimeType = "application/zip";
+    else if (conversionType === "merge-pdf")
+      mimeType = "application/pdf";
     const blob = base64ToBlob(fileObj.FileData, mimeType);
     return URL.createObjectURL(blob);
   }
@@ -93,7 +95,7 @@ const convertDocxToPdf = async (file) => {
   formData.append("File", file);
   const response = await fetch("https://v2.convertapi.com/convert/docx/to/pdf", {
     method: "POST",
-    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
+    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
     body: formData,
   });
   console.log("DOCX to PDF - Raw response:", response);
@@ -112,7 +114,7 @@ const convertPdfToDocx = async (file) => {
   formData.append("File", file);
   const response = await fetch("https://v2.convertapi.com/convert/pdf/to/docx", {
     method: "POST",
-    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
+    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
     body: formData,
   });
   console.log("PDF to DOCX - Raw response:", response);
@@ -129,18 +131,38 @@ const convertPdfToDocx = async (file) => {
 const convertDocxToJpg = async (file) => {
   const formData = new FormData();
   formData.append("File", file);
+  formData.append("StoreFile", "true");
   const response = await fetch("https://v2.convertapi.com/convert/docx/to/jpg", {
     method: "POST",
-    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
+    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
     body: formData,
   });
   console.log("DOCX to JPG - Raw response:", response);
   const data = await response.json();
   console.log("DOCX to JPG - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
-    const fileObj = data.Files[0];
-    const url = getFileUrlFromResponse(fileObj, "docx-to-jpg");
-    if (url) return url;
+    if (data.Files.length === 1) {
+      const fileObj = data.Files[0];
+      return getFileUrlFromResponse(fileObj, "docx-to-jpg");
+    }
+    const firstFile = data.Files[0];
+    if (firstFile.FileName && firstFile.FileName.toLowerCase().endsWith(".zip")) {
+      return getFileUrlFromResponse(firstFile, "docx-to-jpg");
+    }
+    const zip = new JSZip();
+    for (let i = 0; i < data.Files.length; i++) {
+      const fileObj = data.Files[i];
+      const fileUrl = getFileUrlFromResponse(fileObj, "docx-to-jpg");
+      const res = await fetch(fileUrl);
+      const blob = await res.blob();
+      console.log(`DOCX-to-JPG: File ${i} size: ${blob.size}`);
+      const fileName = fileObj.FileName || `page_${i}.jpg`;
+      zip.file(fileName, blob);
+    }
+    const zipArrayBuffer = await zip.generateAsync({ type: "arraybuffer" });
+    const zipBlob = new Blob([zipArrayBuffer], { type: "application/zip" });
+    console.log("Generated DOCX-to-JPG zip size:", zipBlob.size);
+    return URL.createObjectURL(zipBlob);
   }
   throw new Error("DOCX to JPG conversion failed");
 };
@@ -148,25 +170,21 @@ const convertDocxToJpg = async (file) => {
 const convertPdfToJpg = async (file) => {
   const formData = new FormData();
   formData.append("File", file);
-  // Ensure that multiple pages (if any) are zipped
   formData.append("ZipFiles", "true");
-  // Request the API to store the file and return a proper URL
   formData.append("StoreFile", "true");
   const response = await fetch("https://v2.convertapi.com/convert/pdf/to/jpg", {
     method: "POST",
-    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
+    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
     body: formData,
   });
   console.log("PDF to JPG - Raw response:", response);
   const data = await response.json();
   console.log("PDF to JPG - JSON response:", data);
   if (data.Files && data.Files.length > 0) {
-    // If the API returned a single file with a .zip extension, return its URL directly.
     const firstFile = data.Files[0];
     if (firstFile.FileName && firstFile.FileName.toLowerCase().endsWith(".zip")) {
       return getFileUrlFromResponse(firstFile, "pdf-to-jpg");
     }
-    // If multiple JPG files are returned, combine them into a ZIP using JSZip.
     if (data.Files.length > 1) {
       const zip = new JSZip();
       for (let i = 0; i < data.Files.length; i++) {
@@ -174,16 +192,17 @@ const convertPdfToJpg = async (file) => {
         const fileUrl = getFileUrlFromResponse(fileObj, "pdf-to-jpg");
         const res = await fetch(fileUrl);
         const blob = await res.blob();
+        console.log(`PDF-to-JPG: File ${i} size: ${blob.size}`);
         const fileName = fileObj.FileName || `page_${i}.jpg`;
         zip.file(fileName, blob);
       }
-      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const zipArrayBuffer = await zip.generateAsync({ type: "arraybuffer" });
+      const zipBlob = new Blob([zipArrayBuffer], { type: "application/zip" });
+      console.log("Generated PDF-to-JPG zip size:", zipBlob.size);
       return URL.createObjectURL(zipBlob);
     }
-    // Otherwise, assume a single-page PDF that returns one JPG.
     const fileObj = data.Files[0];
-    const url = getFileUrlFromResponse(fileObj, "pdf-to-jpg");
-    return url;
+    return getFileUrlFromResponse(fileObj, "pdf-to-jpg");
   }
   throw new Error("PDF to JPG conversion failed");
 };
@@ -194,7 +213,7 @@ const convertJpgToPdf = async (file) => {
   formData.append("StoreFile", "true");
   const response = await fetch("https://v2.convertapi.com/convert/jpg/to/pdf", {
     method: "POST",
-    headers: { Authorization: `Bearer ${"secret_e8H2rPx2EGZ3KMhG"}` },
+    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
     body: formData,
   });
   console.log("JPG to PDF - Raw response:", response);
@@ -206,6 +225,36 @@ const convertJpgToPdf = async (file) => {
     if (url) return url;
   }
   throw new Error("JPG to PDF conversion failed");
+};
+
+// New function: Merge multiple PDFs into one using the correct endpoint
+const mergePdfFiles = async (files) => {
+  const formData = new FormData();
+  files.forEach((file, index) => {
+    formData.append(`Files[${index}]`, file);
+  });
+  formData.append("StoreFile", "true");
+
+  // Use the correct merge endpoint from ConvertAPI documentation:
+  const response = await fetch("https://v2.convertapi.com/convert/pdf/to/merge", {
+    method: "POST",
+    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
+    body: formData,
+  });
+
+  console.log("Merge PDF - Raw response:", response);
+  if (!response.ok) {
+    console.error("Merge PDF API returned an error:", response.status, response.statusText);
+    throw new Error(`Merge PDF conversion failed with status ${response.status}`);
+  }
+
+  const data = await response.json();
+  console.log("Merge PDF - JSON response:", data);
+  if (data.Files && data.Files.length > 0) {
+    const fileObj = data.Files[0];
+    return getFileUrlFromResponse(fileObj, "merge-pdf");
+  }
+  throw new Error("Merge PDF conversion failed");
 };
 
 const convertFile = async (file, conversionType) => {
@@ -220,6 +269,8 @@ const convertFile = async (file, conversionType) => {
       return await convertPdfToJpg(file);
     case "jpg-to-pdf":
       return await convertJpgToPdf(file);
+    case "merge-pdf":
+      return await mergePdfFiles(file);
     default:
       throw new Error("Invalid conversion type");
   }
@@ -276,36 +327,36 @@ const downloadTextFile = (text, filename) => {
 
 // ------------------ Reusable Components ------------------
 
-const DropZone = ({ onFileSelect, accept, file, placeholder }) => {
+// DropZone Component
+const DropZone = ({ onFileSelect, accept, file, placeholder, multiple = false }) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = React.useRef(null);
-
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
   };
-
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      onFileSelect(e.dataTransfer.files[0]);
+      if (multiple) {
+        onFileSelect(Array.from(e.dataTransfer.files));
+      } else {
+        onFileSelect(e.dataTransfer.files[0]);
+      }
       e.dataTransfer.clearData();
     }
   };
-
   const handleClick = () => {
     fileInputRef.current.click();
   };
-
   return (
     <div
       className={`dropzone ${isDragging ? "dragging" : ""}`}
@@ -320,13 +371,22 @@ const DropZone = ({ onFileSelect, accept, file, placeholder }) => {
         ref={fileInputRef}
         style={{ display: "none" }}
         accept={accept}
+        multiple={multiple}
         onChange={(e) => {
           if (e.target.files && e.target.files.length > 0) {
-            onFileSelect(e.target.files[0]);
+            if (multiple) {
+              onFileSelect(Array.from(e.target.files));
+            } else {
+              onFileSelect(e.target.files[0]);
+            }
           }
         }}
       />
-      {file ? <p>File: {file.name}</p> : <p>{placeholder}</p>}
+      {file
+        ? multiple
+          ? <p>{file.map((f) => f.name).join(", ")}</p>
+          : <p>File: {file.name}</p>
+        : <p>{placeholder}</p>}
     </div>
   );
 };
@@ -351,7 +411,7 @@ const ModalPopup = ({ isOpen, onClose, title, children }) => {
 const ProgressBar = ({ progress }) => (
   <div className="progress-container">
     <div className="progress-bar" style={{ width: `${progress}%` }}>
-      {progress}%
+      {Math.floor(progress)}%
     </div>
   </div>
 );
@@ -376,6 +436,7 @@ const Conversion = () => {
   // --- File Converter States ---
   const [selectedConversion, setSelectedConversion] = useState("docx-to-pdf");
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
+  // For merge-pdf, fileInput will be an array; otherwise a single file
   const [fileInput, setFileInput] = useState(null);
   const [convertedFileUrl, setConvertedFileUrl] = useState("");
   const [fileProgress, setFileProgress] = useState(0);
@@ -387,64 +448,91 @@ const Conversion = () => {
   const [textProgress, setTextProgress] = useState(0);
   const [textConverting, setTextConverting] = useState(false);
 
-  // ------------------ Progress Simulation ------------------
+  // ------------------ Progress Simulation with Water Float Animation ------------------
   const simulateProgress = (duration, setProgress) => {
     return new Promise((resolve) => {
-      const start = Date.now();
-      const timer = setInterval(() => {
-        const elapsed = Date.now() - start;
-        const percent = Math.min(Math.round((elapsed / duration) * 100), 100);
-        setProgress(percent);
-        if (percent === 100) {
-          clearInterval(timer);
-          resolve();
+      let progress = 10; // Immediately start at 10%
+      setProgress(progress);
+      const interval = setInterval(() => {
+        if (progress < 99) {
+          // Increase by a small random float increment to simulate a water-like float effect
+          progress += Math.random() * 2;
+          if (progress > 99) progress = 99;
+          setProgress(progress);
         }
-      }, 30);
+      }, duration / 100);
+
+      // Resolve the promise after the duration has passed
+      setTimeout(() => {
+        clearInterval(interval);
+        setProgress(100);
+        resolve();
+      }, duration);
     });
   };
 
   // ------------------ Conversion Handlers ------------------
 
   const handleFileConversion = async () => {
-    if (!fileInput) {
-      alert("Please select a file.");
+    if (!fileInput || (selectedConversion === "merge-pdf" && fileInput.length === 0)) {
+      alert("Please select at least one file.");
       return;
     }
     setFileConverting(true);
     setFileProgress(0);
-    const minDuration = 3000; // 3 seconds minimum
+    const minDuration = 3000; // 3 seconds minimum for progress simulation
     try {
-      const conversionPromise = convertFile(fileInput, selectedConversion);
-      // Wait for both the conversion and simulated progress
-      const [resultUrl] = await Promise.all([
-        conversionPromise,
-        simulateProgress(minDuration, setFileProgress),
-      ]);
-      setFileProgress(100);
-      // Special handling for PDF-to-JPG:
-      if (selectedConversion === "pdf-to-jpg") {
-        // If the result URL starts with "http", assume it’s a direct URL (ZIP or JPG)
+      let resultUrl;
+      if (selectedConversion === "merge-pdf") {
+        resultUrl = await convertFile(fileInput, selectedConversion);
+      } else {
+        resultUrl = await convertFile(fileInput, selectedConversion);
+      }
+      await simulateProgress(minDuration, setFileProgress);
+      
+      // Trigger download after progress reaches 100%
+      if (
+        selectedConversion === "pdf-to-jpg" ||
+        selectedConversion === "docx-to-jpg"
+      ) {
         if (resultUrl.startsWith("http")) {
           const a = document.createElement("a");
           a.href = resultUrl;
-          a.download = getConvertedFilename(fileInput.name, selectedConversion);
+          a.download = getConvertedFilename(
+            Array.isArray(fileInput)
+              ? fileInput[0].name
+              : fileInput.name,
+            selectedConversion
+          );
           a.style.display = "none";
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
         } else {
-          // Otherwise, fetch the blob and trigger download
           const blobResponse = await fetch(resultUrl);
           const blob = await blobResponse.blob();
-          const dotIndex = fileInput.name.lastIndexOf(".");
+          const dotIndex = Array.isArray(fileInput)
+            ? fileInput[0].name.lastIndexOf(".")
+            : fileInput.name.lastIndexOf(".");
           const baseName =
-            dotIndex !== -1 ? fileInput.name.substring(0, dotIndex) : fileInput.name;
-          const downloadFilename = `${baseName}.zip`;
+            dotIndex !== -1
+              ? (Array.isArray(fileInput)
+                  ? fileInput[0].name.substring(0, dotIndex)
+                  : fileInput.name.substring(0, dotIndex))
+              : (Array.isArray(fileInput)
+                  ? fileInput[0].name
+                  : fileInput.name);
+          const downloadFilename = `${baseName}.${getExtension(selectedConversion)}`;
           downloadBlobFile(blob, downloadFilename);
         }
       } else {
         setConvertedFileUrl(resultUrl);
-        const downloadFilename = getConvertedFilename(fileInput.name, selectedConversion);
+        const downloadFilename = getConvertedFilename(
+          Array.isArray(fileInput)
+            ? fileInput[0].name
+            : fileInput.name,
+          selectedConversion
+        );
         const a = document.createElement("a");
         a.href = resultUrl;
         a.download = downloadFilename;
@@ -458,6 +546,20 @@ const Conversion = () => {
       alert("Conversion failed: " + err.message);
     }
     setFileConverting(false);
+  };
+
+  // ------------------ New Handler for Merge PDF ------------------
+  const handleAddMergeFile = (newFile) => {
+    setFileInput((prevFiles) => {
+      const updatedFiles = prevFiles ? [...prevFiles, newFile] : [newFile];
+      return updatedFiles;
+    });
+  };
+
+  const handleRemoveMergeFile = (indexToRemove) => {
+    setFileInput((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   const handleConvertToText = async () => {
@@ -510,14 +612,15 @@ const Conversion = () => {
     {
       type: "docx-to-jpg",
       label: "DOCX to JPG",
-      description: "Generate crisp JPG images from DOCX files.",
+      description:
+        "Generate crisp JPG images from DOCX files. (If multiple pages, they are zipped.)",
       icon: <FaFileImage size={40} />,
     },
     {
       type: "pdf-to-jpg",
       label: "PDF to JPG",
       description:
-        "Extract high-quality JPG images from your PDFs. For multi‑page PDFs, all pages will be packaged into a ZIP file.",
+        "Extract high-quality JPG images from your PDFs. (If multiple pages, they are zipped.)",
       icon: <FaFileAlt size={40} />,
     },
     {
@@ -526,13 +629,19 @@ const Conversion = () => {
       description: "Merge JPGs into a single streamlined PDF.",
       icon: <FaFilePdf size={40} />,
     },
+    {
+      type: "merge-pdf",
+      label: "Merge PDF",
+      description: "Merge multiple PDF files into a single document.",
+      icon: <FaFilePdf size={40} />,
+    },
   ];
 
   const openConversionModal = (convType) => {
     setSelectedConversion(convType);
-    setFileInput(null);
     setConvertedFileUrl("");
     setFileProgress(0);
+    setFileInput(convType === "merge-pdf" ? [] : null);
     setIsFileModalOpen(true);
   };
 
@@ -567,31 +676,69 @@ const Conversion = () => {
         <p className="modal-instruction">
           Choose a file that matches the format requirements below.
         </p>
-        <DropZone
-          onFileSelect={setFileInput}
-          accept={getAcceptForConversion(selectedConversion)}
-          file={fileInput}
-          placeholder={`Click to upload or drag and drop a ${getAcceptForConversion(
-            selectedConversion
-          )
-            .replace(".", "")
-            .toUpperCase()} file`}
-        />
-        {fileInput && <p className="selected-file">File: {fileInput.name}</p>}
+        {selectedConversion === "merge-pdf" ? (
+          <>
+            <DropZone
+              onFileSelect={handleAddMergeFile}
+              accept={getAcceptForConversion(selectedConversion)}
+              file={null}
+              multiple={false}
+              placeholder="Click to add a PDF file"
+            />
+            {fileInput && fileInput.length > 0 && (
+              <div className="merge-file-list">
+                <h4>Files to Merge:</h4>
+                <ul>
+                  {fileInput.map((file, index) => (
+                    <li key={index}>
+                      {file.name}{" "}
+                      <button onClick={() => handleRemoveMergeFile(index)}>
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
+        ) : (
+          <DropZone
+            onFileSelect={setFileInput}
+            accept={getAcceptForConversion(selectedConversion)}
+            file={fileInput}
+            multiple={false}
+            placeholder={`Click to upload or drag and drop a ${getAcceptForConversion(
+              selectedConversion
+            )
+              .replace(".", "")
+              .toUpperCase()} file`}
+          />
+        )}
+        {fileInput &&
+          selectedConversion !== "merge-pdf" && (
+            <p className="selected-file">File: {fileInput.name}</p>
+          )}
         <button onClick={handleFileConversion} disabled={fileConverting}>
           Convert Now
         </button>
         {fileConverting && <ProgressBar progress={fileProgress} />}
-        {convertedFileUrl && selectedConversion !== "pdf-to-jpg" && (
-          <div className="download-container">
-            <a
-              href={convertedFileUrl}
-              download={getConvertedFilename(fileInput.name, selectedConversion)}
-            >
-              Download Converted File
-            </a>
-          </div>
-        )}
+        {convertedFileUrl &&
+          selectedConversion !== "pdf-to-jpg" &&
+          selectedConversion !== "docx-to-jpg" && (
+            <div className="download-container">
+              <a
+                href={convertedFileUrl}
+                download={getConvertedFilename(
+                  selectedConversion === "merge-pdf"
+                    ? (fileInput && fileInput[0] ? fileInput[0].name : "merged")
+                    : fileInput.name,
+                  selectedConversion
+                )}
+              >
+                Download Converted File
+              </a>
+            </div>
+          )}
       </ModalPopup>
 
       {/* Text Converter Section */}
@@ -599,9 +746,7 @@ const Conversion = () => {
         <h1 className="section-header">Text Converter</h1>
         <h3>Upload Your File</h3>
         <p className="text-converter-description">
-          Our advanced OCR tool quickly converts images, PDFs, and DOC/DOCX files
-          into editable text. Upload your file and let our technology extract the
-          content for you.
+          Our advanced OCR tool quickly converts images, PDFs, and DOC/DOCX files into editable text. Upload your file and let our technology extract the content for you.
         </p>
         <section className="text-converter">
           <div className="text-converter-inner">
