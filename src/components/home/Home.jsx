@@ -34,7 +34,7 @@ const Home = () => {
         {/* Right Section */}
         <section className="right-content">
           <img
-            src="https://digitalasset.intuit.com/content/dam/intuit/cg/en_us/marketing/landing-pages/online-advertising/season-readiness/ty24/batch-2/hero/customer-tablet-refund-w25-lg-xl.png"
+            src="assets/akkk.png"
             alt="Customer holding a tablet with refund details"
             className="hero-image"
           />
