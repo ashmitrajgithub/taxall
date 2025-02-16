@@ -95,7 +95,7 @@ const convertDocxToPdf = async (file) => {
   formData.append("File", file);
   const response = await fetch("https://v2.convertapi.com/convert/docx/to/pdf", {
     method: "POST",
-    headers: { Authorization: "Bearer secret_e8H2rPx2EGZ3KMhG" },
+    headers: { Authorization: "Bearer secret_BGps62890R8yIFfz" },
     body: formData,
   });
   console.log("DOCX to PDF - Raw response:", response);
