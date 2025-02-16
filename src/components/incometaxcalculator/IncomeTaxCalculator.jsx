@@ -17,18 +17,25 @@ import {
 import './IncomeTaxCalculator.css';
 
 const IncomeTaxCalculator = () => {
+  // Define the steps as an array for our step indicator.
+  const steps = [
+    { id: 1, label: 'Basic Details' },
+    { id: 2, label: 'Income Details' },
+    { id: 3, label: 'Deductions' },
+    { id: 4, label: 'Summary Report' },
+  ];
+
   // Step management: 1 = Basic Details, 2 = Income Details, 3 = Deductions, 4 = Summary
   const [step, setStep] = useState(1);
 
-  // Basic Details: financial year, age group, and whether to apply standard deduction
+  // Basic Details
   const [basicDetails, setBasicDetails] = useState({
     financialYear: '',
     ageGroup: '',
     applyStandardDeduction: 'yes',
   });
 
-  // Income Details: salary, rental income, interest, other income, exempt allowances,
-  // and home loan interests (self occupied and let out)
+  // Income Details
   const [incomeDetails, setIncomeDetails] = useState({
     salary: '',
     rentalIncome: '',
@@ -39,7 +46,7 @@ const IncomeTaxCalculator = () => {
     interestHomeLoanLetOut: '',
   });
 
-  // Deductions: basic deductions (80C), medical insurance (80D), donations (80G), and other deductions
+  // Deductions
   const [deductions, setDeductions] = useState({
     basicDeduction80C: '',
     medicalInsurance80D: '',
@@ -47,10 +54,10 @@ const IncomeTaxCalculator = () => {
     otherDeduction: '',
   });
 
-  // Summary state to store all calculated results
+  // Summary state
   const [summary, setSummary] = useState(null);
 
-  // Helper function to format currency values
+  // Format currency helper
   const formatCurrency = (value) => {
     const num = Number(value);
     if (num < 100000) {
@@ -62,28 +69,22 @@ const IncomeTaxCalculator = () => {
     }
   };
 
-  // Navigation functions for the steps
+  // Navigation functions
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
-  // Input change handlers for each section
+  // Input change handlers
   const handleBasicChange = (e) => {
     setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
   };
-
   const handleIncomeChange = (e) => {
     setIncomeDetails({ ...incomeDetails, [e.target.name]: e.target.value });
   };
-
   const handleDeductionChange = (e) => {
     setDeductions({ ...deductions, [e.target.name]: e.target.value });
   };
 
-  // -----------------------------------
   // TAX CALCULATION FUNCTIONS
-  // -----------------------------------
-
-  // Old Tax Regime Slab Calculation
   function calculateOldRegimeTax(taxableIncome) {
     if (taxableIncome <= 250000) return 0;
     if (taxableIncome <= 500000) return (taxableIncome - 250000) * 0.05;
@@ -92,7 +93,6 @@ const IncomeTaxCalculator = () => {
     return (taxableIncome - 1000000) * 0.3 + 112500;
   }
 
-  // New Tax Regime Slab Calculation
   function calculateNewRegimeTax(taxableIncome) {
     if (taxableIncome <= 300000) return 0;
     if (taxableIncome <= 700000) return (taxableIncome - 300000) * 0.05;
@@ -105,24 +105,19 @@ const IncomeTaxCalculator = () => {
     return (taxableIncome - 1500000) * 0.3 + 140000;
   }
 
-  // Main tax calculation function
   const calculateTax = () => {
-    // Total A: Sum of salary, rental income, interest, and other income
     const salary = Number(incomeDetails.salary || 0);
     const rental = Number(incomeDetails.rentalIncome || 0);
     const interest = Number(incomeDetails.interest || 0);
     const otherIncome = Number(incomeDetails.otherIncome || 0);
     const totalA = salary + rental + interest + otherIncome;
 
-    // Total B: Exemptions (Exempt Allowances)
     const exemptions = Number(incomeDetails.exemptAllowances || 0);
 
-    // Home Loan Interest: Sum of self occupied and let out
     const homeLoanInterest =
       Number(incomeDetails.interestHomeLoanSelf || 0) +
       Number(incomeDetails.interestHomeLoanLetOut || 0);
 
-    // Total C: Sum of deductions from 80C, 80D, 80G, other deductions plus home loan interest
     const basicDeduction = Number(deductions.basicDeduction80C || 0);
     const medicalInsurance = Number(deductions.medicalInsurance80D || 0);
     const donations = Number(deductions.donations80G || 0);
@@ -130,50 +125,35 @@ const IncomeTaxCalculator = () => {
     const totalC =
       basicDeduction + medicalInsurance + donations + homeLoanInterest + otherDeduction;
 
-    // Standard Deduction based on user selection
     const applyStandardDeduction = basicDetails.applyStandardDeduction === 'yes';
     const oldStandardDeduction = applyStandardDeduction ? 50000 : 0;
     const newStandardDeduction = applyStandardDeduction ? 75000 : 0;
 
-    // Tax rebate thresholds for each regime
-    const oldTaxRebateUpto = 500000;
-    const newTaxRebateUpto = 700000;
-
-    // Taxable Income Calculation:
     const oldTaxableIncome = Math.max(
       totalA - oldStandardDeduction - exemptions - totalC,
       0
     );
     const newTaxableIncome = Math.max(totalA - newStandardDeduction, 0);
 
-    // Calculated Tax using the slab functions:
     const oldCalculatedTax = calculateOldRegimeTax(oldTaxableIncome);
     const newCalculatedTax = calculateNewRegimeTax(newTaxableIncome);
 
-    // Apply full tax rebate if taxable income is below the threshold:
-    const oldTaxRebate =
-      oldTaxableIncome <= oldTaxRebateUpto ? -oldCalculatedTax : 0;
-    const newTaxRebate =
-      newTaxableIncome <= newTaxRebateUpto ? -newCalculatedTax : 0;
+    const oldTaxRebate = oldTaxableIncome <= 500000 ? -oldCalculatedTax : 0;
+    const newTaxRebate = newTaxableIncome <= 700000 ? -newCalculatedTax : 0;
 
-    // Tax After Rebate:
     const oldTaxAfterRebate = oldCalculatedTax + oldTaxRebate;
     const newTaxAfterRebate = newCalculatedTax + newTaxRebate;
 
-    // Marginal Relief for New Regime:
     const excessIncome =
-      newTaxableIncome > newTaxRebateUpto ? newTaxableIncome - newTaxRebateUpto : 0;
+      newTaxableIncome > 700000 ? newTaxableIncome - 700000 : 0;
     const newTaxAfterMarginalRelief = Math.min(excessIncome, newTaxAfterRebate);
 
-    // Health & Education Cess (4%):
     const oldCess = oldTaxAfterRebate * 0.04;
     const newCess = newTaxAfterMarginalRelief * 0.04;
 
-    // Final Payable Tax:
     const oldPayableTax = oldTaxAfterRebate + oldCess;
     const newPayableTax = newTaxAfterMarginalRelief + newCess;
 
-    // Decide which regime is better:
     let message;
     if (oldPayableTax < newPayableTax) {
       message = "As per the calculation, Old Tax Regime is better for you.";
@@ -183,7 +163,6 @@ const IncomeTaxCalculator = () => {
       message = "As per the calculation, tax payable in both regimes is equal.";
     }
 
-    // Set the summary state with all calculated values
     setSummary({
       totalIncome: totalA,
       old: {
@@ -214,17 +193,14 @@ const IncomeTaxCalculator = () => {
     nextStep();
   };
 
-  // PDF download functionality using html2canvas and jsPDF
+  // PDF Download functionality
   const downloadPdf = () => {
     const input = document.getElementById('report');
     const buttonGroups = input.querySelectorAll('.button-group');
-    
-    // Hide the buttons so they don't appear in the PDF
     buttonGroups.forEach(group => {
       group.style.display = 'none';
     });
     
-    // Your brand logo as a Base64 string (replace with your actual logo data)
     const logoBase64 = './assets/taxallnewww.png';
   
     html2canvas(input, { scale: 2 }).then((canvas) => {
@@ -233,28 +209,23 @@ const IncomeTaxCalculator = () => {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
       
-      // Add the captured report image to the PDF
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       
-      // Add the brand logo in the upper left corner.
-      // Adjust the x, y coordinates and dimensions as needed.
-      const logoX = 10;   // 10 mm from the left
-      const logoY = 10;   // 10 mm from the top
-      const logoWidth = 30;  // Width of the logo in mm (adjust as needed)
-      const logoHeight =20; // Height of the logo in mm (adjust as needed)
+      const logoX = 10;
+      const logoY = 10;
+      const logoWidth = 30;
+      const logoHeight = 20;
       pdf.addImage(logoBase64, 'PNG', logoX, logoY, logoWidth, logoHeight);
       
-      // Save the PDF
       pdf.save("income_tax_summary.pdf");
   
-      // Restore the button groups so the UI remains unchanged
       buttonGroups.forEach(group => {
         group.style.display = '';
       });
     });
   };
-  
-  // Prepare chart data for the summary page graphs
+
+  // Prepare chart data for summary graphs
   const barData = summary
     ? [
         { regime: 'Old Regime', payableTax: summary.old.payableTax },
@@ -278,10 +249,24 @@ const IncomeTaxCalculator = () => {
           { name: 'Cess', value: summary.new.cess },
         ]
       : [];
-  const pieColors = ['#007bff', '#28a745'];
+  const pieColors = ['#ff6b6b', '#feca57'];
 
   return (
     <div className="income-tax-calculator">
+      {/* Step Indicator */}
+      <div className="step-indicator">
+        {steps.map((s) => (
+          <div
+            key={s.id}
+            className={`step ${step === s.id ? 'active' : ''} ${s.id < step ? 'completed' : ''}`}
+            onClick={() => { if (s.id <= step) setStep(s.id); }}
+          >
+            <div className="step-number">{s.id}</div>
+            <div className="step-label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
       {/* Step 1: Basic Details */}
       {step === 1 && (
         <div className="basic-details section">
@@ -474,14 +459,11 @@ const IncomeTaxCalculator = () => {
         </div>
       )}
 
-      {/* Step 4: Summary Report with Graphs */}
+      {/* Step 4: Summary Report */}
       {step === 4 && summary && (
         <div id="report" className="summary section">
           <h2>Summary Report</h2>
-          {/* Display the selected Financial Year */}
           <h3>Financial Year: {basicDetails.financialYear}</h3>
-
-          {/* Comparison Table */}
           <div className="comparison-table">
             <table>
               <thead>
@@ -531,7 +513,6 @@ const IncomeTaxCalculator = () => {
             </table>
           </div>
 
-          {/* Graphs */}
           <div className="charts-flex-container">
             <div className="bar-chart-container">
               <ResponsiveContainer width="100%" height={300}>
@@ -541,15 +522,9 @@ const IncomeTaxCalculator = () => {
                   <YAxis tickFormatter={(value) => formatCurrency(value)} />
                   <Tooltip formatter={(value) => formatCurrency(value)} />
                   <Legend />
-                  <Bar
-                    dataKey="payableTax"
-                    fill={
-                      summary.old.payableTax <= summary.new.payableTax ? "#007bff" : "#28a745"
-                    }
-                    animationDuration={1500}
-                  >
+                  <Bar dataKey="payableTax" fill={summary.old.payableTax <= summary.new.payableTax ? "#ff6b6b" : "#feca57"} animationDuration={1500}>
                     {barData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={index === 0 ? "#007bff" : "#28a745"} />
+                      <Cell key={`cell-${index}`} fill={index === 0 ? "#ff6b6b" : "#feca57"} />
                     ))}
                   </Bar>
                 </BarChart>

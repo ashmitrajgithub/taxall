@@ -4,6 +4,8 @@
   padding: 80px 20px;
   background: linear-gradient(45deg, #000, #444444);
   min-height: 100vh;
+  margin: 1%;
+  border-radius: 15px;
 }
 
 .text-center {
