@@ -46,7 +46,7 @@ const Header = () => {
       className={`sign-in-button ${isMobile ? "mobile-sign-in" : "desktop-only"}`}
       onClick={() => setIsSigninOpen(!isSigninOpen)}
     >
-      <FiLogIn className="sign-in-icon" /> Sign In / Sign Up
+      <FiLogIn className="sign-in-icon" /> Sign In
     </button>
   );
 
