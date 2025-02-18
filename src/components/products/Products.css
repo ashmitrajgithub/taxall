@@ -19,7 +19,7 @@
   background: linear-gradient(45deg, #b1b1b1, #ffffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .parent-container {
@@ -64,7 +64,7 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #000;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .section-description {
@@ -88,7 +88,7 @@
   border-radius: 0.375rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  background: linear-gradient(45deg, #000, #646262);
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);;
   color: #fff;
   align-self: flex-start;
 }
@@ -96,7 +96,7 @@
 .btn-calc:hover,
 .btn-view:hover,
 .btn-convert:hover {
-  background-color: #3182ce;
+  background: linear-gradient(45deg, #000, #434242);
 }
 
 .icon-container {

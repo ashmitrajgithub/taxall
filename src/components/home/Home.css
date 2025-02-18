@@ -40,6 +40,7 @@
   justify-content: space-between;
   width: 50%;
   padding: 2%;
+  
 }
 
 .left-content .logo {
@@ -75,11 +76,12 @@
   color: white;
   margin-bottom: 1.5rem;
   line-height: 1.6;
+  
 }
 
 .left-content .cta-button {
   display: inline-block;
-  background-color: #007bff;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
   color: #ffffff;
   padding: 0.8rem 1.5rem;
   border-radius: 15px;
@@ -138,6 +140,7 @@
   .left-content .cta-button {
     font-size: 1rem;
     padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
   }
 
   .right-content {

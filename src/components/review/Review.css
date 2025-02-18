@@ -14,17 +14,18 @@
   padding-top: 2rem;
   margin-bottom: 0.5rem;
   color: #f5f5f5;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .testimonial-subtitle {
   font-size: 1.2rem;
   margin-bottom: 2rem;
+  font-family: 'Times New Roman', Times, serif;
   color: #bbb;
 }
 
 .testimonial-subtitle span {
-  color: #ff6ec4;
+  color: linear-gradient(135deg, #ff7e5f, #feb47b);
   font-weight: bold;
 }
 
@@ -101,7 +102,7 @@
 
 .add-review-button {
   padding: 0.75rem 1.5rem;
-  background: #ff6ec4;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -163,7 +164,7 @@
 
 .submit-button {
   padding: 0.75rem 1.5rem;
-  background: #ff6ec4;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
   color: #fff;
   border: none;
   border-radius: 5px;

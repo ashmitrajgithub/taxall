@@ -114,7 +114,7 @@ const IncomeTaxCalculator = () => {
     // Slab 3: ₹8,00,001 to ₹12,00,000 – 10% on the amount exceeding ₹8,00,000
     // plus a fixed tax of ₹20,000 from the previous slab.
     else if (taxableIncome <= 1200000) {
-      return 20000 + (taxableIncome - 800000) * 0.10;
+      return ((taxableIncome - 800000) * 0.10) + 20000;
     }
     // -------------------------------
     // Slab 4: ₹12,00,001 to ₹16,00,000 – 15% on the amount exceeding ₹12,00,000
@@ -122,7 +122,7 @@ const IncomeTaxCalculator = () => {
     // However, marginal relief applies: the final tax should not exceed the extra income over ₹12,00,000.
     else if (taxableIncome <= 1600000) {
       // Computed tax without marginal relief.
-      const computedTax = 20000 + 40000 + (taxableIncome - 1200000) * 0.15; // 60000 + 15% of excess over 1,200,000
+      const computedTax = ((taxableIncome - 1200000) * 0.15) + 20000 + 40000; // 60000 + 15% of excess over 1,200,000
       // Marginal relief cap: the tax cannot be more than (taxableIncome - 1200000).
       const marginalCap = taxableIncome - 1200000;
       return Math.min(computedTax, marginalCap);

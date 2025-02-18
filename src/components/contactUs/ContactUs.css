@@ -23,7 +23,7 @@ body {
 .contact-info h1 {
   font-size: 2.2rem;
   color: #ffffff;
-   font-family: 'Dancing Script', cursive;
+   font-family: 'Times New Roman', Times, serif;
   font-weight: 800;
   margin-bottom: 1vh;
 }
@@ -58,6 +58,7 @@ body {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  
 }
 
 .contact-form {
@@ -86,7 +87,7 @@ body {
 .contact-form textarea:focus {
   outline: none;
   background-color: #fff;
-  border-color: #007bff;
+  border-color: linear-gradient(135deg, #ff7e5f, #feb47b);;
 }
 
 .contact-form textarea {
@@ -94,7 +95,7 @@ body {
 }
 
 .contact-form button {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
   color: #fff;
   font-size: 1rem;
   padding: 0.8rem;
@@ -105,7 +106,7 @@ body {
 }
 
 .contact-form button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(45deg, #000, #434242);
 }
 
 /* Media Queries for Mobile */

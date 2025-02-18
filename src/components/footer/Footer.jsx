@@ -43,7 +43,7 @@ const Footer = () => {
           {/* Contact Information */}
           <div className="footer-contact">
             <h3>Contact Us</h3>
-            <p>n110 narayana nagar Laxmi nagar
+            <p> Narayana nagar Laxmi nagar
 lalita park
 NEW DELHI, DELHI 110092
 India</p>

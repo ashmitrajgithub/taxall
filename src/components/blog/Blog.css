@@ -19,7 +19,7 @@
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 2rem;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Times New Roman', Times, serif;
   color: white
 }
 
@@ -30,7 +30,7 @@
   padding-left: 0.5rem;
   border-left: 0.25rem solid #3498db;
   color: white;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /* =========================
@@ -90,6 +90,7 @@
 .blog-card .blog-content h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+  color: #000;
 }
 
 .blog-card .blog-content p {
@@ -125,8 +126,8 @@
 }
 
 .text-blog-item {
-  background: linear-gradient(145deg, #fff9c4, #ffecb3);
-  border: 2px solid #f0e68c;
+  background: rgb(189, 187, 187);
+  /* border: 2px solid #fb9c5d; */
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2);
@@ -149,7 +150,7 @@
   right: 0;
   border-width: 0 3rem 3rem 0;
   border-style: solid;
-  border-color: transparent #ffe082 transparent transparent;
+  border-color: transparent #d2d2d2 transparent transparent;
 }
 
 /* A small pin element to mimic a note being held in place */
@@ -181,12 +182,15 @@
   font-size: 1.75rem;
   margin-bottom: 1rem;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  color:#000;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .text-blog-item p {
   font-size: 1rem;
   line-height: 1.5;
   margin-bottom: 1rem;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /* =========================
