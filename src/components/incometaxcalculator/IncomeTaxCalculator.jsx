@@ -17,7 +17,7 @@ import {
 import './IncomeTaxCalculator.css';
 
 const IncomeTaxCalculator = () => {
-  // Define the steps as an array for our step indicator.
+  // Define the steps for our multi-step form.
   const steps = [
     { id: 1, label: 'Basic Details' },
     { id: 2, label: 'Income Details' },
@@ -25,17 +25,17 @@ const IncomeTaxCalculator = () => {
     { id: 4, label: 'Summary Report' },
   ];
 
-  // Step management: 1 = Basic Details, 2 = Income Details, 3 = Deductions, 4 = Summary
+  // Manage the current step.
   const [step, setStep] = useState(1);
 
-  // Basic Details
+  // State for Basic Details.
   const [basicDetails, setBasicDetails] = useState({
     financialYear: '',
     ageGroup: '',
     applyStandardDeduction: 'yes',
   });
 
-  // Income Details
+  // State for Income Details.
   const [incomeDetails, setIncomeDetails] = useState({
     salary: '',
     rentalIncome: '',
@@ -46,7 +46,7 @@ const IncomeTaxCalculator = () => {
     interestHomeLoanLetOut: '',
   });
 
-  // Deductions
+  // State for Deductions.
   const [deductions, setDeductions] = useState({
     basicDeduction80C: '',
     medicalInsurance80D: '',
@@ -54,10 +54,10 @@ const IncomeTaxCalculator = () => {
     otherDeduction: '',
   });
 
-  // Summary state
+  // State for the summary report.
   const [summary, setSummary] = useState(null);
 
-  // Format currency helper
+  // Helper function to format currency.
   const formatCurrency = (value) => {
     const num = Number(value);
     if (num < 100000) {
@@ -69,11 +69,11 @@ const IncomeTaxCalculator = () => {
     }
   };
 
-  // Navigation functions
+  // Navigation functions.
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
-  // Input change handlers
+  // Input change handlers.
   const handleBasicChange = (e) => {
     setBasicDetails({ ...basicDetails, [e.target.name]: e.target.value });
   };
@@ -84,7 +84,11 @@ const IncomeTaxCalculator = () => {
     setDeductions({ ...deductions, [e.target.name]: e.target.value });
   };
 
+  // ================================
   // TAX CALCULATION FUNCTIONS
+  // ================================
+
+  // OLD REGIME TAX CALCULATION (remains unchanged)
   function calculateOldRegimeTax(taxableIncome) {
     if (taxableIncome <= 250000) return 0;
     if (taxableIncome <= 500000) return (taxableIncome - 250000) * 0.05;
@@ -93,31 +97,74 @@ const IncomeTaxCalculator = () => {
     return (taxableIncome - 1000000) * 0.3 + 112500;
   }
 
+  // NEW REGIME TAX CALCULATION as per NEW SCHEME AFTER BUDGET 2025
   function calculateNewRegimeTax(taxableIncome) {
-    if (taxableIncome <= 300000) return 0;
-    if (taxableIncome <= 700000) return (taxableIncome - 300000) * 0.05;
-    if (taxableIncome <= 1000000)
-      return (taxableIncome - 700000) * 0.1 + 20000;
-    if (taxableIncome <= 1200000)
-      return (taxableIncome - 1000000) * 0.15 + 50000;
-    if (taxableIncome <= 1500000)
-      return (taxableIncome - 1200000) * 0.2 + 80000;
-    return (taxableIncome - 1500000) * 0.3 + 140000;
+    // No standard deduction is allowed under the new regime.
+    // -------------------------------
+    // Slab 1: Up to ₹4,00,000 – 0%
+    if (taxableIncome <= 400000) {
+      return 0;
+    }
+    // -------------------------------
+    // Slab 2: ₹4,00,001 to ₹8,00,000 – 5% on the amount exceeding ₹4,00,000.
+    else if (taxableIncome <= 800000) {
+      return (taxableIncome - 400000) * 0.05;
+    }
+    // -------------------------------
+    // Slab 3: ₹8,00,001 to ₹12,00,000 – 10% on the amount exceeding ₹8,00,000
+    // plus a fixed tax of ₹20,000 from the previous slab.
+    else if (taxableIncome <= 1200000) {
+      return 20000 + (taxableIncome - 800000) * 0.10;
+    }
+    // -------------------------------
+    // Slab 4: ₹12,00,001 to ₹16,00,000 – 15% on the amount exceeding ₹12,00,000
+    // plus fixed amounts from earlier slabs (₹20,000 + ₹40,000 = ₹60,000).
+    // However, marginal relief applies: the final tax should not exceed the extra income over ₹12,00,000.
+    else if (taxableIncome <= 1600000) {
+      // Computed tax without marginal relief.
+      const computedTax = 20000 + 40000 + (taxableIncome - 1200000) * 0.15; // 60000 + 15% of excess over 1,200,000
+      // Marginal relief cap: the tax cannot be more than (taxableIncome - 1200000).
+      const marginalCap = taxableIncome - 1200000;
+      return Math.min(computedTax, marginalCap);
+    }
+    // -------------------------------
+    // Slab 5: ₹16,00,001 to ₹20,00,000 – 20% on the amount exceeding ₹16,00,000
+    // plus a fixed tax of ₹120,000 (i.e. cumulative tax up to ₹16,00,000).
+    else if (taxableIncome <= 2000000) {
+      return 120000 + (taxableIncome - 1600000) * 0.20;
+    }
+    // -------------------------------
+    // Slab 6: ₹20,00,001 to ₹24,00,000 – 25% on the amount exceeding ₹20,00,000
+    // plus a fixed tax of ₹200,000.
+    else if (taxableIncome <= 2400000) {
+      return 200000 + (taxableIncome - 2000000) * 0.25;
+    }
+    // -------------------------------
+    // Slab 7: Above ₹24,00,000 – 30% on the amount exceeding ₹24,00,000
+    // plus a fixed tax of ₹300,000.
+    else {
+      return 300000 + (taxableIncome - 2400000) * 0.30;
+    }
   }
 
+  // Main tax calculation function.
   const calculateTax = () => {
+    // Convert income values to numbers.
     const salary = Number(incomeDetails.salary || 0);
     const rental = Number(incomeDetails.rentalIncome || 0);
     const interest = Number(incomeDetails.interest || 0);
     const otherIncome = Number(incomeDetails.otherIncome || 0);
     const totalA = salary + rental + interest + otherIncome;
 
+    // Exemptions.
     const exemptions = Number(incomeDetails.exemptAllowances || 0);
 
+    // Home loan interest.
     const homeLoanInterest =
       Number(incomeDetails.interestHomeLoanSelf || 0) +
       Number(incomeDetails.interestHomeLoanLetOut || 0);
 
+    // Other deductions.
     const basicDeduction = Number(deductions.basicDeduction80C || 0);
     const medicalInsurance = Number(deductions.medicalInsurance80D || 0);
     const donations = Number(deductions.donations80G || 0);
@@ -125,44 +172,50 @@ const IncomeTaxCalculator = () => {
     const totalC =
       basicDeduction + medicalInsurance + donations + homeLoanInterest + otherDeduction;
 
+    // Determine if the user opts for the standard deduction.
     const applyStandardDeduction = basicDetails.applyStandardDeduction === 'yes';
     const oldStandardDeduction = applyStandardDeduction ? 50000 : 0;
-    const newStandardDeduction = applyStandardDeduction ? 75000 : 0;
+    // In the new regime, no standard deduction is allowed.
+    const newStandardDeduction = 0;
 
+    // Calculate taxable incomes.
     const oldTaxableIncome = Math.max(
       totalA - oldStandardDeduction - exemptions - totalC,
       0
     );
+    // For the new regime, the entire income is taxable.
     const newTaxableIncome = Math.max(totalA - newStandardDeduction, 0);
 
+    // Calculate tax liabilities using the respective functions.
     const oldCalculatedTax = calculateOldRegimeTax(oldTaxableIncome);
     const newCalculatedTax = calculateNewRegimeTax(newTaxableIncome);
 
+    // Apply tax rebate if applicable.
     const oldTaxRebate = oldTaxableIncome <= 500000 ? -oldCalculatedTax : 0;
     const newTaxRebate = newTaxableIncome <= 700000 ? -newCalculatedTax : 0;
 
     const oldTaxAfterRebate = oldCalculatedTax + oldTaxRebate;
+    // For the new regime, marginal relief is built into calculateNewRegimeTax.
     const newTaxAfterRebate = newCalculatedTax + newTaxRebate;
 
-    const excessIncome =
-      newTaxableIncome > 700000 ? newTaxableIncome - 700000 : 0;
-    const newTaxAfterMarginalRelief = Math.min(excessIncome, newTaxAfterRebate);
-
+    // Calculate Health & Education Cess (4%) on the tax after rebate.
     const oldCess = oldTaxAfterRebate * 0.04;
-    const newCess = newTaxAfterMarginalRelief * 0.04;
+    const newCess = newTaxAfterRebate * 0.04;
 
     const oldPayableTax = oldTaxAfterRebate + oldCess;
-    const newPayableTax = newTaxAfterMarginalRelief + newCess;
+    const newPayableTax = newTaxAfterRebate + newCess;
 
+    // Message indicating which regime is better.
     let message;
     if (oldPayableTax < newPayableTax) {
       message = "As per the calculation, Old Tax Regime is better for you.";
     } else if (oldPayableTax > newPayableTax) {
-      message = "As per the calculation, New Tax Regime is better for you.";
+      message = "As per the calculation, New Tax Regime (post Budget 2025) is better for you.";
     } else {
       message = "As per the calculation, tax payable in both regimes is equal.";
     }
 
+    // Set the summary state with all calculated details.
     setSummary({
       totalIncome: totalA,
       old: {
@@ -182,7 +235,7 @@ const IncomeTaxCalculator = () => {
         calculatedTax: newCalculatedTax,
         taxRebate: newTaxRebate,
         taxAfterRebate: newTaxAfterRebate,
-        taxAfterMarginalRelief: newTaxAfterMarginalRelief,
+        // Marginal relief is applied within calculateNewRegimeTax.
         cess: newCess,
         payableTax: newPayableTax,
       },
@@ -193,7 +246,7 @@ const IncomeTaxCalculator = () => {
     nextStep();
   };
 
-  // PDF Download functionality
+  // PDF Download functionality.
   const downloadPdf = () => {
     const input = document.getElementById('report');
     const buttonGroups = input.querySelectorAll('.button-group');
@@ -225,7 +278,7 @@ const IncomeTaxCalculator = () => {
     });
   };
 
-  // Prepare chart data for summary graphs
+  // Prepare chart data for the summary graphs.
   const barData = summary
     ? [
         { regime: 'Old Regime', payableTax: summary.old.payableTax },
@@ -245,7 +298,7 @@ const IncomeTaxCalculator = () => {
         ]
       : summary && preferredRegime === 'new'
       ? [
-          { name: 'Tax After Marginal Relief', value: summary.new.taxAfterMarginalRelief },
+          { name: 'Tax After Rebate', value: summary.new.taxAfterRebate },
           { name: 'Cess', value: summary.new.cess },
         ]
       : [];
@@ -470,7 +523,7 @@ const IncomeTaxCalculator = () => {
                 <tr>
                   <th></th>
                   <th>Old Regime</th>
-                  <th>New Regime</th>
+                  <th>New Regime (Post Budget 2025)</th>
                 </tr>
               </thead>
               <tbody>
@@ -493,11 +546,6 @@ const IncomeTaxCalculator = () => {
                   <td>Tax After Rebate</td>
                   <td>{formatCurrency(summary.old.taxAfterRebate)}</td>
                   <td>{formatCurrency(summary.new.taxAfterRebate)}</td>
-                </tr>
-                <tr>
-                  <td>Tax After Marginal Relief</td>
-                  <td>N/A</td>
-                  <td>{formatCurrency(summary.new.taxAfterMarginalRelief)}</td>
                 </tr>
                 <tr>
                   <td>Health &amp; Education Cess (4%)</td>
