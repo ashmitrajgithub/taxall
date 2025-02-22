@@ -1,0 +1,37 @@
+{
+  "_chunk-DR8eKEHZ.js": {
+    "file": "assets/chunks/chunk-DR8eKEHZ.js",
+    "name": "executeOnRenderClientHook"
+  },
+  "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js": {
+    "file": "assets/entries/entry-client-routing.DKQP1qGA.js",
+    "name": "entries/entry-client-routing",
+    "src": "node_modules/vite-plugin-ssr/dist/esm/client/client-routing-runtime/entry.js",
+    "isEntry": true,
+    "imports": [
+      "_chunk-DR8eKEHZ.js"
+    ],
+    "dynamicImports": [
+      "pages/index.page.jsx"
+    ]
+  },
+  "node_modules/vite-plugin-ssr/dist/esm/client/server-routing-runtime/entry.js": {
+    "file": "assets/entries/entry-server-routing.rk2Knhwv.js",
+    "name": "entries/entry-server-routing",
+    "src": "node_modules/vite-plugin-ssr/dist/esm/client/server-routing-runtime/entry.js",
+    "isEntry": true,
+    "imports": [
+      "_chunk-DR8eKEHZ.js"
+    ],
+    "dynamicImports": [
+      "pages/index.page.jsx"
+    ]
+  },
+  "pages/index.page.jsx": {
+    "file": "assets/entries/pages_index.page.DbmNnEXA.js",
+    "name": "entries/pages/index.page",
+    "src": "pages/index.page.jsx",
+    "isEntry": true,
+    "isDynamicEntry": true
+  }
+}
