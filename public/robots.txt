@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap:https://taxall.co.in/sitemap.txt
+Sitemap:https://docs.google.com/document/d/17dLyvLrfhOJMQNfHxrjPjYqO0CblDs5RxT6pcjuC6JA/edit?usp=sharing
 
 #lastupdated
 
