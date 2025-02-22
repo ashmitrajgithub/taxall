@@ -2,30 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fallback Meta Tags (React Helmet will override dynamically) -->
+    <title>Taxall - Tax & Finance Solutions</title>
+    <meta name="description" content="Taxall provides expert tax and finance solutions, offering a wide range of services to help individuals and businesses manage their finances effectively." />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Favicon Links -->
     <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="shortcut icon" href="assets/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Taxall" />
+
+    <!-- Open Graph (Fallback) -->
+    <meta property="og:title" content="Taxall - Tax & Finance Solutions" />
+    <meta property="og:description" content="Expert tax and finance solutions tailored for individuals and businesses." />
+    <meta property="og:image" content="https://taxall.co.in/assets/taxall-logo.png" />
+    <meta property="og:url" content="https://taxall.co.in" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card (Fallback) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Taxall - Tax & Finance Solutions" />
+    <meta name="twitter:description" content="Expert tax and finance solutions tailored for individuals and businesses." />
+    <meta name="twitter:image" content="https://taxall.co.in/assets/taxall-logo.png" />
+
+    <!-- Manifest for PWA -->
     <link rel="manifest" href="assets/site.webmanifest" />
 
-    <meta name="robots" content="index, follow">
-    <link rel="alternate" type="text/plain" href="https://github.com/ashmitrajgithub/Taxall/blob/main/public/robots.txt">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taxall - Tax & finance Solutions</title>
-    <meta name="description" content="Taxall - Tax & finance Solutions. Give you different types of Many Products." />
-    <script type="text/javascript"> 
+    <script type="text/javascript">
       (function (l) {
-        if (l.search[1] === '/') {
-          var decoded = l.search.slice(1).split('&').map(function (s) {
-            return s.replace(/and/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
-          );
+        if (l.search[1] === "/") {
+          var decoded = l.search.slice(1).split("&").map(function (s) {
+            return s.replace(/and/g, "&");
+          }).join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
-      }(window.location))
+      })(window.location);
     </script>
   </head>
   <body>
