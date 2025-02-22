@@ -1,5 +1,5 @@
 User-agent: *
-Disallow: /
+Disallow:
 Sitemap: https://taxall.co.in/sitemap.xml
 
 #lastupdated
