@@ -88,63 +88,99 @@ const IncomeTaxCalculator = () => {
   // TAX CALCULATION FUNCTIONS
   // ================================
 
-  // OLD REGIME TAX CALCULATION (remains unchanged)
-  function calculateOldRegimeTax(taxableIncome) {
-    if (taxableIncome <= 250000) return 0;
-    if (taxableIncome <= 500000) return (taxableIncome - 250000) * 0.05;
-    if (taxableIncome <= 1000000)
-      return (taxableIncome - 500000) * 0.2 + 12500;
-    return (taxableIncome - 1000000) * 0.3 + 112500;
+  // OLD REGIME TAX CALCULATION based on age group
+  function calculateOldRegimeTax(taxableIncome, ageGroup) {
+    let exemptionLimit = 250000;
+    if (ageGroup === "60-80") {
+      exemptionLimit = 300000;
+    } else if (ageGroup === "80-100") {
+      exemptionLimit = 500000;
+    }
+    if (taxableIncome <= exemptionLimit) return 0;
+    let tax = 0;
+    if (ageGroup === "80-100") {
+      // For individuals aged above 80, there is no 5% slab.
+      if (taxableIncome <= 1000000) {
+        tax = (taxableIncome - exemptionLimit) * 0.2;
+      } else {
+        tax = (1000000 - exemptionLimit) * 0.2 + (taxableIncome - 1000000) * 0.3;
+      }
+    } else {
+      // For individuals below 60 and between 60-80.
+      if (taxableIncome <= 500000) {
+        tax = (taxableIncome - exemptionLimit) * 0.05;
+      } else if (taxableIncome <= 1000000) {
+        tax = (500000 - exemptionLimit) * 0.05 + (taxableIncome - 500000) * 0.2;
+      } else {
+        tax =
+          (500000 - exemptionLimit) * 0.05 +
+          (1000000 - 500000) * 0.2 +
+          (taxableIncome - 1000000) * 0.3;
+      }
+    }
+    return tax;
   }
 
-  // NEW REGIME TAX CALCULATION as per NEW SCHEME AFTER BUDGET 2025
-  function calculateNewRegimeTax(taxableIncome) {
-    // No standard deduction is allowed under the new regime.
-    // -------------------------------
-    // Slab 1: Up to ₹4,00,000 – 0%
-    if (taxableIncome <= 400000) {
-      return 0;
+  // NEW REGIME TAX CALCULATION as per selected financial year
+  function calculateNewRegimeTax(taxableIncome, financialYear) {
+    if (financialYear === "FY24-25") {
+      if (taxableIncome <= 300000) return 0;
+      else if (taxableIncome <= 700000)
+        return (taxableIncome - 300000) * 0.05;
+      else if (taxableIncome <= 1000000)
+        return (700000 - 300000) * 0.05 + (taxableIncome - 700000) * 0.10;
+      else if (taxableIncome <= 1200000)
+        return (
+          (700000 - 300000) * 0.05 +
+          (1000000 - 700000) * 0.10 +
+          (taxableIncome - 1000000) * 0.15
+        );
+      else if (taxableIncome <= 1500000)
+        return (
+          (700000 - 300000) * 0.05 +
+          (1000000 - 700000) * 0.10 +
+          (1200000 - 1000000) * 0.15 +
+          (taxableIncome - 1200000) * 0.20
+        );
+      else
+        return (
+          (700000 - 300000) * 0.05 +
+          (1000000 - 700000) * 0.10 +
+          (1200000 - 1000000) * 0.15 +
+          (1500000 - 1200000) * 0.20 +
+          (taxableIncome - 1500000) * 0.30
+        );
+    } else if (financialYear === "FY25-26") {
+      if (taxableIncome <= 400000) return 0;
+      else if (taxableIncome <= 800000)
+        return (taxableIncome - 400000) * 0.05;
+      else if (taxableIncome <= 1200000)
+        return (800000 - 400000) * 0.05 + (taxableIncome - 800000) * 0.10;
+      else if (taxableIncome <= 1600000)
+        return (800000 - 400000) * 0.05 +
+               (1200000 - 800000) * 0.10 +
+               (taxableIncome - 1200000) * 0.15;
+      else if (taxableIncome <= 2000000)
+        return (800000 - 400000) * 0.05 +
+               (1200000 - 800000) * 0.10 +
+               (1600000 - 1200000) * 0.15 +
+               (taxableIncome - 1600000) * 0.20;
+      else if (taxableIncome <= 2400000)
+        return (800000 - 400000) * 0.05 +
+               (1200000 - 800000) * 0.10 +
+               (1600000 - 1200000) * 0.15 +
+               (2000000 - 1600000) * 0.20 +
+               (taxableIncome - 2000000) * 0.25;
+      else
+        return (800000 - 400000) * 0.05 +
+               (1200000 - 800000) * 0.10 +
+               (1600000 - 1200000) * 0.15 +
+               (2000000 - 1600000) * 0.20 +
+               (2400000 - 2000000) * 0.25 +
+               (taxableIncome - 2400000) * 0.30;
     }
-    // -------------------------------
-    // Slab 2: ₹4,00,001 to ₹8,00,000 – 5% on the amount exceeding ₹4,00,000.
-    else if (taxableIncome <= 800000) {
-      return (taxableIncome - 400000) * 0.05;
-    }
-    // -------------------------------
-    // Slab 3: ₹8,00,001 to ₹12,00,000 – 10% on the amount exceeding ₹8,00,000
-    // plus a fixed tax of ₹20,000 from the previous slab.
-    else if (taxableIncome <= 1200000) {
-      return ((taxableIncome - 800000) * 0.10) + 20000;
-    }
-    // -------------------------------
-    // Slab 4: ₹12,00,001 to ₹16,00,000 – 15% on the amount exceeding ₹12,00,000
-    // plus fixed amounts from earlier slabs (₹20,000 + ₹40,000 = ₹60,000).
-    // However, marginal relief applies: the final tax should not exceed the extra income over ₹12,00,000.
-    else if (taxableIncome <= 1600000) {
-      // Computed tax without marginal relief.
-      const computedTax = ((taxableIncome - 1200000) * 0.15) + 20000 + 40000; // 60000 + 15% of excess over 1,200,000
-      // Marginal relief cap: the tax cannot be more than (taxableIncome - 1200000).
-      const marginalCap = taxableIncome - 1200000;
-      return Math.min(computedTax, marginalCap);
-    }
-    // -------------------------------
-    // Slab 5: ₹16,00,001 to ₹20,00,000 – 20% on the amount exceeding ₹16,00,000
-    // plus a fixed tax of ₹120,000 (i.e. cumulative tax up to ₹16,00,000).
-    else if (taxableIncome <= 2000000) {
-      return 120000 + (taxableIncome - 1600000) * 0.20;
-    }
-    // -------------------------------
-    // Slab 6: ₹20,00,001 to ₹24,00,000 – 25% on the amount exceeding ₹20,00,000
-    // plus a fixed tax of ₹200,000.
-    else if (taxableIncome <= 2400000) {
-      return 200000 + (taxableIncome - 2000000) * 0.25;
-    }
-    // -------------------------------
-    // Slab 7: Above ₹24,00,000 – 30% on the amount exceeding ₹24,00,000
-    // plus a fixed tax of ₹300,000.
-    else {
-      return 300000 + (taxableIncome - 2400000) * 0.30;
-    }
+    // Default to zero if financial year is not recognized.
+    return 0;
   }
 
   // Main tax calculation function.
@@ -156,7 +192,7 @@ const IncomeTaxCalculator = () => {
     const otherIncome = Number(incomeDetails.otherIncome || 0);
     const totalA = salary + rental + interest + otherIncome;
 
-    // Exemptions.
+    // Exemptions (only applicable in the old regime).
     const exemptions = Number(incomeDetails.exemptAllowances || 0);
 
     // Home loan interest.
@@ -174,7 +210,7 @@ const IncomeTaxCalculator = () => {
 
     // Determine if the user opts for the standard deduction.
     const applyStandardDeduction = basicDetails.applyStandardDeduction === 'yes';
-    const oldStandardDeduction = applyStandardDeduction ? 50000 : 0;
+    const oldStandardDeduction = applyStandardDeduction ? 75000 : 0;
     // In the new regime, no standard deduction is allowed.
     const newStandardDeduction = 0;
 
@@ -183,19 +219,28 @@ const IncomeTaxCalculator = () => {
       totalA - oldStandardDeduction - exemptions - totalC,
       0
     );
-    // For the new regime, the entire income is taxable.
+    // For the new regime, only the total income (without exemptions/deductions) is taxed.
     const newTaxableIncome = Math.max(totalA - newStandardDeduction, 0);
 
     // Calculate tax liabilities using the respective functions.
-    const oldCalculatedTax = calculateOldRegimeTax(oldTaxableIncome);
-    const newCalculatedTax = calculateNewRegimeTax(newTaxableIncome);
+    const oldCalculatedTax = calculateOldRegimeTax(oldTaxableIncome, basicDetails.ageGroup);
+    const newCalculatedTax = calculateNewRegimeTax(newTaxableIncome, basicDetails.financialYear);
 
-    // Apply tax rebate if applicable.
+    // Apply tax rebate under Sec 87A.
     const oldTaxRebate = oldTaxableIncome <= 500000 ? -oldCalculatedTax : 0;
-    const newTaxRebate = newTaxableIncome <= 700000 ? -newCalculatedTax : 0;
+    let newTaxRebate = 0;
+    if (basicDetails.financialYear === "FY24-25") {
+      newTaxRebate = newTaxableIncome <= 700000 ? -newCalculatedTax : 0;
+    } else if (basicDetails.financialYear === "FY25-26") {
+      // For salaried individuals who opt for a standard deduction.
+      if (applyStandardDeduction) {
+        newTaxRebate = salary <= 1275000 ? -newCalculatedTax : 0;
+      } else {
+        newTaxRebate = newTaxableIncome <= 1200000 ? -newCalculatedTax : 0;
+      }
+    }
 
     const oldTaxAfterRebate = oldCalculatedTax + oldTaxRebate;
-    // For the new regime, marginal relief is built into calculateNewRegimeTax.
     const newTaxAfterRebate = newCalculatedTax + newTaxRebate;
 
     // Calculate Health & Education Cess (4%) on the tax after rebate.
@@ -235,7 +280,6 @@ const IncomeTaxCalculator = () => {
         calculatedTax: newCalculatedTax,
         taxRebate: newTaxRebate,
         taxAfterRebate: newTaxAfterRebate,
-        // Marginal relief is applied within calculateNewRegimeTax.
         cess: newCess,
         payableTax: newPayableTax,
       },
