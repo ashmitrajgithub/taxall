@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://taxall.co.in/sitemap.xml
+Sitemap: https://taxall.co.in/sitemap.txt
