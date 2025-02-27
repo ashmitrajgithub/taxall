@@ -86,6 +86,20 @@ const Profile = () => {
         }).finally(() => setUpdating(false));
     };
 
+    // New handler for OTP resend option
+    const handleResendOtp = (e) => {
+        e.preventDefault();
+        setUpdating(true);
+        axios.put(`http://localhost:9090/userReq/users/${userId}/email/resend-otp?newEmail=${emailForm.newEmail}`, {}, {
+            headers: { Authorization: `Bearer ${token}` }
+        }).then(response => {
+            setSuccessMsg(response.data);
+        }).catch(error => {
+            console.error("Error resending OTP", error);
+            setError("Failed to resend OTP.");
+        }).finally(() => setUpdating(false));
+    };
+
     return (
         <div className="profile-container">
             {error && <div className="profile-error">{error}</div>}
@@ -133,6 +147,10 @@ const Profile = () => {
                     <h2>Verify Email</h2>
                     <input type="text" name="token" value={emailForm.token} onChange={handleEmailChange} placeholder="Enter verification token" required />
                     <button type="submit" disabled={updating}>{updating ? "Verifying..." : "Verify Email"}</button>
+                    {/* New Resend OTP button */}
+                    <button type="button" onClick={handleResendOtp} disabled={updating}>
+                        {updating ? "Resending..." : "Resend OTP"}
+                    </button>
                 </form>
             )}
         </div>
