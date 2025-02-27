@@ -13,7 +13,7 @@ import {
   FaTimes,
   FaFile,
 } from "react-icons/fa";
-import { FiLogIn } from "react-icons/fi";
+import { FiLogIn, FiUser } from "react-icons/fi";
 import { RiScissorsLine } from "react-icons/ri"; // Imported scissors icon for “cut”
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "/assets/taxallnewww22n.png";
@@ -22,8 +22,13 @@ import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
 import Signin from "../signin/Signin";
 import Subscription from "../subscription/Subscription";
 import "./Header.css";
+import axios from "axios";
 
 const Header = () => {
+  // Check authentication status inside the component
+  const token = localStorage.getItem("token");
+  const isAuthenticated = Boolean(token);
+
   // State for dropdowns, modals, etc.
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -32,16 +37,59 @@ const Header = () => {
   const [isSigninOpen, setIsSigninOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
 
-  // Detect viewport width for mobile vs. desktop (breakpoint at 768px)
+  // State for responsiveness and user profile
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [username, setUsername] = useState("");
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Reusable sign in button markup (with an extra CSS class based on viewport)
-  const signInButton = (
+  // Fetch user profile details (username) if authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const fetchProfile = async () => {
+        try {
+          const email = localStorage.getItem("userEmail");
+          const token = localStorage.getItem("token");
+          if (!email || !token) return;
+          const config = {
+            headers: { Authorization: `Bearer ${token}` },
+          };
+          // First, get the user ID using the email
+          const idResponse = await axios.get(
+            `http://localhost:9090/userReq/user/id?email=${email}`,
+            config
+          );
+          const userId = idResponse.data;
+          // Then, fetch the user profile details using the retrieved ID
+          const profileResponse = await axios.get(
+            `http://localhost:9090/userReq/profile/${userId}`,
+            config
+          );
+          const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.lastname)}`);
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      };
+
+      fetchProfile();
+    }
+  }, [isAuthenticated]);
+
+  // Reusable auth button markup: Profile if authenticated, Sign In otherwise
+  const authButton = isAuthenticated ? (
+    <button
+      className={`profile-button ${isMobile ? "mobile-profile" : "desktop-only"}`}
+      onClick={() => (window.location.href = "/profile")}
+    >
+      <FiUser className="profile-icon" />
+      <span className="profile-text">{username || "Profile"}</span>
+    </button>
+  ) : (
     <button
       className={`sign-in-button ${isMobile ? "mobile-sign-in" : "desktop-only"}`}
       onClick={() => setIsSigninOpen(!isSigninOpen)}
@@ -135,16 +183,16 @@ const Header = () => {
                   </div>
                 )}
               </li>
-              {/* Render sign in button inside navigation only for mobile */}
-              {isMobile && <li className="nav-item sign-in-nav-item">{signInButton}</li>}
+              {/* Render auth button inside navigation only for mobile */}
+              {isMobile && <li className="nav-item auth-nav-item">{authButton}</li>}
             </ul>
           </nav>
           <div className="header-buttons">
             <button className="get-started" id="get-started" onClick={toggleSubscription}>
               Subscribe Us
             </button>
-            {/* Render sign in button in header (right side) only for desktop */}
-            {!isMobile && signInButton}
+            {/* Render auth button in header (right side) only for desktop */}
+            {!isMobile && authButton}
           </div>
         </div>
       </header>
@@ -168,7 +216,8 @@ const Header = () => {
             <button className="close-button" onClick={closeConverter}>
               &times;
             </button>
-            <Converter />
+            {/* Uncomment and implement Converter if needed */}
+            {/* <Converter /> */}
           </div>
         </div>
       )}
@@ -184,7 +233,7 @@ const Header = () => {
             onClick={() => setIsSigninOpen(!isSigninOpen)}
           >
             <motion.div
-              className="header-modal-content header-signin-modal" 
+              className="header-modal-content header-signin-modal"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}

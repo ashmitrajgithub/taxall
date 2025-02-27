@@ -1,0 +1,87 @@
+/* Container for the profile page */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f2f5;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Card styling for the profile */
+  .profile-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+  
+  /* Header styling within the card */
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .profile-header p {
+    margin-top: 5px;
+    color: #888;
+    font-size: 16px;
+  }
+  
+  /* Styling for the profile details */
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .profile-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-field label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .profile-field span {
+    font-size: 16px;
+    color: #333;
+    word-break: break-word;
+  }
+  
+  /* Loading and error messages */
+  .profile-loading,
+  .profile-error {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .profile-card {
+      padding: 20px;
+    }
+  
+    .profile-header h1 {
+      font-size: 20px;
+    }
+  
+    .profile-header p,
+    .profile-field span {
+      font-size: 14px;
+    }
+  }
+  
