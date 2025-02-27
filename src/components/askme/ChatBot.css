@@ -63,16 +63,17 @@
   object-fit: contain;
 }
 
-.close-button {
+.close-button-chat {
   background: none;
   border: none;
-  color: white;
+  color: rgb(255, 255, 255);
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-.close-button:hover {
+.close-button-chat:hover {
   transform: scale(1.2);
+  background-color: #5a5d60;
 }
 
 /* Body */
@@ -197,21 +198,15 @@
 }
 
 .chatbot-send-button {
-  background: linear-gradient(45deg, #000, #222);
+  background: none;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: white;
+  color: rgb(0, 0, 0);
   transition: background-color 0.3s ease;
 }
 
 .chatbot-send-button:hover {
-  background-color: #0056b3;
+  background-color: #5a5d60;
 }
 
 .chatbot-send-button:disabled {
