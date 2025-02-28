@@ -92,7 +92,7 @@ setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.l
   ) : (
     <button
       className={`sign-in-button ${isMobile ? "mobile-sign-in" : "desktop-only"}`}
-      onClick={() => setIsSigninOpen(!isSigninOpen)}
+      onClick={() => (window.location.href = "/signin")}
     >
       <FiLogIn className="sign-in-icon" /> Sign In
     </button>
@@ -222,67 +222,6 @@ setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.l
         </div>
       )}
 
-      {/* Signin Popup */}
-      <AnimatePresence>
-        {isSigninOpen && (
-          <motion.div
-            className="header-modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsSigninOpen(!isSigninOpen)}
-          >
-            <motion.div
-              className="header-modal-content header-signin-modal"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <motion.button
-                className="header-close-button"
-                onClick={() => setIsSigninOpen(!isSigninOpen)}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ rotate: 90 }}
-              >
-                <RiScissorsLine className="cut-icon" />
-              </motion.button>
-              <Signin />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Subscription Popup */}
-      <AnimatePresence>
-        {isSubscriptionOpen && (
-          <motion.div
-            className="modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={toggleSubscription}
-          >
-            <motion.div
-              className="modal-content subscription-modal"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <motion.button
-                className="close-button"
-                onClick={toggleSubscription}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ rotate: 90 }}
-              >
-                <RiScissorsLine className="cut-icon" />
-              </motion.button>
-              <Subscription />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 };

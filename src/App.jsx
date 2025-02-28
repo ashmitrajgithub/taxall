@@ -14,6 +14,7 @@ import "./App.css"
 import Conversion from "./components/conversion/Conversion";
 import Profile from "./components/signin/Profile";
 import UploadTest from "./components/signin/UploadTest"
+import Signin from "./components/signin/Signin";
 const App = () => {
   const location = useLocation(); // Get current location
 
@@ -39,12 +40,13 @@ const App = () => {
           />
           <Route path="/incometaxcalculator" element={<IncomeTaxCalculator />} />
           <Route path="/fileconverter" element={<Conversion />} />
+          <Route path="/signin" element={<Signin />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       </div>
       <Footer />
-      <UploadTest />
+      {/* <UploadTest /> */}
      
     </div>
   );
