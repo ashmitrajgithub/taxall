@@ -13,6 +13,7 @@ import IncomeTaxCalculator from "./components/incometaxcalculator/IncomeTaxCalcu
 import "./App.css"
 import Conversion from "./components/conversion/Conversion";
 import Profile from "./components/signin/Profile";
+import UploadTest from "./components/signin/UploadTest"
 const App = () => {
   const location = useLocation(); // Get current location
 
@@ -43,6 +44,7 @@ const App = () => {
         </Routes>
       </div>
       <Footer />
+      <UploadTest />
      
     </div>
   );
