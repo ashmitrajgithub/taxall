@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+"use client"
+
+import { useState, useEffect } from "react"
 import {
   FaBox,
   FaBook,
@@ -12,73 +14,91 @@ import {
   FaBars,
   FaTimes,
   FaFile,
-} from "react-icons/fa";
-import { FiLogIn, FiUser } from "react-icons/fi";
-import { RiScissorsLine } from "react-icons/ri"; // Imported scissors icon for “cut”
-import { motion, AnimatePresence } from "framer-motion";
-import logo from "/assets/taxallnewww22n.png";
-import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator";
-// import Converter from "../converter/Converter";
-import Signin from "../signin/Signin";
-import Subscription from "../subscription/Subscription";
-import "./Header.css";
-import axios from "axios";
+} from "react-icons/fa"
+import { FiLogIn, FiUser } from "react-icons/fi"
+import logo from "/assets/taxallnewww22n.png"
+import IncomeTaxCalculator from "../incometaxcalculator/IncomeTaxCalculator"
+import "./Header.css"
+import axios from "axios"
 
 const Header = () => {
   // Check authentication status inside the component
-  const token = localStorage.getItem("token");
-  const isAuthenticated = Boolean(token);
+  const token = localStorage.getItem("token")
+  const isAuthenticated = Boolean(token)
 
   // State for dropdowns, modals, etc.
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConverterOpen, setIsConverterOpen] = useState(false);
-  const [isSigninOpen, setIsSigninOpen] = useState(false);
-  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null)
+  const [mobileMenu, setMobileMenu] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isConverterOpen, setIsConverterOpen] = useState(false)
+  const [isSigninOpen, setIsSigninOpen] = useState(false)
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false)
 
   // State for responsiveness and user profile
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [username, setUsername] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const [username, setUsername] = useState("")
+  const [profileImage, setProfileImage] = useState(null)
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   // Fetch user profile details (username) if authenticated
   useEffect(() => {
     if (isAuthenticated) {
+      // Check if profile image exists in localStorage
+      const cachedProfileImage = localStorage.getItem("profileImage")
+      if (cachedProfileImage) {
+        setProfileImage(cachedProfileImage)
+      }
+
       const fetchProfile = async () => {
         try {
-          const email = localStorage.getItem("userEmail");
-          const token = localStorage.getItem("token");
-          if (!email || !token) return;
+          const email = localStorage.getItem("userEmail")
+          const token = localStorage.getItem("token")
+          if (!email || !token) return
           const config = {
             headers: { Authorization: `Bearer ${token}` },
-          };
+          }
           // First, get the user ID using the email
-          const idResponse = await axios.get(
-            `http://localhost:9090/userReq/user/id?email=${email}`,
-            config
-          );
-          const userId = idResponse.data;
+          const idResponse = await axios.get(`http://localhost:9090/userReq/user/id?email=${email}`, config)
+          const userId = idResponse.data
           // Then, fetch the user profile details using the retrieved ID
-          const profileResponse = await axios.get(
-            `http://localhost:9090/userReq/profile/${userId}`,
-            config
-          );
-          const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.lastname)}`);
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        }
-      };
+          const profileResponse = await axios.get(`http://localhost:9090/userReq/profile/${userId}`, config)
+          const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
+          setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.lastname)}`)
 
-      fetchProfile();
+          // If no cached profile image, fetch it from the API
+          if (!cachedProfileImage) {
+            fetchProfileImage(token)
+          }
+        } catch (error) {
+          console.error("Error fetching profile:", error)
+        }
+      }
+
+      fetchProfile()
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated])
+
+  // Function to fetch profile image
+  const fetchProfileImage = async (token) => {
+    try {
+      const response = await axios.get("http://localhost:9090/documents/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "arraybuffer",
+      })
+
+      const blob = new Blob([response.data], { type: "image/jpeg" })
+      const imageUrl = URL.createObjectURL(blob)
+      setProfileImage(imageUrl)
+      localStorage.setItem("profileImage", imageUrl)
+    } catch (error) {
+      console.error("Error fetching profile image:", error)
+    }
+  }
 
   // Reusable auth button markup: Profile if authenticated, Sign In otherwise
   const authButton = isAuthenticated ? (
@@ -86,7 +106,13 @@ setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.l
       className={`profile-button ${isMobile ? "mobile-profile" : "desktop-only"}`}
       onClick={() => (window.location.href = "/profile")}
     >
-      <FiUser className="profile-icon" />
+      {profileImage ? (
+        <div className="profile-avatar-container">
+          <img src={profileImage || "/placeholder.svg"} alt={username} className="profile-avatar" />
+        </div>
+      ) : (
+        <FiUser className="profile-icon" />
+      )}
       <span className="profile-text">{username || "Profile"}</span>
     </button>
   ) : (
@@ -96,17 +122,17 @@ setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.l
     >
       <FiLogIn className="sign-in-icon" /> Sign In
     </button>
-  );
+  )
 
   // Other handlers
-  const handleMouseEnter = (menu) => setActiveDropdown(menu);
-  const handleMouseLeave = () => setActiveDropdown(null);
-  const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-  const openConverter = () => setIsConverterOpen(true);
-  const closeConverter = () => setIsConverterOpen(false);
-  const toggleSubscription = () => setIsSubscriptionOpen(!isSubscriptionOpen);
+  const handleMouseEnter = (menu) => setActiveDropdown(menu)
+  const handleMouseLeave = () => setActiveDropdown(null)
+  const toggleMobileMenu = () => setMobileMenu(!mobileMenu)
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
+  const openConverter = () => setIsConverterOpen(true)
+  const closeConverter = () => setIsConverterOpen(false)
+  const toggleSubscription = () => setIsSubscriptionOpen(!isSubscriptionOpen)
 
   return (
     <>
@@ -221,9 +247,9 @@ setUsername(`${cap(profileResponse.data.firstname)} ${cap(profileResponse.data.l
           </div>
         </div>
       )}
-
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
+
