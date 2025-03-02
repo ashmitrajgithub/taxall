@@ -45,7 +45,16 @@ export default function UpdateDetails() {
 
     const handleVerifyOtp = () => {
         axios.post(`http://localhost:9090/userReq/users/${userId}/email/verify?token=${otp}`, {}, { headers: { Authorization: `Bearer ${token}` } })
-            .then(() => alert("Email updated successfully!"))
+        .then(response => {
+            // Assuming the backend now returns an object { message: "...", token: "newJwt" }
+            const newToken = response.data.token;
+            if (newToken) {
+                localStorage.setItem("token", newToken);
+                alert("Email updated successfully!");
+            } else {
+                alert("Email updated but no new token received.");
+            }
+        })
             .catch(() => alert("Invalid OTP."));
     };
 

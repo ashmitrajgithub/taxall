@@ -16,7 +16,7 @@ export default function UserDetails() {
             setError("Authentication failed. Please log in.");
             setLoading(false);
             return;
-        }
+        } 
 
         axios.get(`http://localhost:9090/userReq/profile/${userId}`, {
             headers: { Authorization: `Bearer ${token}` }
