@@ -1,65 +1,155 @@
-/* Container with a gradient background and centered layout */
-.dashboard-container {
+:root {
+    --bg-dark: #121212;
+    --bg-light: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent-color: #bb86fc;
+    --error-color: #cf6679;
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+  }
+  
+  body {
+    font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+  
+  .dashboard {
+    margin-top: 108px;
+    margin-left: 5px;
+    margin-right: 5px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
-    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
     min-height: 100vh;
   }
   
-  /* Card styling with hover effect and smooth transition */
-  .dashboard-card {
-    width: 100%;
-    max-width: 600px;
-    margin: 16px;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
+  .sidebar {
+    width: 250px;
+    background-color: var(--bg-light);
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
   }
   
-  .dashboard-card:hover {
-    transform: translateY(-5px);
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+    text-align: center;
   }
   
-  /* Button group styling for a clean tab look */
-  .button-group {
-    margin-bottom: 16px;
-    border-radius: 8px;
-    overflow: hidden;
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
-  /* Base button style with transition effects */
-  .tab-button {
-    text-transform: none;
-    font-weight: 600;
-    background-color: #e0e0e0;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    text-align: left;
   }
   
-  /* Active tab styling */
-  .tab-button.active {
-    background-color: #1976d2 !important;
-    color: #fff !important;
+  .nav-item:hover,
+  .nav-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
   }
   
-  /* Content area padding */
-  .dashboard-content {
-    padding: 16px;
+  .nav-item.active {
+    background-color: var(--accent-color);
+    color: var(--bg-dark);
   }
   
-  /* Responsive adjustments for smaller devices */
-  @media (max-width: 600px) {
-    .dashboard-card {
-      margin: 8px;
-      padding: 12px;
-    }
-    .button-group {
+  .nav-icon {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: var(--bg-dark);
+    overflow-y: auto;
+  }
+  
+  .content-header {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 1rem;
+  }
+  
+  .content-header h1 {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  
+  .content-body {
+    background-color: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard {
       flex-direction: column;
     }
-    .tab-button {
-      margin-bottom: 8px;
+  
+    .sidebar {
+      width: 100%;
+      padding: 1rem;
+    }
+  
+    .nav-menu {
+      flex-direction: row;
+      justify-content: space-between;
+      overflow-x: auto;
+    }
+  
+    .nav-item {
+      flex: 1;
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .nav-icon {
+      margin-right: 0;
+      margin-bottom: 0.5rem;
+    }
+  
+    .main-content {
+      padding: 1rem;
     }
   }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .content-body {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
   
